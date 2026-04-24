@@ -1,0 +1,172 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import Section from "../components/Section.astro";
+import Button from "../components/Button.astro";
+
+// Replace FORMSPREE_ID with actual Formspree endpoint
+const MEMBERSHIP_FORM = "https://formspree.io/f/mqewwreq";
+const DISCUSSION_FORM  = "https://formspree.io/f/mlgaaqgn";
+---
+
+<PageLayout
+  title="Community — GADI"
+  description="Join the Generalization Across Domains Initiative. Become a member, propose research topics, and connect with researchers across disciplines."
+  pageTitle="Community"
+  pageSubtitle="Join the network"
+>
+  <!-- Quick signup -->
+  <Section background="white">
+    <div class="mx-auto max-w-2xl text-center fade-up">
+      <p class="label-caps mb-3 text-indigo-600">Quick Signup</p>
+      <h2 class="font-display text-3xl font-semibold text-ink-900">
+        Just want to receive updates?
+      </h2>
+      <p class="mt-3 text-sm font-body text-stone-600 leading-relaxed">
+        Enter your email to stay informed about events and opportunities. No full application needed.
+      </p>
+      <form action="https://formspree.io/f/mqewwreq" method="POST" class="mt-6 flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+        <input
+          type="email"
+          name="email"
+          required
+          placeholder="Your email address"
+          class="input-field flex-1 text-center sm:text-left"
+        />
+        <input type="hidden" name="_subject" value="GADI Updates Signup" />
+        <button type="submit" class="px-6 py-3 border border-amber-500 bg-amber-500 text-xs font-body font-semibold uppercase tracking-label text-white hover:bg-amber-600 hover:border-amber-600 transition-colors whitespace-nowrap">
+          Subscribe
+        </button>
+      </form>
+    </div>
+  </Section>
+
+  <!-- Who can join -->
+  <Section background="cream">
+    <div class="grid gap-16 lg:grid-cols-2 lg:gap-24">
+      <div class="fade-up">
+        <p class="label-caps mb-3 text-indigo-600">Open Membership</p>
+        <h2 class="font-display text-4xl font-semibold text-ink-900">
+          GADI is open to all researchers
+        </h2>
+        <div class="mt-5 h-px w-12 bg-gradient-to-r from-indigo-500 to-transparent" />
+        <p class="mt-6 text-base font-body leading-relaxed text-stone-700">
+          Membership in GADI is free and open to anyone with a genuine interest in generalization and
+          transfer of learning across disciplines. There is no affiliation requirement.
+        </p>
+        <p class="mt-4 text-base font-body leading-relaxed text-stone-700">
+          We welcome researchers at all career stages, from doctoral students to full professors,
+          from psychology, neuroscience, artificial intelligence, education, linguistics, psychiatry,
+          cognitive science, and related fields.
+        </p>
+
+        <div class="mt-8 space-y-4">
+          {[
+            { label: "Access", desc: "Receive announcements, event invitations, and network updates." },
+            { label: "Participate", desc: "Join working groups, attend conferences, workshops, and hackathons." },
+            { label: "Collaborate", desc: "Connect with researchers across disciplines for joint projects." },
+            { label: "Develop", desc: "Apply for travel support and participate in the summer school." },
+          ].map((item) => (
+            <div class="flex gap-3">
+              <div class="mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-indigo-400" />
+              <p class="text-base font-body text-stone-700">
+                <strong class="font-semibold text-ink-900">{item.label}.</strong> {item.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Membership form -->
+      <div class="fade-up" style="transition-delay: 0.1s;">
+        <div class="border border-cream-300 bg-cream-50 p-7">
+          <h3 class="font-display text-2xl font-semibold text-ink-900 mb-6">
+            Membership form
+          </h3>
+          <form action={MEMBERSHIP_FORM} method="POST" class="space-y-4">
+            <div class="grid gap-4 sm:grid-cols-2">
+              <div>
+                <label class="label-caps mb-1.5 block text-stone-500" for="first-name">First Name</label>
+                <input id="first-name" name="first_name" type="text" required class="input-field" />
+              </div>
+              <div>
+                <label class="label-caps mb-1.5 block text-stone-500" for="last-name">Last Name</label>
+                <input id="last-name" name="last_name" type="text" required class="input-field" />
+              </div>
+            </div>
+            <div>
+              <label class="label-caps mb-1.5 block text-stone-500" for="email">Institutional Email</label>
+              <input id="email" name="email" type="email" required class="input-field" />
+            </div>
+            <div>
+              <label class="label-caps mb-1.5 block text-stone-500" for="institution">Institution</label>
+              <input id="institution" name="institution" type="text" required class="input-field" />
+            </div>
+            <div>
+              <label class="label-caps mb-1.5 block text-stone-500" for="position">Position</label>
+              <select id="position" name="position" required class="input-field">
+                <option value="" disabled selected>Select position</option>
+                <option value="phd">PhD Student</option>
+                <option value="postdoc">Postdoctoral Researcher</option>
+                <option value="assistant-professor">Assistant Professor</option>
+                <option value="associate-professor">Associate Professor</option>
+                <option value="full-professor">Full Professor</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div>
+              <label class="label-caps mb-1.5 block text-stone-500" for="field">Primary Research Field</label>
+              <input id="field" name="field" type="text" class="input-field" placeholder="e.g. Cognitive psychology, Machine learning" />
+            </div>
+            <div>
+              <label class="label-caps mb-1.5 block text-stone-500" for="interest">Why are you interested in GADI?</label>
+              <textarea id="interest" name="interest" rows={3} class="textarea-field" placeholder="Briefly describe your interest in generalization research and what you hope to contribute or gain from the network."></textarea>
+            </div>
+            <button type="submit" class="w-full border border-amber-500 bg-amber-500 px-6 py-3 text-xs font-body font-semibold uppercase tracking-label text-white hover:bg-amber-600 hover:border-amber-600 transition-colors">
+              Submit Application
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  <!-- Discussion topics -->
+  <Section label="Scientific Discussions" title="Propose a topic" background="cream">
+    <div class="grid gap-12 lg:grid-cols-2 items-start">
+      <div class="fade-up">
+        <p class="text-base font-body leading-relaxed text-stone-700">
+          GADI working groups are built around member-proposed research topics. If you have a question,
+          methodology, or theme you would like to see discussed across disciplines, submit it here.
+          Topics that attract sufficient interest will be developed into working group activities.
+        </p>
+        <p class="mt-4 text-base font-body leading-relaxed text-stone-700">
+          Examples of relevant topics include: measurement standards for generalization paradigms,
+          cross-species experimental designs, computational benchmarks for transfer learning, or
+          educational interventions promoting robust generalization.
+        </p>
+      </div>
+
+      <div class="fade-up" style="transition-delay: 0.1s;">
+        <div class="border border-cream-300 bg-white p-6">
+          <form action={DISCUSSION_FORM} method="POST" class="space-y-4">
+            <div>
+              <label class="label-caps mb-1.5 block text-stone-500" for="topic-title">Topic Title</label>
+              <input id="topic-title" name="topic_title" type="text" required class="input-field" placeholder="Brief, descriptive title" />
+            </div>
+            <div>
+              <label class="label-caps mb-1.5 block text-stone-500" for="topic-desc">Description</label>
+              <textarea id="topic-desc" name="topic_description" rows={4} required class="textarea-field" placeholder="Describe the research question or topic, and why it is relevant across disciplines."></textarea>
+            </div>
+            <div>
+              <label class="label-caps mb-1.5 block text-stone-500" for="topic-email">Your Email</label>
+              <input id="topic-email" name="email" type="email" required class="input-field" placeholder="you@university.edu" />
+            </div>
+            <button type="submit" class="w-full border border-ink-800 bg-ink-900 px-6 py-3 text-xs font-body font-semibold uppercase tracking-label text-white hover:bg-ink-800 transition-colors">
+              Propose Topic
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </Section>
+</PageLayout>

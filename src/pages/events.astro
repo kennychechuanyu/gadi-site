@@ -1,0 +1,80 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import Section from "../components/Section.astro";
+import EventCard from "../components/EventCard.astro";
+import { getCollection } from "astro:content";
+
+const allEvents = await getCollection("events");
+const now = new Date();
+
+const upcoming = allEvents
+  .filter((e) => e.data.date >= now)
+  .sort((a, b) => a.data.date.getTime() - b.data.date.getTime());
+
+const past = allEvents
+  .filter((e) => e.data.date < now)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const typeLabels: Record<string, string> = {
+  "conference":    "Conference",
+  "workshop":      "Workshop",
+  "hackathon":     "Hackathon",
+  "summer-school": "Summer School",
+  "expert-meeting":"Expert Meeting",
+  "webinar":       "Webinar",
+};
+---
+
+<PageLayout
+  title="Events — GADI"
+  description="Conferences, expert meetings, hackathons, and summer schools organized by the Generalization Across Domains Initiative."
+  pageTitle="Events"
+  pageSubtitle="Where the network convenes"
+>
+  <!-- Upcoming events -->
+  <Section label="Upcoming" background="white">
+    {upcoming.length > 0 ? (
+      <div class="stagger-children grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {upcoming.map((event) => (
+          <EventCard
+            title={event.data.title}
+            date={event.data.date}
+            endDate={event.data.endDate}
+            location={event.data.location}
+            type={event.data.type}
+            href={`/events/${event.id}`}
+            featured={event.data.featured}
+          />
+        ))}
+      </div>
+    ) : (
+      <div class="px-10 py-14 text-center fade-in bg-cream-50">
+        <p class="label-caps mb-2 text-stone-400">Coming Soon</p>
+        <p class="text-sm font-body text-stone-400 max-w-sm mx-auto">
+          No upcoming events scheduled yet. Check back soon, or
+          <a href="/community" class="text-indigo-600 hover:underline">join the mailing list</a>
+          to be notified.
+        </p>
+      </div>
+    )}
+  </Section>
+
+  <!-- Past events -->
+  {past.length > 0 && (
+    <Section label="Past Events" background="white">
+      <div class="stagger-children grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {past.map((event) => (
+          <EventCard
+            title={event.data.title}
+            date={event.data.date}
+            endDate={event.data.endDate}
+            location={event.data.location}
+            type={event.data.type}
+            href={`/events/${event.id}`}
+          />
+        ))}
+      </div>
+    </Section>
+  )}
+
+</PageLayout>

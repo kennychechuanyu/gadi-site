@@ -1,0 +1,31 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  pageTitle: string;
+  pageSubtitle?: string;
+  image?: string;
+}
+
+const { title, description, pageTitle, pageSubtitle, image } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} image={image}>
+  <!-- Page header -->
+  <section class="border-b border-cream-200" style="background-color: var(--cream);">
+    <div class="container-site py-16">
+      <p class="label-caps mb-3 text-indigo-600">{pageTitle}</p>
+      {pageSubtitle && (
+        <h1 class="font-display text-4xl font-bold text-ink-900 lg:text-5xl">
+          {pageSubtitle}
+        </h1>
+      )}
+      <div class="mt-5 h-px w-16 bg-gradient-to-r from-indigo-500 to-transparent" />
+    </div>
+  </section>
+
+  <!-- Page content -->
+  <slot />
+</BaseLayout>

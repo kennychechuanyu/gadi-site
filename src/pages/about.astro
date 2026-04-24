@@ -1,0 +1,119 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import Section from "../components/Section.astro";
+import Button from "../components/Button.astro";
+import { siteConfig } from "../data/site-config";
+---
+
+<PageLayout
+  title="About GADI"
+  description="GADI is an international interdisciplinary research network studying the common principles of generalization across biological and artificial learning systems."
+  pageTitle="About"
+  pageSubtitle="Bridging the science of generalization"
+>
+  <!-- ─── Mission ───────────────────────────────────────────────────── -->
+  <Section background="white">
+    <div class="fade-up">
+      <p class="label-caps mb-3 text-indigo-600">Our Mission</p>
+      <h2 class="font-display text-4xl font-semibold text-ink-900 lg:text-5xl">
+        A unified science of how learning transfers
+      </h2>
+      <div class="mt-5 h-px w-12 bg-gradient-to-r from-indigo-500 to-transparent" />
+      <p class="mt-8 max-w-prose text-lg font-body leading-relaxed text-stone-700">
+        Learning systems, from humans and animals to artificial neural networks, must apply past
+        experience to situations they have never encountered before. This capacity, variously called
+        generalization, transfer of learning, or extrapolation, is fundamental to adaptive behavior,
+        robust intelligence, and effective education.
+      </p>
+      <div class="mt-5 max-w-prose space-y-5 text-base font-body leading-relaxed text-stone-600">
+        <p>
+          Despite its centrality, generalization remains poorly understood at a fundamental level.
+          Research on this problem is distributed across scientific domains that use incompatible
+          terminology, divergent experimental paradigms, and incommensurable theoretical frameworks.
+          Progress has been slowed by the very structure of academic disciplines.
+        </p>
+        <p>
+          GADI was established to build the infrastructure (the communication channels, the
+          collaborative opportunities, and the shared conceptual language) necessary to connect
+          these fragmented communities and accelerate progress toward unified principles of
+          generalization.
+        </p>
+      </div>
+    </div>
+  </Section>
+
+  <!-- ─── The research problem ─────────────────────────────────────── -->
+  <Section label="Scientific Context" background="cream">
+    <div class="fade-up">
+      <h2 class="font-display text-4xl font-semibold text-ink-900 lg:text-5xl">
+        The generalization problem
+      </h2>
+      <div class="mt-5 h-px w-12 bg-gradient-to-r from-indigo-500 to-transparent" />
+      <p class="mt-6 max-w-prose text-base font-body leading-relaxed text-stone-700">
+        Each field has developed deep expertise on a facet of generalization. Yet the terminology
+        rarely crosses disciplinary lines: "stimulus generalization" in psychology,
+        "out-of-distribution generalization" in AI, and "transfer of training" in education refer
+        to related, perhaps identical, phenomena studied in near-complete isolation. GADI creates
+        the conditions for these communities to find common ground.
+      </p>
+    </div>
+
+    <dl class="mt-12 divide-y divide-cream-300 stagger-children">
+      {[
+        {
+          discipline: "Psychology",
+          insight: "Studies how humans learn categories, transfer knowledge, and generalize across contexts, using controlled experimental paradigms to isolate the mechanisms underlying these processes.",
+        },
+        {
+          discipline: "Neuroscience",
+          insight: "Investigates the neural substrates of generalization, including how the brain encodes, abstracts, and transfers learned information to novel contexts.",
+        },
+        {
+          discipline: "Artificial Intelligence",
+          insight: "Develops models that generalize from training data to novel inputs, including out-of-distribution generalization, few-shot learning, and transfer learning in neural networks.",
+        },
+        {
+          discipline: "Education",
+          insight: "Studies how skills and knowledge transfer across tasks and contexts, and how instructional design can promote robust and flexible generalization in students.",
+        },
+        {
+          discipline: "Linguistics",
+          insight: "Examines how speakers generalize grammatical patterns, lexical categories, and phonological regularities from the input they receive to novel utterances.",
+        },
+        {
+          discipline: "Psychiatry",
+          insight: "Investigates maladaptive generalization, where learned responses extend inappropriately to safe contexts, as a clinically significant failure mode of adaptive learning.",
+        },
+      ].map((item) => (
+        <div class="grid gap-3 py-6 md:grid-cols-[180px_1fr] md:gap-12">
+          <dt class="label-caps text-indigo-600 md:pt-0.5">{item.discipline}</dt>
+          <dd class="text-sm font-body leading-relaxed text-stone-700">{item.insight}</dd>
+        </div>
+      ))}
+    </dl>
+  </Section>
+
+  <!-- ─── Objectives ────────────────────────────────────────────────── -->
+  <Section label="What We Do" background="white">
+    <div class="mb-12 fade-up">
+      <h2 class="font-display text-4xl font-semibold text-ink-900 lg:text-5xl">
+        Five objectives
+      </h2>
+      <div class="mt-5 h-px w-12 bg-gradient-to-r from-indigo-500 to-transparent" />
+    </div>
+    <div class="divide-y divide-cream-200 border border-cream-200">
+      {siteConfig.objectives.map((obj, i) => (
+        <div class="grid gap-4 px-8 py-8 fade-up md:grid-cols-[80px_1fr] md:gap-10">
+          <div class="font-display text-4xl font-bold text-indigo-200 leading-none select-none">
+            {obj.number}
+          </div>
+          <div>
+            <h3 class="font-display text-xl font-semibold text-ink-900">{obj.title}</h3>
+            <p class="mt-2 text-sm font-body leading-relaxed text-stone-600">{obj.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </Section>
+
+</PageLayout>

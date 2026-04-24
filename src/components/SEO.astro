@@ -1,0 +1,36 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  type?: string;
+}
+
+const {
+  title,
+  description,
+  image = "/images/gadi-og.png",
+  type = "website",
+} = Astro.props;
+
+const siteUrl = "https://gadi-network.org";
+const fullTitle = title.includes("GADI") ? title : `${title} — GADI`;
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={new URL(Astro.url.pathname, siteUrl).toString()} />
+
+<meta property="og:type" content={type} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={new URL(Astro.url.pathname, siteUrl).toString()} />
+<meta property="og:image" content={new URL(image, siteUrl).toString()} />
+<meta property="og:site_name" content="GADI – Generalization Across Domains Initiative" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={new URL(image, siteUrl).toString()} />
+
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />

@@ -1,0 +1,151 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Custom properties ─────────────────────────────────────────────── */
+:root {
+  --ink:          #0f1318;
+  --indigo:       #6055a0;
+  --indigo-light: #9b8fd6;
+  --amber:        #c4832a;
+  --cream:        #f4efe6;
+  --cream-dark:   #ede6d8;
+  --stone:        #7d7265;
+  --border:       #ddd5c4;
+  --white:        #faf7f2;
+}
+
+/* ─── Base typography ────────────────────────────────────────────────── */
+@layer base {
+  html {
+    font-family: 'Sora', system-ui, sans-serif;
+    color: var(--ink);
+    background-color: var(--white);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply min-h-screen flex flex-col;
+    background-color: var(--white);
+    color: var(--ink);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+  }
+
+  h1 { @apply text-5xl font-bold leading-tight; }
+  h2 { @apply text-4xl font-semibold leading-snug; }
+  h3 { @apply text-2xl font-semibold; }
+
+  a {
+    @apply transition-colors duration-200;
+  }
+
+  ::selection {
+    background-color: var(--indigo);
+    color: #fff;
+  }
+}
+
+/* ─── Layout utilities ───────────────────────────────────────────────── */
+@layer utilities {
+  .container-site {
+    @apply mx-auto max-w-7xl px-6 lg:px-10;
+  }
+
+  .container-narrow {
+    @apply mx-auto max-w-3xl px-6 lg:px-8;
+  }
+
+  .section-pad {
+    @apply py-20 lg:py-28;
+  }
+
+  .label-caps {
+    @apply font-body text-xs font-semibold uppercase tracking-label text-stone-600;
+  }
+}
+
+/* ─── Scroll animations ──────────────────────────────────────────────── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-in {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.fade-in.is-visible {
+  opacity: 1;
+}
+
+.stagger-children > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.stagger-children.is-visible > *:nth-child(1)  { opacity: 1; transform: translateY(0); transition-delay: 0s; }
+.stagger-children.is-visible > *:nth-child(2)  { opacity: 1; transform: translateY(0); transition-delay: 0.08s; }
+.stagger-children.is-visible > *:nth-child(3)  { opacity: 1; transform: translateY(0); transition-delay: 0.16s; }
+.stagger-children.is-visible > *:nth-child(4)  { opacity: 1; transform: translateY(0); transition-delay: 0.24s; }
+.stagger-children.is-visible > *:nth-child(5)  { opacity: 1; transform: translateY(0); transition-delay: 0.32s; }
+.stagger-children.is-visible > *:nth-child(6)  { opacity: 1; transform: translateY(0); transition-delay: 0.40s; }
+.stagger-children.is-visible > *:nth-child(7)  { opacity: 1; transform: translateY(0); transition-delay: 0.48s; }
+.stagger-children.is-visible > *:nth-child(8)  { opacity: 1; transform: translateY(0); transition-delay: 0.56s; }
+.stagger-children.is-visible > *:nth-child(9)  { opacity: 1; transform: translateY(0); transition-delay: 0.64s; }
+.stagger-children.is-visible > *:nth-child(10) { opacity: 1; transform: translateY(0); transition-delay: 0.72s; }
+.stagger-children.is-visible > *:nth-child(11) { opacity: 1; transform: translateY(0); transition-delay: 0.80s; }
+.stagger-children.is-visible > *:nth-child(12) { opacity: 1; transform: translateY(0); transition-delay: 0.88s; }
+
+/* ─── Bio accordion ─────────────────────────────────────────────────── */
+.bio-accordion summary {
+  list-style: none;
+}
+
+.bio-accordion summary::-webkit-details-marker,
+.bio-accordion summary::marker {
+  display: none;
+  content: "";
+}
+
+.bio-accordion .bio-toggle-label::before {
+  content: "▸ ";
+  font-size: 10px;
+}
+
+.bio-accordion[open] .bio-toggle-label::before {
+  content: "▾ ";
+  font-size: 10px;
+}
+
+.bio-accordion .bio-content {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s ease;
+}
+
+.bio-accordion[open] .bio-content {
+  grid-template-rows: 1fr;
+}
+
+/* ─── Form inputs ────────────────────────────────────────────────────── */
+.input-field {
+  @apply w-full rounded-none border border-cream-300 bg-cream-50 px-4 py-3 text-sm font-body text-ink-900
+         focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500
+         placeholder:text-stone-400 transition-colors duration-200;
+}
+
+.textarea-field {
+  @apply input-field resize-none;
+}

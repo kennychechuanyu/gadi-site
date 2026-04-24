@@ -1,0 +1,62 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import Section from "../components/Section.astro";
+import PersonCard from "../components/PersonCard.astro";
+import { people } from "../data/people";
+
+// Priority members: Jonas first, then Steven, Eline, Kenny, Wolf
+const priorityNames = ["Jonas Zaman", "Steven Verheyen", "Eline Van Geert", "Kenny Yu", "Wolf Vanpaemel"];
+
+const coordinatingMembers = people
+  .filter((p) => p.role === "coordinator" || p.role === "steering")
+  .sort((a, b) => {
+    const idxA = priorityNames.indexOf(a.name);
+    const idxB = priorityNames.indexOf(b.name);
+    if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+    if (idxA !== -1) return -1;
+    if (idxB !== -1) return 1;
+    const lastA = a.name.split(" ").slice(-1)[0];
+    const lastB = b.name.split(" ").slice(-1)[0];
+    return lastA.localeCompare(lastB);
+  });
+---
+
+<PageLayout
+  title="People — GADI"
+  description="Meet the coordinating members and broader membership of the Generalization Across Domains Initiative."
+  pageTitle="People"
+  pageSubtitle="Who is involved"
+>
+  <!-- Coordinating Members -->
+  <Section label="Coordinating Members" background="white">
+    <div class="mx-auto max-w-6xl">
+      <div class="stagger-children grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
+        {coordinatingMembers.map((person) => (
+          <PersonCard
+            name={person.name}
+            title={person.title}
+            institution={person.institution}
+            department={person.department}
+            country={person.country}
+            email={person.email}
+            role={person.role}
+            photo={person.photo}
+            bio={person.bio}
+          />
+        ))}
+      </div>
+    </div>
+  </Section>
+
+  <!-- Network Members -->
+  <Section label="Network Members" background="cream">
+    <div class="mx-auto max-w-6xl">
+      <div class="max-w-xl fade-up">
+        <p class="text-base font-body leading-relaxed text-stone-600">
+          Network members will be listed here as the initiative develops.
+          <a href="/community" class="text-indigo-600 hover:text-amber-600 transition-colors">Join the network</a> to be included.
+        </p>
+      </div>
+    </div>
+  </Section>
+</PageLayout>

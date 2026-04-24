@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 58" width="360" height="58">
+  <!-- Icon: dark purple circle background -->
+  <circle cx="29" cy="29" r="27" fill="#1e1b4b"/>
+
+  <!-- Triangle network connecting lines -->
+  <line x1="29" y1="10" x2="12" y2="43" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+  <line x1="29" y1="10" x2="46" y2="43" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+  <line x1="12" y1="43" x2="46" y2="43" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+
+  <!-- Triangle nodes: top (large, medium purple), bottom-left (darker), bottom-right (light) -->
+  <circle cx="29" cy="10" r="6.5" fill="#9b8fd6"/>
+  <circle cx="12" cy="43" r="5"   fill="#6055a0"/>
+  <circle cx="46" cy="43" r="5"   fill="#c8bfea"/>
+
+  <!-- GADI wordmark -->
+  <text
+    x="68" y="37"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="30"
+    font-weight="700"
+    letter-spacing="3"
+    fill="#c4832a"
+  >GADI</text>
+
+  <!-- Subtitle -->
+  <text
+    x="69" y="52"
+    font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+    font-size="11"
+    letter-spacing="0.5"
+    fill="#8a8078"
+  >Generalization Across Domains Initiative</text>
+</svg>

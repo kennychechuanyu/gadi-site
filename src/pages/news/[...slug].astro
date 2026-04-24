@@ -1,0 +1,71 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Button from "../../components/Button.astro";
+
+export async function getStaticPaths() {
+  const news = await getCollection("news");
+  return news.map((item) => ({
+    params: { slug: item.id },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+const { Content } = await item.render();
+
+const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+const typeLabel: Record<string, string> = {
+  "meeting-notes": "Meeting Notes",
+  "announcement":  "Announcement",
+  "update":        "Update",
+};
+---
+
+<BaseLayout title={`${item.data.title} — GADI`} description={item.data.description}>
+  <!-- Header -->
+  <section class="border-b border-cream-200 bg-cream-100">
+    <div class="container-site py-16">
+      <div class="mb-4 flex flex-wrap items-center gap-3">
+        <a href="/news" class="text-xs font-body text-stone-500 hover:text-indigo-600 transition-colors">
+          ← All News
+        </a>
+        <span class="text-cream-300">|</span>
+        <span class="label-caps text-indigo-600">{typeLabel[item.data.type]}</span>
+      </div>
+      <h1 class="font-display text-4xl font-bold text-ink-900 lg:text-5xl max-w-3xl">
+        {item.data.title}
+      </h1>
+      <div class="mt-5 h-px w-16 bg-gradient-to-r from-indigo-500 to-transparent" />
+      <div class="mt-5 flex flex-wrap items-center gap-6 text-sm font-body text-stone-500">
+        <span>
+          {item.data.date.getDate()} {months[item.data.date.getMonth()]} {item.data.date.getFullYear()}
+        </span>
+        {item.data.author && <span>{item.data.author}</span>}
+      </div>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="bg-white">
+    <div class="container-narrow py-16">
+      <div class="prose prose-stone max-w-none font-body
+        prose-headings:font-display prose-headings:font-semibold prose-headings:text-ink-900
+        prose-p:text-stone-700 prose-p:leading-relaxed
+        prose-a:text-indigo-600 prose-a:no-underline hover:prose-a:underline
+        prose-strong:text-ink-900
+        prose-ul:text-stone-700
+        prose-li:marker:text-indigo-400
+        prose-h2:text-3xl prose-h3:text-xl">
+        <Content />
+      </div>
+    </div>
+  </section>
+
+  <div class="border-t border-cream-200 bg-cream-50">
+    <div class="container-site py-6">
+      <Button href="/news" variant="ghost" size="sm">← Back to News</Button>
+    </div>
+  </div>
+</BaseLayout>

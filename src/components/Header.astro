@@ -1,0 +1,33 @@
+---
+import Navigation from "./Navigation.astro";
+import MobileMenu from "./MobileMenu.astro";
+import { siteConfig } from "../data/site-config";
+---
+
+<header class="sticky top-0 z-50 border-b border-cream-200 bg-white/95 backdrop-blur-sm" style="background-color: rgba(250, 247, 242, 0.95);">
+  <div class="container-site">
+    <div class="flex h-16 items-center justify-between">
+
+      <!-- Logo -->
+      <a href="/" class="flex items-center group" aria-label="GADI – Home">
+        <img src="/images/gadi-logo.svg" alt="GADI" class="h-10 w-auto object-contain" />
+      </a>
+
+      <!-- Desktop nav -->
+      <div class="hidden md:flex items-center">
+        <Navigation items={siteConfig.nav} />
+        <div class="ml-5 border-l border-cream-300 pl-5">
+          <a
+            href="/community"
+            class="rounded-none border border-amber-500 px-4 py-1.5 text-xs font-body font-semibold uppercase tracking-label text-amber-600 hover:bg-amber-500 hover:text-white transition-colors duration-200"
+          >
+            Join
+          </a>
+        </div>
+      </div>
+
+      <!-- Mobile menu -->
+      <MobileMenu items={siteConfig.nav} />
+    </div>
+  </div>
+</header>

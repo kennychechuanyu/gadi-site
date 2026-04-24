@@ -1,0 +1,222 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Section from "../components/Section.astro";
+import Card from "../components/Card.astro";
+import EventCard from "../components/EventCard.astro";
+import Button from "../components/Button.astro";
+import { getCollection } from "astro:content";
+import { siteConfig } from "../data/site-config";
+
+const allEvents = await getCollection("events");
+const now = new Date();
+const upcomingEvents = allEvents
+  .filter((e) => e.data.date >= now)
+  .sort((a, b) => a.data.date.getTime() - b.data.date.getTime())
+  .slice(0, 3);
+---
+
+<BaseLayout
+  title="GADI – Generalization Across Domains Initiative"
+  description={siteConfig.description}
+>
+  <!-- ─── Hero ─────────────────────────────────────────────────────── -->
+  <section
+    class="relative overflow-hidden bg-ink-900"
+    style="min-height: 85vh; display: flex; flex-direction: column; justify-content: center;"
+  >
+    <div
+      class="absolute inset-0"
+      style="background:
+        radial-gradient(ellipse 70% 50% at 75% 35%, rgba(96,85,160,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 60% at 20% 80%, rgba(30,37,52,0.6) 0%, transparent 60%),
+        radial-gradient(ellipse 90% 40% at 50% 100%, rgba(15,19,24,0.8) 0%, transparent 50%);"
+    />
+
+    <div class="absolute top-0 left-0 right-0 h-px bg-indigo-500 opacity-60" />
+
+    <div class="container-site relative py-28 lg:py-36">
+      <div class="max-w-3xl">
+        <p class="label-caps mb-6 text-indigo-300 fade-up">
+          Generalization Across Domains Initiative
+        </p>
+
+        <h1 class="font-display text-5xl font-bold leading-[1.08] text-cream-100 lg:text-7xl xl:text-8xl fade-up" style="transition-delay: 0.08s;">
+          How does learning<br />
+          <em class="not-italic text-amber-400">transfer</em> across<br />
+          domains?
+        </h1>
+
+        <div class="my-10 h-px w-24 bg-gradient-to-r from-indigo-400 to-transparent fade-up" style="transition-delay: 0.16s;" />
+
+        <p class="max-w-prose text-base font-body leading-relaxed text-cream-400 lg:text-lg fade-up" style="transition-delay: 0.2s;">
+          An international research network uniting psychology, neuroscience, artificial intelligence,
+          education, and linguistics around a single question: what are the common principles that govern
+          generalization across biological and artificial learning systems?
+        </p>
+
+        <div class="mt-12 flex flex-wrap gap-4 fade-up" style="transition-delay: 0.28s;">
+          <Button href="/community" variant="primary" size="lg">
+            Join the Network
+          </Button>
+          <Button href="/about" size="lg" class="border-cream-400 text-cream-300 hover:bg-cream-100 hover:text-ink-900 hover:border-cream-100">
+            Learn More
+          </Button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Upcoming Events ───────────────────────────────────────────── -->
+  <section class="bg-white border-b border-cream-200">
+    <div class="container-site py-16 lg:py-20">
+
+      <div class="flex items-baseline justify-between mb-10 fade-up">
+        <div>
+          <p class="label-caps mb-1 text-indigo-600">Upcoming Events</p>
+          <h2 class="font-display text-2xl font-semibold text-ink-900">What's on</h2>
+        </div>
+        <a
+          href="/events"
+          class="text-xs font-body font-semibold uppercase tracking-label text-stone-400 hover:text-indigo-600 transition-colors"
+        >
+          All events →
+        </a>
+      </div>
+
+      {upcomingEvents.length > 0 ? (
+        <div class="stagger-children grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {upcomingEvents.map((event) => (
+            <EventCard
+              title={event.data.title}
+              date={event.data.date}
+              endDate={event.data.endDate}
+              location={event.data.location}
+              type={event.data.type}
+              href={`/events/${event.id}`}
+              featured={event.data.featured}
+            />
+          ))}
+        </div>
+      ) : (
+        <div class="px-10 py-14 text-center fade-in bg-cream-50">
+          <p class="label-caps mb-2 text-stone-400">Coming Soon</p>
+          <p class="text-sm font-body text-stone-400 max-w-sm mx-auto">
+            Events will be announced here as they are scheduled. Check back or
+            <a href="/community" class="text-indigo-600 hover:underline">join the network</a>
+            to be notified.
+          </p>
+        </div>
+      )}
+
+    </div>
+  </section>
+
+  <!-- ─── The Problem ───────────────────────────────────────────────── -->
+  <Section background="cream">
+    <div class="grid gap-16 lg:grid-cols-[1fr,1fr] lg:gap-20 items-start">
+      <div class="fade-up">
+        <p class="label-caps mb-3 text-indigo-600">The Problem</p>
+        <h2 class="font-display text-4xl font-semibold text-ink-900 lg:text-5xl leading-[1.1]">
+          A fragmented science of a fundamental problem
+        </h2>
+        <div class="mt-5 h-px w-12 bg-gradient-to-r from-indigo-500 to-transparent" />
+
+        <div class="mt-8 space-y-5">
+          <p class="text-base font-body leading-relaxed text-stone-700">
+            The ability to apply past experience to new situations, generalization, is central to adaptive
+            behavior, intelligent systems, and learning itself. Yet the research addressing this problem is
+            scattered across disciplines that rarely speak to each other.
+          </p>
+          <p class="text-base font-body leading-relaxed text-stone-700">
+            Psychologists, neuroscientists, AI researchers, educators, and linguists each study generalization
+            under different names, with different methods, and through different theoretical lenses. Insights
+            that could be mutually informative remain isolated behind disciplinary walls.
+          </p>
+        </div>
+
+        <blockquote class="mt-8 border-l-2 border-indigo-300 pl-6 py-1">
+          <p class="font-display text-xl font-medium italic text-ink-700 leading-relaxed">
+            GADI exists to change that.
+          </p>
+        </blockquote>
+
+        <div class="mt-10">
+          <Button href="/about" variant="secondary">
+            Read our mission
+          </Button>
+        </div>
+      </div>
+
+      <div class="fade-up" style="transition-delay: 0.15s;">
+        <p class="label-caps mb-5 text-stone-500">Participating disciplines</p>
+        <div class="grid grid-cols-2 gap-4">
+          {siteConfig.domains.map((domain) => (
+            <div class="bg-white px-5 py-4 group hover:bg-indigo-50 transition-colors duration-200 border border-cream-200 hover:border-indigo-300">
+              <span class="text-sm font-body font-medium text-ink-800 group-hover:text-indigo-700 transition-colors">
+                {domain}
+              </span>
+            </div>
+          ))}
+        </div>
+        <p class="mt-5 text-xs font-body text-stone-400 leading-relaxed">
+          The network brings together researchers across these fields who share a commitment to
+          understanding generalization as a unified scientific problem.
+        </p>
+      </div>
+    </div>
+  </Section>
+
+  <!-- ─── Objectives ────────────────────────────────────────────────── -->
+  <Section
+    label="Scientific Objectives"
+    title="Five goals, one vision"
+    subtitle="GADI pursues five complementary objectives to build a durable interdisciplinary community around the science of generalization."
+    background="white"
+  >
+    <div class="stagger-children grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {siteConfig.objectives.map((obj) => (
+        <div class="bg-white p-8 group hover:bg-cream-50 transition-all duration-200 border border-cream-200 hover:border-indigo-300 relative">
+          <div class="absolute top-0 left-0 right-0 h-0 bg-indigo-500 group-hover:h-0.5 transition-all duration-200" />
+          <div class="mb-5 font-display text-4xl font-bold text-cream-300 group-hover:text-indigo-400 leading-none transition-colors duration-200">
+            {obj.number}
+          </div>
+          <h3 class="font-display text-xl font-semibold text-ink-900 group-hover:text-indigo-700 transition-colors leading-snug">
+            {obj.title}
+          </h3>
+          <p class="mt-3 text-sm font-body leading-relaxed text-stone-600">
+            {obj.description}
+          </p>
+        </div>
+      ))}
+    </div>
+  </Section>
+
+  <!-- ─── Stay Updated ──────────────────────────────────────────────── -->
+  <section class="bg-ink-900">
+    <div class="container-site py-16 lg:py-20">
+      <div class="mx-auto max-w-2xl text-center fade-up">
+        <p class="label-caps mb-3 text-indigo-300">Stay Updated</p>
+        <h2 class="font-display text-3xl font-semibold text-cream-100 lg:text-4xl">
+          Receive network updates
+        </h2>
+        <p class="mt-4 text-sm font-body text-cream-400 leading-relaxed">
+          Get notified about events, publications, and opportunities.
+        </p>
+        <form action="https://formspree.io/f/mqewwreq" method="POST" class="mt-8 flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+          <input
+            type="email"
+            name="email"
+            required
+            placeholder="Your email address"
+            class="flex-1 px-4 py-3 text-sm font-body bg-ink-800 border border-ink-700 text-cream-100 placeholder:text-stone-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-colors"
+          />
+          <input type="hidden" name="_subject" value="GADI Updates Signup" />
+          <button type="submit" class="px-6 py-3 border border-amber-500 bg-amber-500 text-xs font-body font-semibold uppercase tracking-label text-white hover:bg-amber-600 hover:border-amber-600 transition-colors whitespace-nowrap">
+            Subscribe
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>

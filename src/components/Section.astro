@@ -1,0 +1,71 @@
+---
+interface Props {
+  label?: string;
+  title?: string;
+  subtitle?: string;
+  background?: "white" | "cream" | "ink";
+  centered?: boolean;
+  narrow?: boolean;
+  class?: string;
+}
+
+const {
+  label,
+  title,
+  subtitle,
+  background = "white",
+  centered = false,
+  narrow = false,
+  class: extraClass = "",
+} = Astro.props;
+
+const bgMap = {
+  white: "bg-white",
+  cream: "bg-cream-100",
+  ink:   "bg-ink-900",
+};
+
+const textMap = {
+  white: "text-ink-900",
+  cream: "text-ink-900",
+  ink:   "text-cream-100",
+};
+
+const subtitleMap = {
+  white: "text-stone-600",
+  cream: "text-stone-600",
+  ink:   "text-cream-400",
+};
+
+const labelMap = {
+  white: "text-indigo-600",
+  cream: "text-indigo-600",
+  ink:   "text-indigo-300",
+};
+---
+
+<section class:list={[bgMap[background], "section-pad", extraClass]}>
+  <div class:list={[narrow ? "container-narrow" : "container-site"]}>
+    {(label || title || subtitle) && (
+      <div class:list={["mb-12 fade-up", centered && "text-center"]}>
+        {label && (
+          <p class:list={["label-caps mb-3", labelMap[background]]}>
+            {label}
+          </p>
+        )}
+        {title && (
+          <h2 class:list={["font-display text-4xl font-semibold lg:text-5xl", textMap[background]]}>
+            {title}
+          </h2>
+        )}
+        {subtitle && (
+          <p class:list={["mt-4 max-w-prose text-base font-body leading-relaxed", subtitleMap[background], centered && "mx-auto"]}>
+            {subtitle}
+          </p>
+        )}
+        <div class:list={["mt-5 h-px w-12 bg-gradient-to-r from-indigo-500 to-transparent", centered && "mx-auto"]} />
+      </div>
+    )}
+    <slot />
+  </div>
+</section>

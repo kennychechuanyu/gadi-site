@@ -1,0 +1,70 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import Section from "../components/Section.astro";
+import { siteConfig } from "../data/site-config";
+
+const CONTACT_FORM = "https://formspree.io/f/mjgjjngk";
+---
+
+<PageLayout
+  title="Contact — GADI"
+  description="Get in touch with the GADI coordination team at Universiteit Hasselt."
+  pageTitle="Contact"
+  pageSubtitle="Get in touch"
+>
+  <Section background="white">
+    <div class="grid gap-12 lg:grid-cols-[1fr,20rem] fade-up">
+      <!-- Form -->
+      <div>
+        <p class="text-base font-body leading-relaxed text-stone-700 mb-8">
+          For enquiries about membership, events, or collaborations, use the form below and the
+          coordination team will get back to you.
+        </p>
+        <div class="border border-cream-300 bg-cream-50 p-7">
+          <form action={CONTACT_FORM} method="POST" class="space-y-4">
+            <div class="grid gap-4 sm:grid-cols-2">
+              <div>
+                <label class="label-caps mb-1.5 block text-stone-500" for="name">Name</label>
+                <input id="name" name="name" type="text" required class="input-field" placeholder="Your name" />
+              </div>
+              <div>
+                <label class="label-caps mb-1.5 block text-stone-500" for="contact-email">Email</label>
+                <input id="contact-email" name="email" type="email" required class="input-field" placeholder="you@university.edu" />
+              </div>
+            </div>
+            <div>
+              <label class="label-caps mb-1.5 block text-stone-500" for="subject">Subject</label>
+              <select id="subject" name="subject" class="input-field">
+                <option value="" disabled selected>Select a subject</option>
+                <option value="membership">Network membership</option>
+                <option value="events">Events and programme</option>
+                <option value="collaboration">Research collaboration</option>
+                <option value="media">Media and communication</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div>
+              <label class="label-caps mb-1.5 block text-stone-500" for="message">Message</label>
+              <textarea id="message" name="message" rows={6} required class="textarea-field" placeholder="How can we help?"></textarea>
+            </div>
+            <button type="submit" class="w-full border border-amber-500 bg-amber-500 px-6 py-3 text-xs font-body font-semibold uppercase tracking-label text-white hover:bg-amber-600 transition-colors">
+              Send Message
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Contact info sidebar -->
+      <aside class="lg:pt-14">
+        <div class="border border-cream-200 bg-cream-50 p-6">
+          <div>
+            <p class="label-caps mb-2 text-stone-500">Email</p>
+            <a href={`mailto:${siteConfig.email}`} class="text-sm font-body text-indigo-600 hover:text-indigo-700 transition-colors break-all">
+              {siteConfig.email}
+            </a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </Section>
+</PageLayout>
