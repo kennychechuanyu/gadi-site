@@ -57,7 +57,12 @@ tailwind.config.cjs  Tailwind CSS configuration
 
 ## Common Tasks
 
-### Adding a new team member
+### Adding a new member
+
+The site has two groups on the People page:
+
+- **Coordinating Members** (roles: `"coordinator"` or `"steering"`)
+- **Network Members** (role: `"member"`)
 
 Edit `src/data/people.ts`. Add a new entry to the `people` array:
 
@@ -69,15 +74,20 @@ Edit `src/data/people.ts`. Add a new entry to the `people` array:
   department: "Department Name",      // optional
   country: "Country",
   email: "email@university.edu",
-  role: "steering",                   // "coordinator", "steering", or "member"
+  role: "member",                     // "coordinator", "steering", or "member"
   photo: "/images/people/FL.jpg",     // optional, place photo in public/images/people/
   bio: "Short biography paragraph.",  // optional, shows as expandable "About"
 },
 ```
 
+**Roles explained:**
+- `"coordinator"` — Network coordinator (currently Jonas Zaman). Shown first on the page.
+- `"steering"` — Steering/coordinating committee member. Shown in the "Coordinating Members" section.
+- `"member"` — General network member. Shown in the "Network Members" section.
+
 **Photo:** Place the photo in `public/images/people/`. Use initials as filename (e.g., `FL.jpg`). Any aspect ratio works; it will be cropped to a circle. Recommended minimum size: 256x256px.
 
-**Ordering:** Coordinating members are listed first (in priority order defined in `src/pages/people.astro`), then remaining members alphabetically by last name.
+**Ordering:** The coordinator is listed first, followed by priority members (defined in `src/pages/people.astro`), then remaining members alphabetically by last name.
 
 ### Adding a news post
 
