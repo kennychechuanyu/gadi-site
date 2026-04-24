@@ -105,6 +105,7 @@ export const people: Person[] = [
     email: "samuel.cooper@austin.utexas.edu",
     role: "steering",
     photo: "/images/people/SC.jpg",
+    bio: "Samuel E. Cooper is an Assistant Professor of Psychiatry and Behavioral Sciences at the University of Texas at Austin, where he directs the SCOOP Lab. His research focuses on the neurobehavioral mechanisms of fear generalization and their relation to anxiety-related psychopathology, such as PTSD and OCD. He integrates threat conditioning paradigms with multivariate fMRI, psychophysiology, and EMA, and is currently focusing on abstract forms of generalization through higher-order associative learning in adults and adolescents. Cutting across these lines of research, his lab employs dimensional psychopathology frameworks to characterize individual differences in fear learning and extinction, and relates them to real-world symptoms and outcomes.",
   },
   {
     name: "Ilia Sucholutsky",
