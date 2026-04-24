@@ -83,6 +83,8 @@ export const people: Person[] = [
     country: "United Kingdom",
     email: "d.divjak@bham.ac.uk",
     role: "steering",
+    photo: "/images/people/DD.png",
+    bio: "Dagmar Divjak is an interdisciplinary linguist working at the interface of linguistics, cognitive science, and AI. Her research investigates how linguistic knowledge emerges from usage, combining corpus, experimental and computational approaches to study abstraction in language learning across individuals and languages.",
   },
   {
     name: "Maria Robinson",
