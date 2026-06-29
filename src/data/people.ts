@@ -32,6 +32,7 @@ export const people: Person[] = [
     country: "Belgium",
     email: "vera.hoorens@kuleuven.be",
     role: "steering",
+    photo: "/images/people/VH.jpg",
   },
   {
     name: "Eline Van Geert",
@@ -42,6 +43,7 @@ export const people: Person[] = [
     email: "eline.vangeert@kuleuven.be",
     role: "steering",
     photo: "/images/people/EVG.jpg",
+    bio: "Eline Van Geert is a postdoctoral researcher in the Brain and Cognition Research Unit at KU Leuven. Her theoretical, experimental, and computational research examines individual and contextual differences in visual perception, and how these perceptual differences affect post-perceptual cognitive processes such as categorization, discrimination, and aesthetic appreciation. Perceptual learning and generalization (the focus of GADI) are central processes in understanding the impact of spatial and temporal context as well as individual differences on perception, cognition, and behavior.",
   },
   {
     name: "Wolf Vanpaemel",
@@ -51,6 +53,8 @@ export const people: Person[] = [
     country: "Belgium",
     email: "wolf.vanpaemel@kuleuven.be",
     role: "steering",
+    photo: "/images/people/WV.jpg",
+    bio: "Wolf Vanpaemel is head of the Research Group of Quantitative Psychology and Individual Differences at KU Leuven. His research is situated within mathematical psychology and centers on methodological and metascientific issues, including Bayesian statistics, and the concept of the data prior as a tool for severe theory testing. He recently authored a resource for scrutinizing and replicating studies: Evaluating and replicating studies: A practical guide (available at earsguide.io).",
   },
   {
     name: "Kenny Yu",
@@ -72,6 +76,7 @@ export const people: Person[] = [
     country: "Netherlands",
     email: "verheyen@essb.eur.nl",
     role: "steering",
+    photo: "/images/people/SV.jpg",
     bio: "Steven Verheyen studies generalization in the context of categorization and induction. He investigates how similarity relations govern the extension of category membership and semantic properties. He is particularly interested in understanding individual differences in generalization and how these relate to people's category representations, which he models as multidimensional metric spaces. More recently, he has applied this framework to the study of conceptual fear generalization.",
   },
   // United Kingdom
