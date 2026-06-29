@@ -4,43 +4,43 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // ─── Starfield palette — midnight indigo + lavender starlight ───
-        // Tuned to the hero node-network: deep indigo ground, soft lavender
-        // accents (a desaturated cousin of the logo violet, less "loud purple").
+        // ─── Neutral dark — charcoal/blue-black ground, lavender starlight ───
+        // Backgrounds + text are neutral (no purple cast); lavender appears only
+        // as the accent (links, CTAs, the node-network stars).
         violet: {
-          50:  '#f3f1fa',
-          100: '#e7e3f4',
-          200: '#cfc8e8',
-          300: '#c8bfea',  // star lavender — bright accents/highlights
-          400: '#a99dd6',  // soft periwinkle — primary accent (links/CTAs)
-          500: '#9385c9',  // CTA fill
-          600: '#7e6fb8',
-          700: '#6a5ba0',
-          800: '#2b2d4e',  // border-weight violet
-          900: '#101126',  // ground
-          950: '#0a0b18',
+          50:  '#f4f3f8',
+          100: '#e8e6f0',
+          200: '#d8d4e6',
+          300: '#d2cfe6',  // bright star / hover
+          400: '#c2bdda',  // accent — links, numerals, highlights
+          500: '#b3abd4',  // CTA fill (with dark text)
+          600: '#9990bf',
+          700: '#6f6796',
+          800: '#2a2e36',  // border-weight (neutral, matches line)
+          900: '#0f1216',  // ground
+          950: '#0a0c0f',
         },
-        // Page ground + raised surfaces for the dark theme
+        // Page ground + raised surfaces — neutral near-black
         ground: {
-          DEFAULT: '#101126',  // midnight indigo
-          deep:    '#0a0b18',  // darker bands
+          DEFAULT: '#0f1216',  // neutral blue-black
+          deep:    '#0a0c0f',  // darker bands
         },
         surface: {
-          DEFAULT: '#181a34',  // cards / alternating sections
-          raised:  '#212340',  // hover / raised
+          DEFAULT: '#181b21',  // cards / alternating sections
+          raised:  '#21252d',  // hover / raised
         },
         line: {
-          DEFAULT: '#2b2d4e',  // borders
-          soft:    '#20223e',
+          DEFAULT: '#2a2e36',  // borders
+          soft:    '#20242b',
         },
-        // Lavender-white text scale (100 = brightest starlight)
+        // Neutral off-white text scale (100 = brightest)
         lav: {
-          DEFAULT: '#ece9f7',
-          100: '#ece9f7',
-          200: '#d3cdeb',
-          300: '#b4abd4',
-          400: '#948cb4',
-          500: '#746f95',
+          DEFAULT: '#ececef',
+          100: '#ececef',
+          200: '#d4d7dd',
+          300: '#9aa0ab',
+          400: '#767c87',
+          500: '#595f69',
         },
         ink: {
           50:  '#f0f1f3',

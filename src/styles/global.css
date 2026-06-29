@@ -3,21 +3,21 @@
 @tailwind utilities;
 
 /* ─── Custom properties ─────────────────────────────────────────────── */
-/* Starfield palette — a midnight-indigo ground with lavender starlight,
-   echoing the hero's node-network animation. */
+/* Neutral dark — charcoal/blue-black ground with lavender starlight accents.
+   Backgrounds and text are neutral; lavender is reserved for accents/stars. */
 :root {
-  --ground:        #101126;  /* page ground */
-  --ground-deep:   #0a0b18;  /* darkest bands */
-  --surface:       #181a34;  /* cards / alternating sections */
-  --surface-raised:#21234080;
-  --text:          #ece9f7;  /* starlight white */
-  --muted:         #b4abd4;  /* lavender-grey */
-  --accent:        #a99dd6;  /* soft periwinkle — links / CTAs */
-  --accent-bright: #c8bfea;  /* star lavender */
-  --border:        #2b2d4e;
-  /* legacy alias kept for any inline references */
-  --ink:           #0a0b18;
-  --ink-indigo:    #101126;
+  --ground:        #0f1216;  /* page ground (neutral) */
+  --ground-deep:   #0a0c0f;  /* darkest bands */
+  --surface:       #181b21;  /* cards / alternating sections */
+  --surface-raised:#21252d;
+  --text:          #ececef;  /* neutral off-white */
+  --muted:         #9aa0ab;  /* neutral grey */
+  --accent:        #b9b3d4;  /* soft lavender — links / CTAs / stars */
+  --accent-bright: #d2cfe6;  /* bright star */
+  --border:        #2a2e36;
+  /* legacy aliases kept for any inline references */
+  --ink:           #0a0c0f;
+  --ink-indigo:    #0f1216;
 }
 
 /* ─── Base typography ────────────────────────────────────────────────── */
