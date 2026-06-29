@@ -23,6 +23,8 @@ const initials = name
 const dialogId = "bio-" + name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 ---
 
+<!-- One grid cell: card + its modal (kept as a single child so stagger/grid count stays correct) -->
+<div class="person-cell">
 <!-- Card (entire card opens the profile modal) -->
 <button type="button" data-bio-open={dialogId} class="group relative flex w-full cursor-pointer flex-col items-center pt-8 text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-4 focus-visible:ring-offset-ground">
   <!-- Top accent rule — animates on hover -->
@@ -78,7 +80,7 @@ const dialogId = "bio-" + name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
         </div>
       )}
       <div class="min-w-0 pr-8">
-        <h3 class="font-display text-2xl font-semibold leading-tight text-lav">{title} {name}</h3>
+        <h3 class="font-display text-2xl font-semibold leading-tight text-lav">{name}</h3>
         <p class="mt-1 text-sm font-medium text-violet-400">{institution}</p>
         <p class="text-xs font-body text-lav-400">
           {[department, country].filter(Boolean).join(" · ")}
@@ -108,6 +110,7 @@ const dialogId = "bio-" + name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
     </a>
   </div>
 </dialog>
+</div>
 
 <script>
   function wireBioModals() {
