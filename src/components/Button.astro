@@ -6,6 +6,7 @@ interface Props {
   class?: string;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
+  arrow?: boolean;
 }
 
 const {
@@ -15,15 +16,22 @@ const {
   class: extraClass = "",
   type = "button",
   disabled = false,
+  arrow = false,
 } = Astro.props;
 
 const baseClass =
-  "inline-flex items-center justify-center font-body font-semibold uppercase tracking-label transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none";
+  "group relative inline-flex items-center justify-center gap-2.5 font-body font-semibold uppercase tracking-label transition-all duration-300 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-ground disabled:opacity-50 disabled:pointer-events-none";
 
 const variants = {
-  primary:   "border border-violet-500 bg-violet-500 text-ground hover:bg-violet-400 hover:border-violet-400",
-  secondary: "border border-violet-800 bg-transparent text-lav hover:bg-surface hover:text-ground",
-  ghost:     "border border-line bg-transparent text-lav-200 hover:border-violet-500 hover:text-lav",
+  // Filled lavender, dark text — lifts and casts a soft glow on hover.
+  primary:
+    "border border-violet-400 bg-violet-400 text-ground hover:bg-violet-300 hover:border-violet-300 hover:-translate-y-0.5 shadow-[0_0_0_0_rgba(185,179,212,0)] hover:shadow-[0_14px_34px_-14px_rgba(194,189,218,0.6)]",
+  // Outlined ghost — light text, border brightens and fills faintly on hover.
+  secondary:
+    "border border-line bg-transparent text-lav hover:border-violet-400 hover:bg-violet-400/10 hover:-translate-y-0.5",
+  // Text-only with an arrow.
+  ghost:
+    "border border-transparent bg-transparent text-lav-200 hover:text-lav",
 };
 
 const sizes = {
@@ -38,9 +46,19 @@ const classes = [baseClass, variants[variant], sizes[size], extraClass].join(" "
 {href ? (
   <a href={href} class={classes}>
     <slot />
+    {arrow && (
+      <svg class="h-3.5 w-3.5 -mr-0.5 transition-transform duration-300 ease-out group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h13m0 0-5.5-5.5M18 12l-5.5 5.5" />
+      </svg>
+    )}
   </a>
 ) : (
   <button type={type} class={classes} disabled={disabled}>
     <slot />
+    {arrow && (
+      <svg class="h-3.5 w-3.5 -mr-0.5 transition-transform duration-300 ease-out group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h13m0 0-5.5-5.5M18 12l-5.5 5.5" />
+      </svg>
+    )}
   </button>
 )}
