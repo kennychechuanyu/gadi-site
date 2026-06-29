@@ -92,6 +92,17 @@ export const people: Person[] = [
     bio: "Dagmar Divjak is an interdisciplinary linguist working at the interface of linguistics, cognitive science, and AI. Her research investigates how linguistic knowledge emerges from usage, combining corpus, experimental and computational approaches to study abstraction in language learning across individuals and languages.",
   },
   {
+    name: "Petar Milin",
+    title: "Prof.",
+    institution: "University of Birmingham",
+    department: "Department of Modern Languages",
+    country: "United Kingdom",
+    email: "p.milin@bham.ac.uk",
+    role: "steering",
+    photo: "/images/people/PM.jpg",
+    bio: "Petar Milin is Professor of Psychology of Language and Language Learning in the Department of Modern Languages at the University of Birmingham. His research investigates the crucial role of learning in human language, its behaviour, and use, combining experimentation, computational modelling, and statistical analysis to understand how individuals acquire and process language. He studies language as a dynamic cognitive system, with particular interest in lexical and natural communication processes and probabilistic phenomena such as text analysis, stylometry, and vocabulary structure.",
+  },
+  {
     name: "Maria Robinson",
     title: "Dr.",
     institution: "University of Warwick",
