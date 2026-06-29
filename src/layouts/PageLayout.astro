@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
+import NodeNetwork from "../components/NodeNetwork.astro";
 
 interface Props {
   title: string;
@@ -13,16 +14,31 @@ const { title, description, pageTitle, pageSubtitle, image } = Astro.props;
 ---
 
 <BaseLayout title={title} description={description} image={image}>
-  <!-- Page header -->
-  <section class="border-b border-cream-200" style="background-color: var(--cream);">
-    <div class="container-site py-16">
-      <p class="label-caps mb-3 text-indigo-600">{pageTitle}</p>
+  <!-- Page header — compact node-network banner, echoing the home hero -->
+  <section
+    class="relative isolate overflow-hidden"
+    style="background: linear-gradient(150deg, #1a1c3c 0%, #101126 55%, #0a0b18 100%);"
+  >
+    <NodeNetwork class="opacity-70" />
+    <div
+      class="absolute inset-0 z-[2]"
+      style="background:
+        radial-gradient(ellipse 55% 70% at 85% 30%, rgba(169,157,214,0.14) 0%, transparent 60%),
+        linear-gradient(to right, rgba(16,17,38,0.94) 0%, rgba(16,17,38,0.5) 60%, transparent 100%);"
+    />
+    <div class="absolute top-0 inset-x-0 z-[3] h-px bg-gradient-to-r from-transparent via-violet-400/60 to-transparent" />
+
+    <div class="container-site relative z-10 py-20 lg:py-24">
+      <p class="label-caps mb-4 text-violet-300">
+        <span class="mr-2.5 inline-block h-1.5 w-1.5 -translate-y-0.5 rounded-full bg-violet-400 align-middle"></span>
+        {pageTitle}
+      </p>
       {pageSubtitle && (
-        <h1 class="font-display text-4xl font-bold text-ink-900 lg:text-5xl">
-          {pageSubtitle}
+        <h1 class="font-display text-4xl font-bold leading-[1.02] text-lav text-balance lg:text-6xl">
+          <span class="mask-reveal block"><span>{pageSubtitle}</span></span>
         </h1>
       )}
-      <div class="mt-5 h-px w-16 bg-gradient-to-r from-indigo-500 to-transparent" />
+      <div class="mt-6 h-px w-20 bg-gradient-to-r from-violet-400 via-violet-400 to-transparent" />
     </div>
   </section>
 

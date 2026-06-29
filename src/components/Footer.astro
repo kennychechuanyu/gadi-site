@@ -24,7 +24,7 @@ const footerLinks = [
 ];
 ---
 
-<footer class="border-t border-cream-200 bg-ink-900 text-cream-200">
+<footer class="border-t border-line text-lav-200" style="background-color: var(--ink-indigo);">
   <div class="container-site py-16">
     <div class="grid gap-12 lg:grid-cols-3">
 
@@ -33,12 +33,12 @@ const footerLinks = [
         <a href="/" class="inline-flex items-center group mb-4">
           <img src="/images/gadi-logo.svg" alt="GADI" class="h-10 w-auto object-contain" />
         </a>
-        <p class="text-sm font-body leading-relaxed text-cream-400 max-w-xs">
+        <p class="text-sm font-body leading-relaxed text-lav-300 max-w-xs">
           Generalization Across Domains Initiative: building a unified science of how learning transfers across biological and artificial systems.
         </p>
         <div class="mt-6 flex items-center gap-2">
-          <span class="label-caps text-cream-500">Est.</span>
-          <span class="font-display text-lg font-semibold text-indigo-400">{siteConfig.founded}</span>
+          <span class="label-caps text-lav-400">Est.</span>
+          <span class="font-display text-lg font-semibold text-violet-400">{siteConfig.founded}</span>
         </div>
       </div>
 
@@ -46,13 +46,13 @@ const footerLinks = [
       <div class="grid grid-cols-2 gap-8 lg:col-span-2">
         {footerLinks.map((group) => (
           <div>
-            <h3 class="label-caps mb-4 text-cream-500">{group.heading}</h3>
+            <h3 class="label-caps mb-4 text-lav-400">{group.heading}</h3>
             <ul class="space-y-2.5">
               {group.links.map((link) => (
                 <li>
                   <a
                     href={link.href}
-                    class="text-sm font-body text-cream-300 hover:text-indigo-400 transition-colors"
+                    class="text-sm font-body text-lav-300 hover:text-violet-300 transition-colors"
                   >
                     {link.label}
                   </a>
@@ -64,10 +64,10 @@ const footerLinks = [
 
         <!-- Contact -->
         <div class="col-span-2 sm:col-span-1">
-          <h3 class="label-caps mb-4 text-cream-500">Contact</h3>
+          <h3 class="label-caps mb-4 text-lav-400">Contact</h3>
           <a
             href={`mailto:${siteConfig.email}`}
-            class="text-sm font-body text-cream-300 hover:text-indigo-400 transition-colors break-all"
+            class="text-sm font-body text-lav-300 hover:text-violet-300 transition-colors break-all"
           >
             {siteConfig.email}
           </a>
@@ -76,11 +76,11 @@ const footerLinks = [
     </div>
 
     <!-- Bottom bar -->
-    <div class="mt-12 flex flex-col items-start justify-between gap-4 border-t border-ink-700 pt-8 sm:flex-row sm:items-center">
-      <p class="text-xs font-body text-cream-600">
+    <div class="mt-12 flex flex-col items-start justify-between gap-4 border-t border-violet-800 pt-8 sm:flex-row sm:items-center">
+      <p class="text-xs font-body text-lav-500">
         &copy; {currentYear} Generalization Across Domains Initiative. All rights reserved.
       </p>
-      <p class="text-xs font-body text-cream-600">
+      <p class="text-xs font-body text-lav-500">
         Generalization Across Domains Initiative
       </p>
     </div>

@@ -14,18 +14,18 @@ import { siteConfig } from "../data/site-config";
   <!-- ─── Mission ───────────────────────────────────────────────────── -->
   <Section background="white">
     <div class="fade-up">
-      <p class="label-caps mb-3 text-indigo-600">Our Mission</p>
-      <h2 class="font-display text-4xl font-semibold text-ink-900 lg:text-5xl">
+      <p class="label-caps mb-3 text-violet-400">Our Mission</p>
+      <h2 class="font-display text-4xl font-semibold text-lav lg:text-5xl">
         A unified science of how learning transfers
       </h2>
-      <div class="mt-5 h-px w-12 bg-gradient-to-r from-indigo-500 to-transparent" />
-      <p class="mt-8 max-w-prose text-lg font-body leading-relaxed text-stone-700">
+      <div class="mt-5 h-px w-12 bg-gradient-to-r from-violet-400 to-transparent" />
+      <p class="mt-8 max-w-prose text-lg font-body leading-relaxed text-lav-200">
         Learning systems, from humans and animals to artificial neural networks, must apply past
         experience to situations they have never encountered before. This capacity, variously called
         generalization, transfer of learning, or extrapolation, is fundamental to adaptive behavior,
         robust intelligence, and effective education.
       </p>
-      <div class="mt-5 max-w-prose space-y-5 text-base font-body leading-relaxed text-stone-600">
+      <div class="mt-5 max-w-prose space-y-5 text-base font-body leading-relaxed text-lav-300">
         <p>
           Despite its centrality, generalization remains poorly understood at a fundamental level.
           Research on this problem is distributed across scientific domains that use incompatible
@@ -45,11 +45,11 @@ import { siteConfig } from "../data/site-config";
   <!-- ─── The research problem ─────────────────────────────────────── -->
   <Section label="Scientific Context" background="cream">
     <div class="fade-up">
-      <h2 class="font-display text-4xl font-semibold text-ink-900 lg:text-5xl">
+      <h2 class="font-display text-4xl font-semibold text-lav lg:text-5xl">
         The generalization problem
       </h2>
-      <div class="mt-5 h-px w-12 bg-gradient-to-r from-indigo-500 to-transparent" />
-      <p class="mt-6 max-w-prose text-base font-body leading-relaxed text-stone-700">
+      <div class="mt-5 h-px w-12 bg-gradient-to-r from-violet-400 to-transparent" />
+      <p class="mt-6 max-w-prose text-base font-body leading-relaxed text-lav-200">
         Each field has developed deep expertise on a facet of generalization. Yet the terminology
         rarely crosses disciplinary lines: "stimulus generalization" in psychology,
         "out-of-distribution generalization" in AI, and "transfer of training" in education refer
@@ -58,7 +58,7 @@ import { siteConfig } from "../data/site-config";
       </p>
     </div>
 
-    <dl class="mt-12 divide-y divide-cream-300 stagger-children">
+    <dl class="mt-12 divide-y divide-line stagger-children">
       {[
         {
           discipline: "Psychology",
@@ -86,8 +86,8 @@ import { siteConfig } from "../data/site-config";
         },
       ].map((item) => (
         <div class="grid gap-3 py-6 md:grid-cols-[180px_1fr] md:gap-12">
-          <dt class="label-caps text-indigo-600 md:pt-0.5">{item.discipline}</dt>
-          <dd class="text-sm font-body leading-relaxed text-stone-700">{item.insight}</dd>
+          <dt class="label-caps text-violet-400 md:pt-0.5">{item.discipline}</dt>
+          <dd class="text-sm font-body leading-relaxed text-lav-200">{item.insight}</dd>
         </div>
       ))}
     </dl>
@@ -96,20 +96,20 @@ import { siteConfig } from "../data/site-config";
   <!-- ─── Objectives ────────────────────────────────────────────────── -->
   <Section label="What We Do" background="white">
     <div class="mb-12 fade-up">
-      <h2 class="font-display text-4xl font-semibold text-ink-900 lg:text-5xl">
+      <h2 class="font-display text-4xl font-semibold text-lav lg:text-5xl">
         Five objectives
       </h2>
-      <div class="mt-5 h-px w-12 bg-gradient-to-r from-indigo-500 to-transparent" />
+      <div class="mt-5 h-px w-12 bg-gradient-to-r from-violet-400 to-transparent" />
     </div>
-    <div class="divide-y divide-cream-200 border border-cream-200">
+    <div class="divide-y divide-line border border-line">
       {siteConfig.objectives.map((obj, i) => (
         <div class="grid gap-4 px-8 py-8 fade-up md:grid-cols-[80px_1fr] md:gap-10">
-          <div class="font-display text-4xl font-bold text-indigo-200 leading-none select-none">
+          <div class="font-display text-4xl font-bold text-violet-300 leading-none select-none">
             {obj.number}
           </div>
           <div>
-            <h3 class="font-display text-xl font-semibold text-ink-900">{obj.title}</h3>
-            <p class="mt-2 text-sm font-body leading-relaxed text-stone-600">{obj.description}</p>
+            <h3 class="font-display text-xl font-semibold text-lav">{obj.title}</h3>
+            <p class="mt-2 text-sm font-body leading-relaxed text-lav-300">{obj.description}</p>
           </div>
         </div>
       ))}

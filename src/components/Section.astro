@@ -20,27 +20,27 @@ const {
 } = Astro.props;
 
 const bgMap = {
-  white: "bg-white",
-  cream: "bg-cream-100",
-  ink:   "bg-ink-900",
+  white: "bg-surface",
+  cream: "bg-ground",
+  ink:   "bg-ground",
 };
 
 const textMap = {
-  white: "text-ink-900",
-  cream: "text-ink-900",
-  ink:   "text-cream-100",
+  white: "text-lav",
+  cream: "text-lav",
+  ink:   "text-lav",
 };
 
 const subtitleMap = {
-  white: "text-stone-600",
-  cream: "text-stone-600",
-  ink:   "text-cream-400",
+  white: "text-lav-300",
+  cream: "text-lav-300",
+  ink:   "text-lav-300",
 };
 
 const labelMap = {
-  white: "text-indigo-600",
-  cream: "text-indigo-600",
-  ink:   "text-indigo-300",
+  white: "text-violet-400",
+  cream: "text-violet-400",
+  ink:   "text-violet-300",
 };
 ---
 
@@ -63,7 +63,7 @@ const labelMap = {
             {subtitle}
           </p>
         )}
-        <div class:list={["mt-5 h-px w-12 bg-gradient-to-r from-indigo-500 to-transparent", centered && "mx-auto"]} />
+        <div class:list={["mt-5 h-px w-12 bg-gradient-to-r from-violet-400 to-transparent", centered && "mx-auto"]} />
       </div>
     )}
     <slot />

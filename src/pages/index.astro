@@ -4,6 +4,7 @@ import Section from "../components/Section.astro";
 import Card from "../components/Card.astro";
 import EventCard from "../components/EventCard.astro";
 import Button from "../components/Button.astro";
+import NodeNetwork from "../components/NodeNetwork.astro";
 import { getCollection } from "astro:content";
 import { siteConfig } from "../data/site-config";
 
@@ -21,63 +22,100 @@ const upcomingEvents = allEvents
 >
   <!-- ─── Hero ─────────────────────────────────────────────────────── -->
   <section
-    class="relative overflow-hidden bg-ink-900"
-    style="min-height: 85vh; display: flex; flex-direction: column; justify-content: center;"
+    class="grain relative isolate flex min-h-[92vh] flex-col justify-center overflow-hidden"
+    style="background: linear-gradient(165deg, #1a1c3c 0%, #101126 45%, #0a0b18 100%);"
   >
+    <!-- Animated node-network: the visual signature -->
+    <NodeNetwork class="reveal-blur is-visible opacity-90" />
+
+    <!-- Depth veils for atmosphere + text legibility -->
     <div
-      class="absolute inset-0"
+      class="absolute inset-0 z-[2]"
       style="background:
-        radial-gradient(ellipse 70% 50% at 75% 35%, rgba(96,85,160,0.07) 0%, transparent 70%),
-        radial-gradient(ellipse 50% 60% at 20% 80%, rgba(30,37,52,0.6) 0%, transparent 60%),
-        radial-gradient(ellipse 90% 40% at 50% 100%, rgba(15,19,24,0.8) 0%, transparent 50%);"
+        radial-gradient(ellipse 60% 55% at 78% 28%, rgba(169,157,214,0.16) 0%, transparent 62%),
+        radial-gradient(ellipse 70% 60% at 8% 92%, rgba(10,11,24,0.85) 0%, transparent 60%),
+        linear-gradient(to right, rgba(16,17,38,0.92) 0%, rgba(16,17,38,0.38) 55%, transparent 100%);"
     />
+    <div class="absolute inset-x-0 bottom-0 z-[2] h-1/3" style="background: linear-gradient(to top, var(--ink), transparent);" />
+    <div class="absolute top-0 inset-x-0 z-[3] h-px bg-gradient-to-r from-transparent via-violet-400/70 to-transparent" />
 
-    <div class="absolute top-0 left-0 right-0 h-px bg-indigo-500 opacity-60" />
+    <div class="container-site relative z-10 py-28 lg:py-32">
+      <div class="grid items-end gap-y-12 lg:grid-cols-12 lg:gap-12">
 
-    <div class="container-site relative py-28 lg:py-36">
-      <div class="max-w-3xl">
-        <p class="label-caps mb-6 text-indigo-300 fade-up">
-          Generalization Across Domains Initiative
-        </p>
+        <!-- Headline column -->
+        <div class="lg:col-span-8 xl:col-span-9">
+          <p class="label-caps mb-8 text-violet-300 fade-up">
+            <span class="mr-3 inline-block h-1.5 w-1.5 -translate-y-0.5 rounded-full bg-violet-400 align-middle"></span>
+            Generalization Across Domains Initiative
+          </p>
 
-        <h1 class="font-display text-5xl font-bold leading-[1.08] text-cream-100 lg:text-7xl xl:text-8xl fade-up" style="transition-delay: 0.08s;">
-          How does learning<br />
-          <em class="not-italic text-amber-400">transfer</em> across<br />
-          domains?
-        </h1>
+          <h1 class="font-display font-bold leading-[0.95] tracking-[-0.01em] text-lav text-balance text-[clamp(3rem,9vw,8.5rem)]">
+            <span class="mask-reveal block" style="--i:0;"><span>How does learning</span></span>
+            <span class="mask-reveal block" style="--i:1;"><span><em class="font-normal italic text-violet-400">transfer</em> across</span></span>
+            <span class="mask-reveal block" style="--i:2;"><span>domains?</span></span>
+          </h1>
 
-        <div class="my-10 h-px w-24 bg-gradient-to-r from-indigo-400 to-transparent fade-up" style="transition-delay: 0.16s;" />
+          <div class="my-10 h-px w-28 origin-left bg-gradient-to-r from-violet-400 via-violet-400 to-transparent fade-up" style="transition-delay: 0.4s;" />
 
-        <p class="max-w-prose text-base font-body leading-relaxed text-cream-400 lg:text-lg fade-up" style="transition-delay: 0.2s;">
-          An international research network uniting psychology, neuroscience, artificial intelligence,
-          education, and linguistics around a single question: what are the common principles that govern
-          generalization across biological and artificial learning systems?
-        </p>
+          <p class="max-w-xl font-body text-base leading-relaxed text-lav-300 lg:text-lg fade-up" style="transition-delay: 0.48s;">
+            An international research network uniting psychology, neuroscience, artificial intelligence,
+            education, and linguistics around a single question: what common principles govern
+            generalization across biological and artificial learning systems?
+          </p>
 
-        <div class="mt-12 flex flex-wrap gap-4 fade-up" style="transition-delay: 0.28s;">
-          <Button href="/community" variant="primary" size="lg">
-            Join the Network
-          </Button>
-          <Button href="/about" size="lg" class="border-cream-400 text-cream-300 hover:bg-cream-100 hover:text-ink-900 hover:border-cream-100">
-            Learn More
-          </Button>
+          <div class="mt-12 flex flex-wrap gap-4 fade-up" style="transition-delay: 0.56s;">
+            <Button href="/community" variant="primary" size="lg" class="btn-sheen">
+              Join the Network
+            </Button>
+            <Button href="/about" size="lg" class="border-line text-lav-200 hover:bg-surface-raised hover:text-lav hover:border-violet-400">
+              Learn More
+            </Button>
+          </div>
         </div>
+
+        <!-- Domain index rail -->
+        <aside class="hidden lg:col-span-4 lg:block xl:col-span-3 fade-up" style="transition-delay: 0.6s;">
+          <p class="label-caps mb-5 text-lav-500" style="font-size:10px;">Connecting</p>
+          <ul class="space-y-px border-l border-violet-800">
+            {siteConfig.domains.slice(0, 6).map((d, i) => (
+              <li class="group flex items-center gap-3 py-2 pl-4" style={`opacity:0; animation: drift-slow 0s; transition: opacity .6s ease ${0.7 + i * 0.08}s, transform .6s ease ${0.7 + i * 0.08}s;`} data-rail>
+                <span class="font-mono text-[10px] tabular-nums text-violet-400/70">{String(i + 1).padStart(2, "0")}</span>
+                <span class="font-body text-sm text-lav-300 transition-colors group-hover:text-violet-300">{d}</span>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      </div>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-7 left-1/2 z-10 hidden -translate-x-1/2 lg:block fade-in" style="transition-delay: 1s;">
+      <div class="flex flex-col items-center gap-2">
+        <span class="label-caps text-lav-400" style="font-size:9px;">Scroll</span>
+        <span class="block h-10 w-px bg-gradient-to-b from-violet-400/70 to-transparent"></span>
       </div>
     </div>
   </section>
 
+  <script is:inline>
+    // Reveal the hero domain rail on load.
+    requestAnimationFrame(() =>
+      document.querySelectorAll("[data-rail]").forEach((el) => (el.style.opacity = "1"))
+    );
+  </script>
+
   <!-- ─── Upcoming Events ───────────────────────────────────────────── -->
-  <section class="bg-white border-b border-cream-200">
+  <section class="bg-surface border-b border-line">
     <div class="container-site py-16 lg:py-20">
 
       <div class="flex items-baseline justify-between mb-10 fade-up">
         <div>
-          <p class="label-caps mb-1 text-indigo-600">Upcoming Events</p>
-          <h2 class="font-display text-2xl font-semibold text-ink-900">What's on</h2>
+          <p class="label-caps mb-1 text-violet-400">Upcoming Events</p>
+          <h2 class="font-display text-2xl font-semibold text-lav">What's on</h2>
         </div>
         <a
           href="/events"
-          class="text-xs font-body font-semibold uppercase tracking-label text-stone-400 hover:text-indigo-600 transition-colors"
+          class="text-xs font-body font-semibold uppercase tracking-label text-lav-500 hover:text-violet-300 transition-colors"
         >
           All events →
         </a>
@@ -98,11 +136,11 @@ const upcomingEvents = allEvents
           ))}
         </div>
       ) : (
-        <div class="px-10 py-14 text-center fade-in bg-cream-50">
-          <p class="label-caps mb-2 text-stone-400">Coming Soon</p>
-          <p class="text-sm font-body text-stone-400 max-w-sm mx-auto">
+        <div class="px-10 py-14 text-center fade-in bg-surface">
+          <p class="label-caps mb-2 text-lav-500">Coming Soon</p>
+          <p class="text-sm font-body text-lav-500 max-w-sm mx-auto">
             Events will be announced here as they are scheduled. Check back or
-            <a href="/community" class="text-indigo-600 hover:underline">join the network</a>
+            <a href="/community" class="text-violet-400 hover:underline">join the network</a>
             to be notified.
           </p>
         </div>
@@ -115,28 +153,28 @@ const upcomingEvents = allEvents
   <Section background="cream">
     <div class="grid gap-16 lg:grid-cols-[1fr,1fr] lg:gap-20 items-start">
       <div class="fade-up">
-        <p class="label-caps mb-3 text-indigo-600">The Problem</p>
-        <h2 class="font-display text-4xl font-semibold text-ink-900 lg:text-5xl leading-[1.1]">
+        <p class="label-caps mb-3 text-violet-400">The Problem</p>
+        <h2 class="font-display text-4xl font-semibold text-lav lg:text-5xl leading-[1.1]">
           A fragmented science of a fundamental problem
         </h2>
-        <div class="mt-5 h-px w-12 bg-gradient-to-r from-indigo-500 to-transparent" />
+        <div class="mt-5 h-px w-12 bg-gradient-to-r from-violet-400 to-transparent" />
 
         <div class="mt-8 space-y-5">
-          <p class="text-base font-body leading-relaxed text-stone-700">
+          <p class="text-base font-body leading-relaxed text-lav-200">
             The ability to apply past experience to new situations, generalization, is central to adaptive
             behavior, intelligent systems, and learning itself. Yet the research addressing this problem is
             scattered across disciplines that rarely speak to each other.
           </p>
-          <p class="text-base font-body leading-relaxed text-stone-700">
+          <p class="text-base font-body leading-relaxed text-lav-200">
             Psychologists, neuroscientists, AI researchers, educators, and linguists each study generalization
             under different names, with different methods, and through different theoretical lenses. Insights
             that could be mutually informative remain isolated behind disciplinary walls.
           </p>
         </div>
 
-        <blockquote class="mt-8 border-l-2 border-indigo-300 pl-6 py-1">
-          <p class="font-display text-xl font-medium italic text-ink-700 leading-relaxed">
-            GADI exists to change that.
+        <blockquote class="mt-10 border-l-2 border-violet-500 pl-6">
+          <p class="font-display text-3xl font-medium italic leading-[1.05] text-lav lg:text-4xl">
+            GADI exists<br />to change that.
           </p>
         </blockquote>
 
@@ -148,17 +186,17 @@ const upcomingEvents = allEvents
       </div>
 
       <div class="fade-up" style="transition-delay: 0.15s;">
-        <p class="label-caps mb-5 text-stone-500">Participating disciplines</p>
+        <p class="label-caps mb-5 text-lav-400">Participating disciplines</p>
         <div class="grid grid-cols-2 gap-4">
           {siteConfig.domains.map((domain) => (
-            <div class="bg-white px-5 py-4 group hover:bg-indigo-50 transition-colors duration-200 border border-cream-200 hover:border-indigo-300">
-              <span class="text-sm font-body font-medium text-ink-800 group-hover:text-indigo-700 transition-colors">
+            <div class="bg-surface px-5 py-4 group hover:bg-violet-800/40 transition-colors duration-200 border border-line hover:border-violet-400">
+              <span class="text-sm font-body font-medium text-lav group-hover:text-violet-300 transition-colors">
                 {domain}
               </span>
             </div>
           ))}
         </div>
-        <p class="mt-5 text-xs font-body text-stone-400 leading-relaxed">
+        <p class="mt-5 text-xs font-body text-lav-500 leading-relaxed">
           The network brings together researchers across these fields who share a commitment to
           understanding generalization as a unified scientific problem.
         </p>
@@ -173,33 +211,42 @@ const upcomingEvents = allEvents
     subtitle="GADI pursues five complementary objectives to build a durable interdisciplinary community around the science of generalization."
     background="white"
   >
-    <div class="stagger-children grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-      {siteConfig.objectives.map((obj) => (
-        <div class="bg-white p-8 group hover:bg-cream-50 transition-all duration-200 border border-cream-200 hover:border-indigo-300 relative">
-          <div class="absolute top-0 left-0 right-0 h-0 bg-indigo-500 group-hover:h-0.5 transition-all duration-200" />
-          <div class="mb-5 font-display text-4xl font-bold text-cream-300 group-hover:text-indigo-400 leading-none transition-colors duration-200">
+    <div class="border-t border-line">
+      {siteConfig.objectives.map((obj, i) => (
+        <article
+          class="group relative grid grid-cols-[auto,1fr] items-start gap-x-6 gap-y-2 border-b border-line py-9 transition-colors duration-300 hover:bg-surface-raised md:gap-x-12 fade-up"
+          style={`transition-delay:${i * 0.06}s`}
+        >
+          <div class="numeral-outline select-none text-[3.25rem] transition-all duration-500 group-hover:translate-x-1 group-hover:[-webkit-text-stroke-color:#c4832a] md:text-[6rem]">
             {obj.number}
           </div>
-          <h3 class="font-display text-xl font-semibold text-ink-900 group-hover:text-indigo-700 transition-colors leading-snug">
-            {obj.title}
-          </h3>
-          <p class="mt-3 text-sm font-body leading-relaxed text-stone-600">
-            {obj.description}
-          </p>
-        </div>
+          <div class="md:pt-4">
+            <h3 class="font-display text-2xl font-semibold leading-tight text-lav transition-colors group-hover:text-violet-300 md:text-3xl">
+              {obj.title}
+            </h3>
+            <p class="mt-3 max-w-2xl font-body text-sm leading-relaxed text-lav-300 md:text-base">
+              {obj.description}
+            </p>
+          </div>
+          <span class="absolute right-1 top-9 hidden font-mono text-[10px] tabular-nums text-lav-500 md:block">
+            {obj.number} / 05
+          </span>
+        </article>
       ))}
     </div>
   </Section>
 
   <!-- ─── Stay Updated ──────────────────────────────────────────────── -->
-  <section class="bg-ink-900">
-    <div class="container-site py-16 lg:py-20">
+  <section class="relative isolate overflow-hidden" style="background-color: var(--ink-indigo);">
+    <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-violet-400/50 to-transparent" />
+    <div class="absolute inset-0" style="background: radial-gradient(ellipse 50% 80% at 50% 0%, rgba(169,157,214,0.12) 0%, transparent 70%);" />
+    <div class="container-site relative py-16 lg:py-20">
       <div class="mx-auto max-w-2xl text-center fade-up">
-        <p class="label-caps mb-3 text-indigo-300">Stay Updated</p>
-        <h2 class="font-display text-3xl font-semibold text-cream-100 lg:text-4xl">
+        <p class="label-caps mb-3 text-violet-300">Stay Updated</p>
+        <h2 class="font-display text-3xl font-semibold text-lav lg:text-4xl">
           Receive network updates
         </h2>
-        <p class="mt-4 text-sm font-body text-cream-400 leading-relaxed">
+        <p class="mt-4 text-sm font-body text-lav-300 leading-relaxed">
           Get notified about events, publications, and opportunities.
         </p>
         <form action="https://formspree.io/f/mqewwreq" method="POST" class="mt-8 flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
@@ -208,10 +255,10 @@ const upcomingEvents = allEvents
             name="email"
             required
             placeholder="Your email address"
-            class="flex-1 px-4 py-3 text-sm font-body bg-ink-800 border border-ink-700 text-cream-100 placeholder:text-stone-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-colors"
+            class="flex-1 px-4 py-3 text-sm font-body bg-surface border border-violet-800 text-lav placeholder:text-lav-400 focus:border-violet-500 focus:outline-none focus:ring-1 focus:ring-violet-500 transition-colors"
           />
           <input type="hidden" name="_subject" value="GADI Updates Signup" />
-          <button type="submit" class="px-6 py-3 border border-amber-500 bg-amber-500 text-xs font-body font-semibold uppercase tracking-label text-white hover:bg-amber-600 hover:border-amber-600 transition-colors whitespace-nowrap">
+          <button type="submit" class="px-6 py-3 border border-violet-500 bg-violet-500 text-xs font-body font-semibold uppercase tracking-label text-white hover:bg-violet-400 hover:border-violet-400 transition-colors whitespace-nowrap">
             Subscribe
           </button>
         </form>

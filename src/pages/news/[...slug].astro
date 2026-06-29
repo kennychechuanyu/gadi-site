@@ -25,20 +25,20 @@ const typeLabel: Record<string, string> = {
 
 <BaseLayout title={`${item.data.title} — GADI`} description={item.data.description}>
   <!-- Header -->
-  <section class="border-b border-cream-200 bg-cream-100">
+  <section class="border-b border-line bg-ground">
     <div class="container-site py-16">
       <div class="mb-4 flex flex-wrap items-center gap-3">
-        <a href="/news" class="text-xs font-body text-stone-500 hover:text-indigo-600 transition-colors">
+        <a href="/news" class="text-xs font-body text-lav-400 hover:text-violet-300 transition-colors">
           ← All News
         </a>
-        <span class="text-cream-300">|</span>
-        <span class="label-caps text-indigo-600">{typeLabel[item.data.type]}</span>
+        <span class="text-lav-300">|</span>
+        <span class="label-caps text-violet-400">{typeLabel[item.data.type]}</span>
       </div>
-      <h1 class="font-display text-4xl font-bold text-ink-900 lg:text-5xl max-w-3xl">
+      <h1 class="font-display text-4xl font-bold text-lav lg:text-5xl max-w-3xl">
         {item.data.title}
       </h1>
-      <div class="mt-5 h-px w-16 bg-gradient-to-r from-indigo-500 to-transparent" />
-      <div class="mt-5 flex flex-wrap items-center gap-6 text-sm font-body text-stone-500">
+      <div class="mt-5 h-px w-16 bg-gradient-to-r from-violet-400 to-transparent" />
+      <div class="mt-5 flex flex-wrap items-center gap-6 text-sm font-body text-lav-400">
         <span>
           {item.data.date.getDate()} {months[item.data.date.getMonth()]} {item.data.date.getFullYear()}
         </span>
@@ -48,22 +48,22 @@ const typeLabel: Record<string, string> = {
   </section>
 
   <!-- Content -->
-  <section class="bg-white">
+  <section class="bg-surface">
     <div class="container-narrow py-16">
       <div class="prose prose-stone max-w-none font-body
-        prose-headings:font-display prose-headings:font-semibold prose-headings:text-ink-900
-        prose-p:text-stone-700 prose-p:leading-relaxed
-        prose-a:text-indigo-600 prose-a:no-underline hover:prose-a:underline
-        prose-strong:text-ink-900
-        prose-ul:text-stone-700
-        prose-li:marker:text-indigo-400
+        prose-headings:font-display prose-headings:font-semibold prose-headings:text-lav
+        prose-p:text-lav-200 prose-p:leading-relaxed
+        prose-a:text-violet-400 prose-a:no-underline hover:prose-a:underline
+        prose-strong:text-lav
+        prose-ul:text-lav-200
+        prose-li:marker:text-violet-400
         prose-h2:text-3xl prose-h3:text-xl">
         <Content />
       </div>
     </div>
   </section>
 
-  <div class="border-t border-cream-200 bg-cream-50">
+  <div class="border-t border-line bg-surface">
     <div class="container-site py-6">
       <Button href="/news" variant="ghost" size="sm">← Back to News</Button>
     </div>

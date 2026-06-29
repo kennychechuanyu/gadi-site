@@ -34,7 +34,7 @@ const { title, description, image } = Astro.props;
   <body>
     <a
       href="#main-content"
-      class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-indigo-600 focus:px-4 focus:py-2 focus:text-white"
+      class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-violet-600 focus:px-4 focus:py-2 focus:text-white"
     >
       Skip to main content
     </a>
@@ -62,7 +62,7 @@ const { title, description, image } = Astro.props;
       );
 
       document
-        .querySelectorAll(".fade-up, .fade-in, .stagger-children")
+        .querySelectorAll(".fade-up, .fade-in, .mask-reveal, .reveal-blur, .stagger-children")
         .forEach((el) => observer.observe(el));
     </script>
   </body>

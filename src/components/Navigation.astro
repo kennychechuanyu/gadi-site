@@ -25,13 +25,13 @@ function isActive(href: string) {
         class:list={[
           "relative px-3 py-1.5 text-sm font-body font-medium transition-colors duration-200",
           isActive(item.href)
-            ? "text-indigo-600"
-            : "text-ink-600 hover:text-ink-900",
+            ? "text-violet-400"
+            : "text-lav-300 hover:text-lav",
         ]}
       >
         {item.label}
         {isActive(item.href) && (
-          <span class="absolute bottom-0 left-3 right-3 h-px bg-indigo-500" />
+          <span class="absolute bottom-0 left-3 right-3 h-px bg-violet-500" />
         )}
       </a>
     </li>

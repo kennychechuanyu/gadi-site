@@ -23,19 +23,19 @@ const initials = name
 
 <article class="group relative flex flex-col items-center pt-8 text-center">
   <!-- Top accent rule — animates on hover -->
-  <div aria-hidden="true" class="absolute inset-x-0 top-0 h-px bg-cream-300" />
-  <div aria-hidden="true" class="absolute inset-x-0 top-0 h-[2px] w-0 bg-indigo-500 transition-[width] duration-700 ease-out group-hover:w-full" />
+  <div aria-hidden="true" class="absolute inset-x-0 top-0 h-px bg-surface-raised" />
+  <div aria-hidden="true" class="absolute inset-x-0 top-0 h-[2px] w-0 bg-violet-500 transition-[width] duration-700 ease-out group-hover:w-full" />
 
   <!-- Photo / Initials -->
   {photo ? (
     <img
       src={photo}
       alt={name}
-      class="h-32 w-32 rounded-full object-cover object-top ring-2 ring-cream-200 transition-all duration-300 group-hover:ring-indigo-300"
+      class="h-32 w-32 rounded-full object-cover object-top ring-2 ring-violet-800 transition-all duration-300 group-hover:ring-violet-500"
     />
   ) : (
-    <div class="flex h-32 w-32 rounded-full items-center justify-center bg-cream-100 ring-2 ring-cream-200 transition-all duration-300 group-hover:ring-indigo-300">
-      <span class="font-display text-3xl font-semibold text-indigo-400 select-none">
+    <div class="flex h-32 w-32 rounded-full items-center justify-center bg-ground ring-2 ring-violet-800 transition-all duration-300 group-hover:ring-violet-500">
+      <span class="font-display text-3xl font-semibold text-violet-400 select-none">
         {initials}
       </span>
     </div>
@@ -43,25 +43,25 @@ const initials = name
 
   <!-- Info block -->
   <div class="mt-5 space-y-1">
-    <h3 class="font-display text-lg font-semibold text-ink-900 leading-snug">
+    <h3 class="font-display text-lg font-semibold text-lav leading-snug">
       {name}
     </h3>
-    <p class="text-sm font-medium text-indigo-600">{institution}</p>
+    <p class="text-sm font-medium text-violet-400">{institution}</p>
     {department && (
-      <p class="text-xs font-body text-stone-500">{department}</p>
+      <p class="text-xs font-body text-lav-400">{department}</p>
     )}
   </div>
 
   <!-- Divider + Bio + Email zone -->
-  <div class="mt-5 w-full border-t border-cream-200 pt-4">
+  <div class="mt-5 w-full border-t border-line pt-4">
     {bio ? (
       <details class="bio-accordion">
-        <summary class="cursor-pointer select-none text-center font-body text-[11px] font-medium uppercase text-stone-400 transition-colors hover:text-indigo-600" style="letter-spacing: 0.18em;">
+        <summary class="cursor-pointer select-none text-center font-body text-[11px] font-medium uppercase text-lav-500 transition-colors hover:text-violet-300" style="letter-spacing: 0.18em;">
           <span class="bio-toggle-label">About</span>
         </summary>
         <div class="bio-content">
           <div class="overflow-hidden">
-            <p class="mt-4 px-2 text-[13px] font-body leading-[1.75] text-stone-500 text-justify">
+            <p class="mt-4 px-2 text-[13px] font-body leading-[1.75] text-lav-400 text-justify">
               {bio}
             </p>
           </div>
@@ -73,8 +73,8 @@ const initials = name
     <a
       href={`mailto:${email}`}
       class:list={[
-        "block text-center text-stone-400 transition-colors hover:text-amber-600",
-        bio ? "mt-4 border-t border-cream-200 pt-3" : "",
+        "block text-center text-lav-500 transition-colors hover:text-violet-300",
+        bio ? "mt-4 border-t border-line pt-3" : "",
       ]}
       style="font-family: 'JetBrains Mono', monospace; font-size: 11px;"
     >

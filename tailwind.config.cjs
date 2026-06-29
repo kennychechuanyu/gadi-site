@@ -4,6 +4,44 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        // ─── Starfield palette — midnight indigo + lavender starlight ───
+        // Tuned to the hero node-network: deep indigo ground, soft lavender
+        // accents (a desaturated cousin of the logo violet, less "loud purple").
+        violet: {
+          50:  '#f3f1fa',
+          100: '#e7e3f4',
+          200: '#cfc8e8',
+          300: '#c8bfea',  // star lavender — bright accents/highlights
+          400: '#a99dd6',  // soft periwinkle — primary accent (links/CTAs)
+          500: '#9385c9',  // CTA fill
+          600: '#7e6fb8',
+          700: '#6a5ba0',
+          800: '#2b2d4e',  // border-weight violet
+          900: '#101126',  // ground
+          950: '#0a0b18',
+        },
+        // Page ground + raised surfaces for the dark theme
+        ground: {
+          DEFAULT: '#101126',  // midnight indigo
+          deep:    '#0a0b18',  // darker bands
+        },
+        surface: {
+          DEFAULT: '#181a34',  // cards / alternating sections
+          raised:  '#212340',  // hover / raised
+        },
+        line: {
+          DEFAULT: '#2b2d4e',  // borders
+          soft:    '#20223e',
+        },
+        // Lavender-white text scale (100 = brightest starlight)
+        lav: {
+          DEFAULT: '#ece9f7',
+          100: '#ece9f7',
+          200: '#d3cdeb',
+          300: '#b4abd4',
+          400: '#948cb4',
+          500: '#746f95',
+        },
         ink: {
           50:  '#f0f1f3',
           100: '#dddfe4',

@@ -32,35 +32,35 @@ function formatDate(d: Date) {
 
 <BaseLayout title={`${event.data.title} — GADI`} description={event.data.description}>
   <!-- Page header -->
-  <section class="border-b border-cream-200 bg-cream-100">
+  <section class="border-b border-line bg-ground">
     <div class="container-site py-16">
       <div class="mb-4 flex flex-wrap items-center gap-3">
-        <a href="/events" class="text-xs font-body text-stone-500 hover:text-indigo-600 transition-colors">
+        <a href="/events" class="text-xs font-body text-lav-400 hover:text-violet-300 transition-colors">
           ← All Events
         </a>
-        <span class="text-cream-300">|</span>
-        <span class="label-caps text-indigo-600">{typeLabels[event.data.type]}</span>
+        <span class="text-lav-300">|</span>
+        <span class="label-caps text-violet-400">{typeLabels[event.data.type]}</span>
         {event.data.featured && (
-          <span class="label-caps text-indigo-500">Featured</span>
+          <span class="label-caps text-violet-400">Featured</span>
         )}
       </div>
-      <h1 class="font-display text-4xl font-bold text-ink-900 lg:text-5xl max-w-3xl">
+      <h1 class="font-display text-4xl font-bold text-lav lg:text-5xl max-w-3xl">
         {event.data.title}
       </h1>
-      <div class="mt-5 h-px w-16 bg-gradient-to-r from-indigo-500 to-transparent" />
+      <div class="mt-5 h-px w-16 bg-gradient-to-r from-violet-400 to-transparent" />
 
       <!-- Meta row -->
       <div class="mt-6 flex flex-wrap gap-6">
         <div>
-          <p class="label-caps text-stone-500">Date</p>
-          <p class="mt-1 text-sm font-body text-ink-800">
+          <p class="label-caps text-lav-400">Date</p>
+          <p class="mt-1 text-sm font-body text-lav">
             {formatDate(event.data.date)}
             {event.data.endDate && ` – ${formatDate(event.data.endDate)}`}
           </p>
         </div>
         <div>
-          <p class="label-caps text-stone-500">Location</p>
-          <p class="mt-1 text-sm font-body text-ink-800">{event.data.location}</p>
+          <p class="label-caps text-lav-400">Location</p>
+          <p class="mt-1 text-sm font-body text-lav">{event.data.location}</p>
         </div>
       </div>
 
@@ -75,22 +75,22 @@ function formatDate(d: Date) {
   </section>
 
   <!-- Content -->
-  <section class="bg-white">
+  <section class="bg-surface">
     <div class="container-narrow py-16">
       <div class="prose prose-stone max-w-none font-body
-        prose-headings:font-display prose-headings:font-semibold prose-headings:text-ink-900
-        prose-p:text-stone-700 prose-p:leading-relaxed
-        prose-a:text-indigo-600 prose-a:no-underline hover:prose-a:underline
-        prose-strong:text-ink-900
-        prose-ul:text-stone-700
-        prose-li:marker:text-indigo-400">
+        prose-headings:font-display prose-headings:font-semibold prose-headings:text-lav
+        prose-p:text-lav-200 prose-p:leading-relaxed
+        prose-a:text-violet-400 prose-a:no-underline hover:prose-a:underline
+        prose-strong:text-lav
+        prose-ul:text-lav-200
+        prose-li:marker:text-violet-400">
         <Content />
       </div>
     </div>
   </section>
 
   <!-- Back link -->
-  <div class="border-t border-cream-200 bg-cream-50">
+  <div class="border-t border-line bg-surface">
     <div class="container-site py-6">
       <Button href="/events" variant="ghost" size="sm">
         ← Back to Events

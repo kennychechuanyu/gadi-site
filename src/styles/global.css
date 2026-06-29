@@ -3,32 +3,37 @@
 @tailwind utilities;
 
 /* ─── Custom properties ─────────────────────────────────────────────── */
+/* Starfield palette — a midnight-indigo ground with lavender starlight,
+   echoing the hero's node-network animation. */
 :root {
-  --ink:          #0f1318;
-  --indigo:       #6055a0;
-  --indigo-light: #9b8fd6;
-  --amber:        #c4832a;
-  --cream:        #f4efe6;
-  --cream-dark:   #ede6d8;
-  --stone:        #7d7265;
-  --border:       #ddd5c4;
-  --white:        #faf7f2;
+  --ground:        #101126;  /* page ground */
+  --ground-deep:   #0a0b18;  /* darkest bands */
+  --surface:       #181a34;  /* cards / alternating sections */
+  --surface-raised:#21234080;
+  --text:          #ece9f7;  /* starlight white */
+  --muted:         #b4abd4;  /* lavender-grey */
+  --accent:        #a99dd6;  /* soft periwinkle — links / CTAs */
+  --accent-bright: #c8bfea;  /* star lavender */
+  --border:        #2b2d4e;
+  /* legacy alias kept for any inline references */
+  --ink:           #0a0b18;
+  --ink-indigo:    #101126;
 }
 
 /* ─── Base typography ────────────────────────────────────────────────── */
 @layer base {
   html {
     font-family: 'Sora', system-ui, sans-serif;
-    color: var(--ink);
-    background-color: var(--white);
+    color: var(--text);
+    background-color: var(--ground);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   body {
     @apply min-h-screen flex flex-col;
-    background-color: var(--white);
-    color: var(--ink);
+    background-color: var(--ground);
+    color: var(--text);
   }
 
   h1, h2, h3, h4 {
@@ -44,8 +49,8 @@
   }
 
   ::selection {
-    background-color: var(--indigo);
-    color: #fff;
+    background-color: var(--accent);
+    color: var(--ground);
   }
 }
 
@@ -64,8 +69,43 @@
   }
 
   .label-caps {
-    @apply font-body text-xs font-semibold uppercase tracking-label text-stone-600;
+    @apply font-body text-xs font-semibold uppercase tracking-label text-lav-400;
   }
+
+  /* Balanced wrapping for display headings */
+  .text-balance { text-wrap: balance; }
+  .text-pretty  { text-wrap: pretty; }
+
+  /* Oversized editorial numeral — outlined serif glyph */
+  .numeral-outline {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    -webkit-text-stroke: 1.5px var(--accent);
+    color: transparent;
+    line-height: 0.8;
+  }
+
+  /* Animated link underline that wipes in from the left */
+  .link-wipe {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    transition: background-size 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  .link-wipe:hover { background-size: 100% 1px; }
+}
+
+/* ─── Film-grain atmosphere ──────────────────────────────────────────── */
+/* A fixed, ultra-subtle noise layer that gives flat fills a printed depth. */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
 }
 
 /* ─── Scroll animations ──────────────────────────────────────────────── */
@@ -108,6 +148,89 @@
 .stagger-children.is-visible > *:nth-child(11) { opacity: 1; transform: translateY(0); transition-delay: 0.80s; }
 .stagger-children.is-visible > *:nth-child(12) { opacity: 1; transform: translateY(0); transition-delay: 0.88s; }
 
+/* ─── Dramatic reveal variants ───────────────────────────────────────── */
+/* Line-mask reveal — the inner line slides up from behind an overflow mask.
+   IMPORTANT: observe the .mask-reveal WRAPPER, not the inner. The wrapper has
+   normal geometry so IntersectionObserver fires; the inner moves via transform
+   (transforms don't affect intersection, unlike clip-path). padding-bottom on
+   the inner keeps descenders (g, p, y) from being shaved by the mask. */
+.mask-reveal {
+  overflow: hidden;
+}
+.mask-reveal > * {
+  display: block;
+  padding-bottom: 0.12em;
+  transform: translateY(110%);
+  transition: transform 0.95s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(var(--i, 0) * 0.09s);
+}
+.mask-reveal.is-visible > * {
+  transform: translateY(0);
+}
+
+/* Soft blur-in for atmospheric elements */
+.reveal-blur {
+  opacity: 0;
+  filter: blur(14px);
+  transform: scale(1.04);
+  transition: opacity 1s ease, filter 1s ease, transform 1s ease;
+}
+.reveal-blur.is-visible {
+  opacity: 1;
+  filter: blur(0);
+  transform: scale(1);
+}
+
+/* ─── Keyframes ──────────────────────────────────────────────────────── */
+@keyframes drift-slow {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%      { transform: translate3d(0, -14px, 0); }
+}
+
+@keyframes pulse-ring {
+  0%   { transform: scale(0.6); opacity: 0.5; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+@keyframes sheen {
+  0%   { transform: translateX(-120%) skewX(-18deg); }
+  60%, 100% { transform: translateX(220%) skewX(-18deg); }
+}
+
+@keyframes hairline-grow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* CTA sheen — a light sweep across amber buttons on hover */
+.btn-sheen { position: relative; overflow: hidden; }
+.btn-sheen::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,0.35), transparent);
+  transform: translateX(-120%) skewX(-18deg);
+}
+.btn-sheen:hover::after { animation: sheen 0.9s ease; }
+
+/* ─── Reduced-motion ─────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .fade-up, .fade-in, .reveal-blur,
+  .mask-reveal > *,
+  .stagger-children > * {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    clip-path: none !important;
+    transition: none !important;
+  }
+  .btn-sheen::after { display: none; }
+  [data-net] { display: none; }
+}
+
 /* ─── Bio accordion ─────────────────────────────────────────────────── */
 .bio-accordion summary {
   list-style: none;
@@ -141,9 +264,9 @@
 
 /* ─── Form inputs ────────────────────────────────────────────────────── */
 .input-field {
-  @apply w-full rounded-none border border-cream-300 bg-cream-50 px-4 py-3 text-sm font-body text-ink-900
-         focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500
-         placeholder:text-stone-400 transition-colors duration-200;
+  @apply w-full rounded-none border border-line bg-ground-deep px-4 py-3 text-sm font-body text-lav
+         focus:border-violet-400 focus:outline-none focus:ring-1 focus:ring-violet-400
+         placeholder:text-lav-500 transition-colors duration-200;
 }
 
 .textarea-field {
