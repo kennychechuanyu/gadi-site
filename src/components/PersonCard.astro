@@ -92,7 +92,7 @@ const dialogId = "bio-" + name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 
     <!-- Bio -->
     {bio ? (
-      <p class="text-pretty font-body text-[15px] leading-[1.8] text-lav-300">{bio}</p>
+      <p class="bio-text text-pretty font-body text-[15px] leading-[1.8] text-lav-300" set:html={bio} />
     ) : (
       <p class="font-body text-sm italic leading-relaxed text-lav-400">Profile details coming soon.</p>
     )}
@@ -111,6 +111,18 @@ const dialogId = "bio-" + name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
   </div>
 </dialog>
 </div>
+
+<style>
+  .bio-text :global(a) {
+    color: rgb(167 139 250); /* violet-400 */
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.15s;
+  }
+  .bio-text :global(a:hover) {
+    color: rgb(196 181 253); /* violet-300 */
+  }
+</style>
 
 <script>
   function wireBioModals() {

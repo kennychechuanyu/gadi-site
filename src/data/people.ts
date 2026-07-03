@@ -128,11 +128,13 @@ export const people: Person[] = [
   {
     name: "Ilia Sucholutsky",
     title: "Dr.",
-    institution: "New York University",
-    department: "NYU Center for Data Science",
+    institution: "Purdue University",
+    department: "Department of Computer Science",
     country: "United States",
     email: "is3060@nyu.edu",
     role: "steering",
+    photo: "/images/people/IS.jpg",
+    bio: 'Ilia Sucholutsky is an assistant professor of Computer Science at Purdue University, where he leads the <a href="https://ilia10000.github.io" target="_blank" rel="noopener noreferrer">AI Thought Partner Lab</a>. He uses tools like <a href="https://arxiv.org/abs/2310.13018" target="_blank" rel="noopener noreferrer">representational alignment</a> to study the parallels between human and artificial intelligence and probe <a href="https://proceedings.neurips.cc/paper_files/paper/2023/hash/e8ddc03b001d4c4b44b29bc1167e7fdd-Abstract-Conference.html" target="_blank" rel="noopener noreferrer">the limits of learning and teaching with small data</a> to develop AI thought partners that <a href="https://www.nature.com/articles/s41562-024-01991-9" target="_blank" rel="noopener noreferrer">learn and think with people rather than instead of people</a>. He was previously a Faculty Fellow and assistant professor at the NYU Center for Data Science, a Computer Science postdoc at Princeton University, and a visiting scholar in Brain and Cognitive Sciences at MIT. Ilia earned his PhD and BMath degrees in the Statistics department at the University of Waterloo.',
   },
 ];
 
