@@ -3,12 +3,16 @@ export const siteConfig = {
   fullName: "Generalization Across Domains Initiative",
   description:
     "An international interdisciplinary research network studying how learning generalizes across biological and artificial systems, uniting psychology, neuroscience, AI, and education.",
-  url: "https://gadi-network.org",
+  url: "https://gadi-psych.vercel.app",
   email: "gadi.network@outlook.com",
   founded: "2026",
   memberCount: "66",
   countryCount: "10+",
   steeringCount: "9",
+
+  // Pages hidden until they have content. To show one again, remove it here
+  // and drop the leading "_" from its file in src/pages (e.g. _resources.astro).
+  hiddenPages: ["/events", "/news", "/resources"],
 
   nav: [
     { label: "Home",      href: "/" },
@@ -35,15 +39,15 @@ export const siteConfig = {
   objectives: [
     {
       number: "01",
-      title: "Build an Interdisciplinary Community",
+      title: "Foster Interdisciplinary Exchange",
       description:
-        "Organize annual international conferences bringing together researchers from psychology, neuroscience, AI, and education to develop a shared scientific foundation.",
+        "Organize an annual international conference that brings together researchers from psychology, neuroscience, AI, linguistics, and education to develop the scientific foundation of generalization.",
     },
     {
       number: "02",
       title: "Develop a Shared Framework",
       description:
-        "Through thematic working groups, synthesize theoretical and empirical insights across disciplines into a consensus paper on common mechanisms and research priorities.",
+        "Through thematic working groups, synthesize theoretical and empirical insights across disciplines into a consensus paper on common terminology, mechanisms, and research priorities.",
     },
     {
       number: "03",

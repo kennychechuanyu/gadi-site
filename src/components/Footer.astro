@@ -21,7 +21,10 @@ const footerLinks = [
       { label: "Contact",          href: "/contact" },
     ],
   },
-];
+].map((col) => ({
+  ...col,
+  links: col.links.filter((l) => !siteConfig.hiddenPages.includes(l.href)),
+}));
 ---
 
 <footer class="border-t border-line text-lav-200" style="background-color: var(--ink-indigo);">
@@ -34,7 +37,7 @@ const footerLinks = [
           <img src="/images/gadi-logo.svg" alt="GADI" class="h-10 w-auto object-contain" />
         </a>
         <p class="text-sm font-body leading-relaxed text-lav-300 max-w-xs">
-          Generalization Across Domains Initiative: building a unified science of how learning transfers across biological and artificial systems.
+          Generalization Across Domains Initiative: building a unified science of how learning transfers.
         </p>
         <div class="mt-6 flex items-center gap-2">
           <span class="label-caps text-lav-400">Est.</span>

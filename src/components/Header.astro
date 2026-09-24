@@ -15,7 +15,7 @@ import { siteConfig } from "../data/site-config";
 
       <!-- Desktop nav -->
       <div class="hidden md:flex items-center">
-        <Navigation items={siteConfig.nav} />
+        <Navigation items={siteConfig.nav.filter((l) => !siteConfig.hiddenPages.includes(l.href))} />
         <div class="ml-5 border-l border-line pl-5">
           <a
             href="/community"
@@ -27,7 +27,7 @@ import { siteConfig } from "../data/site-config";
       </div>
 
       <!-- Mobile menu -->
-      <MobileMenu items={siteConfig.nav} />
+      <MobileMenu items={siteConfig.nav.filter((l) => !siteConfig.hiddenPages.includes(l.href))} />
     </div>
   </div>
 </header>

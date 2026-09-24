@@ -273,6 +273,12 @@
   @apply input-field resize-none;
 }
 
+/* Mark required fields: a "*" after the label of any required input */
+div:has(> :is(input, select, textarea)[required]) > label::after {
+  content: " *";
+  @apply text-violet-400;
+}
+
 /* ─── Profile modal (native <dialog>) ────────────────────────────────── */
 .bio-modal {
   margin: auto;               /* center within the viewport */

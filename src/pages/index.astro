@@ -103,7 +103,8 @@ const upcomingEvents = allEvents
     );
   </script>
 
-  <!-- ─── Upcoming Events ───────────────────────────────────────────── -->
+  <!-- ─── Upcoming Events (only when events are scheduled) ──────────── -->
+  {upcomingEvents.length > 0 && (
   <section class="bg-surface border-b border-line">
     <div class="container-site py-16 lg:py-20">
 
@@ -147,6 +148,7 @@ const upcomingEvents = allEvents
 
     </div>
   </section>
+  )}
 
   <!-- ─── The Problem ───────────────────────────────────────────────── -->
   <Section background="cream">
@@ -160,9 +162,9 @@ const upcomingEvents = allEvents
 
         <div class="mt-8 space-y-5">
           <p class="text-base font-body leading-relaxed text-lav-200">
-            The ability to apply past experience to new situations, generalization, is central to adaptive
-            behavior, intelligent systems, and learning itself. Yet the research addressing this problem is
-            scattered across disciplines that rarely speak to each other.
+            Generalization is the ability to apply past experience to new situations. It is central to
+            adaptive behavior, intelligent systems, and learning itself. Yet the research addressing
+            generalization is scattered across disciplines that rarely interact.
           </p>
           <p class="text-base font-body leading-relaxed text-lav-200">
             Psychologists, neuroscientists, AI researchers, educators, and linguists each study generalization

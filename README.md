@@ -2,7 +2,7 @@
 
 Website for the **Generalization Across Domains Initiative**, an international interdisciplinary research network.
 
-- **URL:** [gadi-network.org](https://gadi-network.org)
+- **URL:** [gadi-psych.vercel.app](https://gadi-psych.vercel.app)
 - **Contact:** gadi.network@outlook.com
 - **Tech stack:** [Astro](https://astro.build/) + [Tailwind CSS](https://tailwindcss.com/)
 - **Forms:** [Formspree](https://formspree.io/)

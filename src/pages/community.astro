@@ -2,6 +2,7 @@
 import PageLayout from "../layouts/PageLayout.astro";
 import Section from "../components/Section.astro";
 import Button from "../components/Button.astro";
+import { siteConfig } from "../data/site-config";
 
 // Replace FORMSPREE_ID with actual Formspree endpoint
 const MEMBERSHIP_FORM = "https://formspree.io/f/mqewwreq";
@@ -64,7 +65,7 @@ const DISCUSSION_FORM  = "https://formspree.io/f/mlgaaqgn";
             { label: "Access", desc: "Receive announcements, event invitations, and network updates." },
             { label: "Participate", desc: "Join working groups, attend conferences, workshops, and hackathons." },
             { label: "Collaborate", desc: "Connect with researchers across disciplines for joint projects." },
-            { label: "Develop", desc: "Apply for travel support and participate in the summer school." },
+            { label: "Develop", desc: "Apply for travel support and participate in future summer schools and training events." },
           ].map((item) => (
             <div class="flex gap-3">
               <div class="mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-violet-400" />
@@ -94,12 +95,12 @@ const DISCUSSION_FORM  = "https://formspree.io/f/mlgaaqgn";
               </div>
             </div>
             <div>
-              <label class="label-caps mb-1.5 block text-lav-400" for="email">Institutional Email</label>
+              <label class="label-caps mb-1.5 block text-lav-400" for="email">Email</label>
               <input id="email" name="email" type="email" required class="input-field" />
             </div>
             <div>
               <label class="label-caps mb-1.5 block text-lav-400" for="institution">Institution</label>
-              <input id="institution" name="institution" type="text" required class="input-field" />
+              <input id="institution" name="institution" type="text" class="input-field" />
             </div>
             <div>
               <label class="label-caps mb-1.5 block text-lav-400" for="position">Position</label>
@@ -121,6 +122,16 @@ const DISCUSSION_FORM  = "https://formspree.io/f/mlgaaqgn";
               <label class="label-caps mb-1.5 block text-lav-400" for="interest">Why are you interested in GADI?</label>
               <textarea id="interest" name="interest" rows={3} class="textarea-field" placeholder="Briefly describe your interest in generalization research and what you hope to contribute or gain from the network."></textarea>
             </div>
+            <label class="flex items-start gap-3 text-sm font-body text-lav-200" for="list-consent">
+              <input id="list-consent" name="list_on_website" type="checkbox" value="yes" class="mt-1 h-4 w-4 shrink-0 accent-violet-500" />
+              <span>I agree to have my name, position, and institution listed on the GADI website.</span>
+            </label>
+            <p class="text-xs font-body leading-relaxed text-lav-400">
+              Your details go to the GADI coordination team and are used only to manage your membership.
+              You are listed on the website only if you tick the box above. To see, change, or remove your
+              details, email <a href={`mailto:${siteConfig.email}`} class="text-violet-400 hover:underline">{siteConfig.email}</a>.
+              Fields marked <span class="text-violet-400">*</span> are required.
+            </p>
             <button type="submit" class="w-full border border-violet-500 bg-violet-500 px-6 py-3 text-xs font-body font-semibold uppercase tracking-label text-ground hover:bg-violet-400 hover:border-violet-400 transition-colors">
               Submit Application
             </button>
