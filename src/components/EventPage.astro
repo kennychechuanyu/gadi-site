@@ -133,7 +133,7 @@ const jsonLd = {
 };
 ---
 
-<BaseLayout title={fullTitle} description={data.description} image={data.ogImage}>
+<BaseLayout title={fullTitle} description={data.description} image={data.ogImage} imageAlt={`${fullTitle}, ${eyebrow.toLowerCase()} on ${day} ${month} ${year}`}>
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
 
   <div

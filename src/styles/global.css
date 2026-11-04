@@ -296,16 +296,6 @@ div:has(> :is(input, select, textarea)[required]) > label::after {
   @apply text-violet-400;
 }
 
-.header-glass::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background-color: rgb(var(--c-ground) / 0.95);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
-}
-
 .bio-modal {
   margin: auto;
   color: rgb(var(--c-lav));

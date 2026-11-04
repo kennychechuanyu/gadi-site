@@ -1,0 +1,24 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import Section from "../components/Section.astro";
+import Button from "../components/Button.astro";
+---
+
+<PageLayout
+  title="Page not found"
+  description="The page you are looking for does not exist or has moved."
+  pageTitle="Page not found"
+  pageSubtitle="This page does not exist"
+>
+  <Section background="white">
+    <div class="max-w-xl">
+      <p class="font-body text-base leading-relaxed text-lav-200">
+        The link may be out of date, or the page may have moved. You can find everything from the home page.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-4">
+        <Button href="/" variant="primary" arrow>Home page</Button>
+        <Button href="/events" variant="secondary">Events</Button>
+      </div>
+    </div>
+  </Section>
+</PageLayout>
