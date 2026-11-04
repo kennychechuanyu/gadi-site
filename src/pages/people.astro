@@ -4,7 +4,6 @@ import Section from "../components/Section.astro";
 import PersonCard from "../components/PersonCard.astro";
 import { people } from "../data/people";
 
-// Priority members: Jonas first, then Steven, Eline, Kenny, Wolf
 const priorityNames = ["Jonas Zaman", "Steven Verheyen", "Eline Van Geert", "Kenny Yu", "Wolf Vanpaemel"];
 
 const coordinatingMembers = people
@@ -22,12 +21,11 @@ const coordinatingMembers = people
 ---
 
 <PageLayout
-  title="People — GADI"
+  title="People | GADI"
   description="Meet the coordinating members and broader membership of the Generalization Across Domains Initiative."
   pageTitle="People"
   pageSubtitle="Who is involved"
 >
-  <!-- Coordinating Members -->
   <Section label="Coordinating Members" background="white">
     <div class="mx-auto max-w-6xl">
       <div class="stagger-children grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
@@ -48,7 +46,6 @@ const coordinatingMembers = people
     </div>
   </Section>
 
-  <!-- Network Members -->
   <Section label="Network Members" background="cream">
     <div class="mx-auto max-w-6xl">
       <div class="max-w-xl fade-up">

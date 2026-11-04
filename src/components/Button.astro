@@ -23,13 +23,10 @@ const baseClass =
   "group relative inline-flex items-center justify-center gap-2.5 font-body font-semibold uppercase tracking-label transition-all duration-300 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-ground disabled:opacity-50 disabled:pointer-events-none";
 
 const variants = {
-  // Filled lavender, dark text — lifts and casts a soft glow on hover.
   primary:
-    "border border-violet-400 bg-violet-400 text-ground hover:bg-violet-300 hover:border-violet-300 hover:-translate-y-0.5 shadow-[0_0_0_0_rgba(185,179,212,0)] hover:shadow-[0_14px_34px_-14px_rgba(194,189,218,0.6)]",
-  // Outlined ghost — light text, border brightens and fills faintly on hover.
+    "border border-violet-400 bg-violet-400 text-ground hover:bg-violet-300 hover:border-violet-300 hover:-translate-y-0.5 shadow-[0_0_0_0_rgb(var(--c-accent)/0)] hover:shadow-[0_14px_34px_-14px_rgb(var(--c-violet-400)/0.6)]",
   secondary:
     "border border-line bg-transparent text-lav hover:border-violet-400 hover:bg-violet-400/10 hover:-translate-y-0.5",
-  // Text-only with an arrow.
   ghost:
     "border border-transparent bg-transparent text-lav-200 hover:text-lav",
 };

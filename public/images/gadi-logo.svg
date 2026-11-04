@@ -1,18 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 58" width="360" height="58">
-  <!-- Icon: subtle violet circle, reads cleanly on dark grounds -->
   <circle cx="29" cy="29" r="27" fill="#1c1d3e"/>
 
-  <!-- Triangle network connecting lines -->
   <line x1="29" y1="10" x2="12" y2="43" stroke="#ece9f7" stroke-width="1.6" stroke-linecap="round"/>
   <line x1="29" y1="10" x2="46" y2="43" stroke="#ece9f7" stroke-width="1.6" stroke-linecap="round"/>
   <line x1="12" y1="43" x2="46" y2="43" stroke="#ece9f7" stroke-width="1.6" stroke-linecap="round"/>
 
-  <!-- Triangle nodes: top (bright lavender), bottom-left (periwinkle), bottom-right (starlight) -->
   <circle cx="29" cy="10" r="6.5" fill="#c8bfea"/>
   <circle cx="12" cy="43" r="5"   fill="#a99dd6"/>
   <circle cx="46" cy="43" r="5"   fill="#f3f1fa"/>
 
-  <!-- GADI wordmark — white sans, matching the real logo -->
   <text
     x="68" y="38"
     font-family="Sora, 'Helvetica Neue', Arial, sans-serif"
@@ -22,7 +18,6 @@
     fill="#f3f1fa"
   >GADI</text>
 
-  <!-- Subtitle -->
   <text
     x="69" y="52"
     font-family="Sora, 'Helvetica Neue', Arial, sans-serif"

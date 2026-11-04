@@ -2,38 +2,75 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ─── Custom properties ─────────────────────────────────────────────── */
-/* Neutral dark — charcoal/blue-black ground with lavender starlight accents.
-   Backgrounds and text are neutral; lavender is reserved for accents/stars. */
 :root {
-  --ground:        #0f1216;  /* page ground (neutral) */
-  --ground-deep:   #0a0c0f;  /* darkest bands */
-  --surface:       #181b21;  /* cards / alternating sections */
-  --surface-raised:#21252d;
-  --text:          #ececef;  /* neutral off-white */
-  --muted:         #9aa0ab;  /* neutral grey */
-  --accent:        #b9b3d4;  /* soft lavender — links / CTAs / stars */
-  --accent-bright: #d2cfe6;  /* bright star */
-  --border:        #2a2e36;
-  /* legacy aliases kept for any inline references */
-  --ink:           #0a0c0f;
-  --ink-indigo:    #0f1216;
+  --c-ground: 248 247 252;
+  --c-ground-deep: 240 237 248;
+  --c-surface: 255 255 255;
+  --c-surface-raised: 243 240 250;
+  --c-line: 226 222 238;
+  --c-line-soft: 236 233 245;
+  --c-hero: 42 30 78;
+  --c-lav: 35 25 64;
+  --c-lav-200: 58 49 86;
+  --c-lav-300: 94 86 120;
+  --c-lav-400: 112 105 138;
+  --c-lav-500: 160 154 182;
+  --c-accent: 161 124 245;
+  --c-violet-50: 245 241 255;
+  --c-violet-100: 236 229 255;
+  --c-violet-200: 217 204 252;
+  --c-violet-300: 72 40 140;
+  --c-violet-400: 89 53 156;
+  --c-violet-500: 104 66 184;
+  --c-violet-600: 124 92 214;
+  --c-violet-700: 196 182 240;
+  --c-violet-800: 226 222 238;
+  --c-violet-900: 248 247 252;
+  --c-violet-950: 240 237 248;
+  --c-star-edge: 170 152 240;
+  --c-star-node: 195 181 255;
+  --c-star-hub: 240 233 255;
+  --c-star-act: 240 233 255;
 }
 
-/* ─── Base typography ────────────────────────────────────────────────── */
+.band-dark {
+  --c-ground: 25 20 44;
+  --c-ground-deep: 17 14 31;
+  --c-surface: 34 28 57;
+  --c-surface-raised: 44 37 72;
+  --c-line: 57 49 89;
+  --c-line-soft: 44 37 72;
+  --c-hero: 42 30 78;
+  --c-lav: 243 240 252;
+  --c-lav-200: 218 212 238;
+  --c-lav-300: 172 165 201;
+  --c-lav-400: 138 131 170;
+  --c-lav-500: 106 99 138;
+  --c-accent: 195 181 255;
+  --c-violet-300: 220 211 255;
+  --c-violet-400: 195 181 255;
+  --c-violet-500: 172 150 248;
+  --c-violet-600: 161 124 245;
+  --c-violet-700: 106 74 180;
+  --c-violet-800: 57 49 89;
+  --c-violet-900: 25 20 44;
+  --c-violet-950: 17 14 31;
+  color: rgb(var(--c-lav));
+}
+
 @layer base {
   html {
     font-family: 'Sora', system-ui, sans-serif;
-    color: var(--text);
-    background-color: var(--ground);
+    color: rgb(var(--c-lav));
+    background-color: rgb(var(--c-ground));
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   body {
     @apply min-h-screen flex flex-col;
-    background-color: var(--ground);
-    color: var(--text);
+    background-color: rgb(var(--c-ground));
+    color: rgb(var(--c-lav));
   }
 
   h1, h2, h3, h4 {
@@ -49,12 +86,11 @@
   }
 
   ::selection {
-    background-color: var(--accent);
-    color: var(--ground);
+    background-color: rgb(var(--c-accent));
+    color: rgb(var(--c-ground));
   }
 }
 
-/* ─── Layout utilities ───────────────────────────────────────────────── */
 @layer utilities {
   .container-site {
     @apply mx-auto max-w-7xl px-6 lg:px-10;
@@ -72,19 +108,16 @@
     @apply font-body text-xs font-semibold uppercase tracking-label text-lav-400;
   }
 
-  /* Balanced wrapping for display headings */
   .text-balance { text-wrap: balance; }
   .text-pretty  { text-wrap: pretty; }
 
-  /* Oversized editorial numeral — outlined serif glyph */
   .numeral-outline {
     font-family: 'Cormorant Garamond', Georgia, serif;
-    -webkit-text-stroke: 1.5px var(--accent);
+    -webkit-text-stroke: 1.5px rgb(var(--c-accent));
     color: transparent;
     line-height: 0.8;
   }
 
-  /* Animated link underline that wipes in from the left */
   .link-wipe {
     background-image: linear-gradient(currentColor, currentColor);
     background-position: 0% 100%;
@@ -95,8 +128,6 @@
   .link-wipe:hover { background-size: 100% 1px; }
 }
 
-/* ─── Film-grain atmosphere ──────────────────────────────────────────── */
-/* A fixed, ultra-subtle noise layer that gives flat fills a printed depth. */
 .grain::after {
   content: "";
   position: fixed;
@@ -108,7 +139,6 @@
   mix-blend-mode: overlay;
 }
 
-/* ─── Scroll animations ──────────────────────────────────────────────── */
 .fade-up {
   opacity: 0;
   transform: translateY(24px);
@@ -148,12 +178,6 @@
 .stagger-children.is-visible > *:nth-child(11) { opacity: 1; transform: translateY(0); transition-delay: 0.80s; }
 .stagger-children.is-visible > *:nth-child(12) { opacity: 1; transform: translateY(0); transition-delay: 0.88s; }
 
-/* ─── Dramatic reveal variants ───────────────────────────────────────── */
-/* Line-mask reveal — the inner line slides up from behind an overflow mask.
-   IMPORTANT: observe the .mask-reveal WRAPPER, not the inner. The wrapper has
-   normal geometry so IntersectionObserver fires; the inner moves via transform
-   (transforms don't affect intersection, unlike clip-path). padding-bottom on
-   the inner keeps descenders (g, p, y) from being shaved by the mask. */
 .mask-reveal {
   overflow: hidden;
 }
@@ -168,7 +192,6 @@
   transform: translateY(0);
 }
 
-/* Soft blur-in for atmospheric elements */
 .reveal-blur {
   opacity: 0;
   filter: blur(14px);
@@ -181,7 +204,6 @@
   transform: scale(1);
 }
 
-/* ─── Keyframes ──────────────────────────────────────────────────────── */
 @keyframes drift-slow {
   0%, 100% { transform: translate3d(0, 0, 0); }
   50%      { transform: translate3d(0, -14px, 0); }
@@ -202,7 +224,6 @@
   to   { transform: scaleX(1); }
 }
 
-/* CTA sheen — a light sweep across amber buttons on hover */
 .btn-sheen { position: relative; overflow: hidden; }
 .btn-sheen::after {
   content: "";
@@ -216,7 +237,6 @@
 }
 .btn-sheen:hover::after { animation: sheen 0.9s ease; }
 
-/* ─── Reduced-motion ─────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .fade-up, .fade-in, .reveal-blur,
   .mask-reveal > *,
@@ -231,7 +251,6 @@
   [data-net] { display: none; }
 }
 
-/* ─── Bio accordion ─────────────────────────────────────────────────── */
 .bio-accordion summary {
   list-style: none;
 }
@@ -262,7 +281,6 @@
   grid-template-rows: 1fr;
 }
 
-/* ─── Form inputs ────────────────────────────────────────────────────── */
 .input-field {
   @apply w-full rounded-none border border-line bg-ground-deep px-4 py-3 text-sm font-body text-lav
          focus:border-violet-400 focus:outline-none focus:ring-1 focus:ring-violet-400
@@ -273,16 +291,24 @@
   @apply input-field resize-none;
 }
 
-/* Mark required fields: a "*" after the label of any required input */
 div:has(> :is(input, select, textarea)[required]) > label::after {
   content: " *";
   @apply text-violet-400;
 }
 
-/* ─── Profile modal (native <dialog>) ────────────────────────────────── */
+.header-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: rgb(var(--c-ground) / 0.95);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
 .bio-modal {
-  margin: auto;               /* center within the viewport */
-  color: var(--text);
+  margin: auto;
+  color: rgb(var(--c-lav));
 }
 .bio-modal::backdrop {
   background-color: rgba(8, 9, 12, 0.72);

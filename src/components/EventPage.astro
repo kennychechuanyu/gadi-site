@@ -1,0 +1,1517 @@
+---
+import type { CollectionEntry } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import NodeNetwork from "./NodeNetwork.astro";
+import Button from "./Button.astro";
+import { siteConfig } from "../data/site-config";
+import { toInstants, eventEnd, wallClock, zoneName } from "../utils/eventTime";
+
+interface Props {
+  event: CollectionEntry<"events">;
+}
+
+const { event } = Astro.props;
+const { Content } = await event.render();
+const data = event.data;
+const hasBody = (event.body ?? "").trim().length > 0;
+
+const typeLabels: Record<string, string> = {
+  conference: "Conference",
+  workshop: "Workshop",
+  hackathon: "Hackathon",
+  "summer-school": "Summer School",
+  "expert-meeting": "Expert Meeting",
+  webinar: "Webinar",
+  symposium: "Symposium",
+};
+const typeLabel = typeLabels[data.type];
+const online = /^online/i.test(data.location);
+const eyebrow = online ? `Online ${typeLabel.toLowerCase()}` : typeLabel;
+const fullTitle = data.subtitle ? `${data.title}: ${data.subtitle}` : data.title;
+
+const tz = data.timezone;
+const span = toInstants(data.time, data.date, tz);
+const ends = eventEnd(data);
+const starts = span ? new Date(span.start) : data.date;
+const now = new Date();
+const phase = now >= ends ? "past" : now >= starts ? "live" : "upcoming";
+
+const onDate = (opts: Intl.DateTimeFormatOptions, d = data.date) =>
+  new Intl.DateTimeFormat("en-GB", { timeZone: "UTC", ...opts }).format(d);
+const day = onDate({ day: "numeric" });
+const month = onDate({ month: "long" });
+const year = onDate({ year: "numeric" });
+const weekday = onDate({ weekday: "long" });
+const ymd = data.date.toISOString().slice(0, 10);
+const until = data.endDate ? onDate({ day: "numeric", month: "long", year: "numeric" }, data.endDate) : undefined;
+const zone = span ? zoneName(span.start, tz) : "";
+const timeText = span ? `${wallClock(span.start, tz)}${span.end ? `–${wallClock(span.end, tz)}` : ""}` : data.time;
+
+const speakers = data.speakers ?? [];
+let talkCount = 0;
+const rows = (data.programme ?? []).map((row) => {
+  const at = toInstants(row.time, data.date, tz);
+  const minutes = at?.end ? Math.round((Date.parse(at.end) - Date.parse(at.start)) / 60000) : undefined;
+  const n = row.kind === "talk" ? ++talkCount : undefined;
+  const sp = row.speaker ? speakers.find((s) => s.name === row.speaker) : undefined;
+  return { ...row, at, minutes, n, sp };
+});
+const talks = rows.filter((r) => r.kind === "talk");
+const numberWords = ["No", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"];
+const talkSummary =
+  talks.length > 0
+    ? `${numberWords[talks.length] ?? talks.length} talks${rows.some((r) => r.kind === "discussion") ? ", then a discussion with all speakers" : ""}`
+    : "";
+const questionCount = data.questions?.length ?? 0;
+const questionsHeading = `${numberWords[questionCount] ?? questionCount} questions for every talk`;
+const initialsOf = (name: string) =>
+  name
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((w) => w[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+const discussion = rows.find((r) => r.kind === "discussion");
+
+const spanStart = span ? Date.parse(span.start) : 0;
+const spanEnd = span?.end ? Date.parse(span.end) : 0;
+const ticks: { iso: string; pct: number; edge: string }[] = [];
+if (span?.end && spanEnd > spanStart) {
+  for (let t = spanStart; t < spanEnd; t += 3600000) {
+    ticks.push({
+      iso: new Date(t).toISOString(),
+      pct: ((t - spanStart) / (spanEnd - spanStart)) * 100,
+      edge: t === spanStart ? "start" : "mid",
+    });
+  }
+  ticks.push({ iso: span.end, pct: 100, edge: "end" });
+}
+const segTitle = (r: (typeof rows)[number]) => {
+  const label = r.kind === "talk" ? `Talk ${r.n}: ${r.field}` : r.title ?? r.kind;
+  return r.at?.end ? `${label}, ${wallClock(r.at.start, tz)}–${wallClock(r.at.end, tz)} ${zone}` : label;
+};
+
+const pageUrl = new URL(`/events/${event.slug}/`, Astro.site).href;
+const stamp = (iso: string) => iso.replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z");
+const googleUrl = span?.end
+  ? "https://calendar.google.com/calendar/render?" +
+    new URLSearchParams({
+      action: "TEMPLATE",
+      text: fullTitle,
+      dates: stamp(span.start) + "/" + stamp(span.end),
+      details: data.description + "\n\n" + pageUrl,
+      location: data.location,
+    }).toString()
+  : undefined;
+const icsUrl = span ? `/events/${event.slug}.ics` : undefined;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  name: fullTitle,
+  description: data.description,
+  startDate: span?.start ?? ymd,
+  ...(span?.end ? { endDate: span.end } : {}),
+  eventStatus: "https://schema.org/EventScheduled",
+  eventAttendanceMode: online
+    ? "https://schema.org/OnlineEventAttendanceMode"
+    : "https://schema.org/OfflineEventAttendanceMode",
+  location: online ? { "@type": "VirtualLocation", url: pageUrl } : { "@type": "Place", name: data.location },
+  organizer: { "@type": "Organization", name: siteConfig.fullName, url: siteConfig.url },
+  ...(speakers.length > 0
+    ? {
+        performer: speakers.map((s) => ({
+          "@type": "Person",
+          name: s.name,
+          affiliation: { "@type": "Organization", name: s.institution },
+        })),
+      }
+    : {}),
+  ...(data.ogImage ? { image: new URL(data.ogImage, Astro.site).href } : {}),
+  url: pageUrl,
+};
+---
+
+<BaseLayout title={fullTitle} description={data.description} image={data.ogImage}>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
+
+  <div
+    data-event
+    data-phase={phase}
+    data-start={span?.start ?? data.date.toISOString()}
+    data-end={ends.toISOString()}
+    data-tz={tz}
+    data-ymd={ymd}
+  >
+    <section
+      class="band-dark relative isolate overflow-hidden border-b border-line"
+      style="background: linear-gradient(160deg, rgb(var(--c-hero)) 0%, rgb(var(--c-ground)) 52%, rgb(var(--c-ground-deep)) 100%);"
+    >
+      <NodeNetwork class="opacity-80" />
+      <div
+        class="absolute inset-0 z-[2]"
+        style="background:
+          radial-gradient(ellipse 50% 65% at 84% 28%, rgb(var(--c-accent) / 0.10) 0%, transparent 62%),
+          linear-gradient(to right, rgb(var(--c-ground) / 0.95) 0%, rgb(var(--c-ground) / 0.62) 55%, rgb(var(--c-ground) / 0.4) 100%);"
+      ></div>
+      <div class="absolute inset-x-0 top-0 z-[3] h-px bg-gradient-to-r from-transparent via-violet-400/60 to-transparent"></div>
+
+      <div class="container-site relative z-10 pb-14 pt-8 lg:pb-16 lg:pt-10">
+        <nav aria-label="Breadcrumb" class="mb-10 lg:mb-14">
+          <ol class="flex items-center gap-2 font-body text-xs text-lav-400">
+            <li><a href="/events" class="transition-colors hover:text-violet-300">Events</a></li>
+            <li aria-hidden="true" class="text-lav-500">/</li>
+            <li aria-current="page" class="text-lav-300">{typeLabel}</li>
+          </ol>
+        </nav>
+
+        <div class="grid gap-12 lg:grid-cols-12 lg:items-end lg:gap-10">
+          <div class="lg:col-span-7 xl:col-span-8">
+            <p class="label-caps mb-7 text-violet-300 fade-up">
+              <span class="mr-2.5 inline-block h-1.5 w-1.5 -translate-y-0.5 rounded-full bg-violet-400 align-middle"></span>
+              {eyebrow}
+            </p>
+            <h1 class="text-balance font-display text-[clamp(2.5rem,5.4vw,4.75rem)] font-bold leading-[1.02] tracking-[-0.01em] text-lav">
+              <span class="mask-reveal block" style="--i:0;"><span>{data.title}</span></span>
+              {data.subtitle && (
+                <span class="mask-reveal mt-1 block text-[0.7em] leading-[1.12]" style="--i:1;">
+                  <span><em class="font-normal italic text-violet-400">{data.subtitle}</em></span>
+                </span>
+              )}
+            </h1>
+            <div class="my-9 h-px w-28 bg-gradient-to-r from-violet-400 via-violet-400 to-transparent fade-up" style="transition-delay: 0.35s;"></div>
+            <p class="max-w-2xl text-pretty font-body text-base leading-relaxed text-lav-300 lg:text-lg fade-up" style="transition-delay: 0.45s;">
+              {data.deck ?? data.description}
+            </p>
+          </div>
+
+          <aside class="lg:col-span-5 xl:col-span-4 fade-up" style="transition-delay: 0.55s;" aria-label="Date, time and place">
+            <div class="relative border border-line bg-ground/85 backdrop-blur-sm">
+              <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-violet-400/80 via-violet-400/20 to-transparent"></div>
+
+              <div class="flex items-end justify-between gap-4 px-6 pb-6 pt-7 sm:px-7">
+                <div class="flex items-end gap-4">
+                  <span class="font-display text-[4.5rem] font-semibold leading-[0.78] text-lav">{day}</span>
+                  <span class="pb-0.5">
+                    <span class="label-caps block text-lav-200">{month} {year}</span>
+                    <span class="label-caps mt-1.5 block text-lav-400">{until ? `to ${until}` : weekday}</span>
+                  </span>
+                </div>
+                <span data-status class="status-chip"></span>
+              </div>
+
+              <dl class="border-t border-line">
+                {timeText && (
+                  <div class="grid grid-cols-[4.5rem_minmax(0,1fr)] gap-4 border-b border-line px-6 py-4 sm:px-7">
+                    <dt class="label-caps pt-1 text-lav-400">Time</dt>
+                    <dd>
+                      <p class="font-body text-[15px] text-lav">
+                        {span ? <time datetime={span.start}>{timeText}</time> : timeText} {zone}
+                      </p>
+                      <p data-local-span class="mt-1 hidden font-body text-[13px] text-lav-300"></p>
+                      {data.provisional && <p class="when-open mt-1 font-body text-xs text-lav-400">Times are provisional</p>}
+                    </dd>
+                  </div>
+                )}
+                <div class="grid grid-cols-[4.5rem_minmax(0,1fr)] gap-4 px-6 py-4 sm:px-7">
+                  <dt class="label-caps pt-1 text-lav-400">Where</dt>
+                  <dd class="font-body text-[15px] text-lav">{data.location}</dd>
+                </div>
+              </dl>
+
+              <div class="border-t border-line px-6 py-6 sm:px-7">
+                <div class="when-open">
+                  <div class="flex flex-wrap items-center gap-3">
+                    {data.registrationUrl && (
+                      <Button href={data.registrationUrl} variant="primary" arrow>Register</Button>
+                    )}
+                    {(googleUrl || icsUrl) && (
+                      <details class="cal-menu relative" data-cal>
+                        <summary class:list={["cal-trigger", data.registrationUrl ? "cal-trigger--quiet" : "cal-trigger--solid"]}>
+                          Add to calendar
+                          <svg class="cal-chevron h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6" />
+                          </svg>
+                        </summary>
+                        <div class="absolute left-0 top-full z-30 mt-2 w-72 border border-line bg-surface p-1.5 shadow-[0_24px_48px_-20px_rgba(0,0,0,0.8)]">
+                          {googleUrl && (
+                            <a href={googleUrl} target="_blank" rel="noopener noreferrer" class="cal-item">
+                              Google Calendar
+                              <svg class="h-3.5 w-3.5 text-lav-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M7 17 17 7M9 7h8v8" />
+                              </svg>
+                            </a>
+                          )}
+                          {icsUrl && (
+                            <a href={icsUrl} download class="cal-item">
+                              Apple Calendar, Outlook
+                              <span class="font-mono text-[10px] text-lav-400">.ics</span>
+                            </a>
+                          )}
+                        </div>
+                      </details>
+                    )}
+                  </div>
+                  {!data.registrationUrl && data.registrationNote && (
+                    <p class="mt-4 font-body text-[13px] leading-relaxed text-lav-300">
+                      {data.registrationNote}
+                      <a href="#register" class="ml-1 text-violet-400 underline decoration-violet-400/40 underline-offset-4 transition-colors hover:text-violet-300">Get notified</a>
+                    </p>
+                  )}
+                </div>
+                <p class="when-past font-display text-lg italic leading-snug text-lav-300">
+                  This {typeLabel.toLowerCase()} took place on {day} {month} {year}.
+                </p>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    {talks.length > 0 && (
+      <section class="relative overflow-hidden border-b border-line bg-ground-deep" aria-labelledby="speakers-heading">
+        <div class="speakers-glow" aria-hidden="true"></div>
+        <div class="container-site relative pb-16 pt-14 lg:pb-24 lg:pt-16">
+          <div class="mb-10 flex flex-wrap items-baseline justify-between gap-x-10 gap-y-3 lg:mb-12">
+            <h2 id="speakers-heading" class="label-caps text-violet-400">Speakers</h2>
+            <p class="font-body text-sm text-lav-300">{talkSummary}.</p>
+          </div>
+
+          <ol class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6 lg:gap-4">
+            {talks.map((t) => (
+              <li>
+                <a href={`#talk-${t.n}`} class="speaker" data-source data-tba={t.sp ? undefined : ""}>
+                  <span class="speaker-no">{String(t.n).padStart(2, "0")}</span>
+                  <span class:list={["speaker-avatar", !t.sp && "speaker-avatar--tba"]} aria-hidden="true">
+                    {t.sp?.photo ? (
+                      <img src={t.sp.photo} alt="" loading="lazy" decoding="async" />
+                    ) : t.sp ? (
+                      <span class="speaker-initials">{initialsOf(t.sp.name)}</span>
+                    ) : (
+                      <span class="speaker-tba-dot"></span>
+                    )}
+                  </span>
+                  <span class="speaker-field">{t.short ?? t.field}</span>
+                  {t.sp ? (
+                    <>
+                      <span class="speaker-name">{t.sp.name}</span>
+                      <span class="speaker-inst">{t.sp.institution}</span>
+                    </>
+                  ) : (
+                    <span class="speaker-name speaker-name--tba">To be announced</span>
+                  )}
+                </a>
+              </li>
+            ))}
+          </ol>
+
+          {discussion && (
+            <>
+              <div class="converge" data-converge aria-hidden="true">
+                <svg data-converge-svg></svg>
+              </div>
+              <a href="#discussion" class="hub">
+                <span class="hub-dot" data-hub-dot aria-hidden="true"></span>
+                <span class="hub-kicker">{discussion.title ?? "Discussion"}</span>
+                <span class="hub-title">{data.subtitle ?? discussion.title}</span>
+                <span class="hub-sub">
+                  {discussion.with ? `With ${discussion.with.toLowerCase()}` : "With all speakers"}{discussion.minutes ? `, ${discussion.minutes} minutes` : ""}
+                </span>
+              </a>
+            </>
+          )}
+        </div>
+      </section>
+    )}
+
+    {((data.about?.length ?? 0) > 0 || questionCount > 0) && (
+      <section id="about" class="section-pad scroll-mt-16 bg-surface">
+        <div class="container-site grid gap-16 lg:grid-cols-12 lg:gap-x-20">
+          {data.about && data.about.length > 0 && (
+            <div class="lg:col-span-7 fade-up">
+              <h2 class="label-caps mb-8 text-violet-400">About</h2>
+              <p class="text-pretty font-display text-[1.6rem] font-medium leading-[1.35] text-lav lg:text-[1.95rem]">{data.about[0]}</p>
+              <div class="mt-8 space-y-5">
+                {data.about.slice(1).map((para) => (
+                  <p class="max-w-2xl text-pretty font-body text-base leading-[1.8] text-lav-200">{para}</p>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {data.questions && questionCount > 0 && (
+            <div class="lg:col-span-5 fade-up" style="transition-delay: 0.12s;">
+              <h2 class="label-caps mb-4 text-violet-400">{questionsHeading}</h2>
+              {data.questionsIntro && (
+                <p class="font-body text-sm leading-relaxed text-lav-300">{data.questionsIntro}</p>
+              )}
+              <ol class="mt-8 border-t border-line">
+                {data.questions.map((q, i) => (
+                  <li class="grid grid-cols-[3.5rem_minmax(0,1fr)] gap-x-4 border-b border-line py-6">
+                    <span aria-hidden="true" class="numeral-outline select-none text-[2.75rem]">{String(i + 1).padStart(2, "0")}</span>
+                    <div>
+                      <h3 class="font-body text-[11px] font-semibold uppercase tracking-label text-lav-200">{q.label}</h3>
+                      <p class="mt-2 text-pretty font-body text-[15px] leading-relaxed text-lav-300">{q.text}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}
+        </div>
+      </section>
+    )}
+
+    {rows.length > 0 && (
+      <section id="programme" class="section-pad scroll-mt-16 bg-ground">
+        <div class="container-site">
+          <div class="mb-12 flex flex-col gap-8 lg:mb-16 lg:flex-row lg:items-end lg:justify-between">
+            <div class="fade-up">
+              <h2 class="label-caps mb-3 text-violet-400">Programme</h2>
+              <p class="font-display text-4xl font-semibold text-lav lg:text-5xl">{weekday} {day} {month}</p>
+              {(data.format || data.provisional) && (
+                <p class="mt-4 max-w-xl font-body text-sm leading-relaxed text-lav-300">
+                  {[data.format, data.provisional && "Times are provisional."].filter(Boolean).join(" ")}
+                </p>
+              )}
+            </div>
+            <div data-zone-switch class="zone-switch">
+              <span id="zone-label" class="label-caps text-lav-400">Show times in</span>
+              <div role="group" aria-labelledby="zone-label" class="inline-flex border border-line bg-ground-deep p-1">
+                <button type="button" data-zone="event" aria-pressed="true" class="zone-btn">{zone}</button>
+                <button type="button" data-zone="local" aria-pressed="false" class="zone-btn">Your time</button>
+              </div>
+            </div>
+          </div>
+
+          {ticks.length > 0 && (
+            <div class="glance" aria-hidden="true">
+              <div class="glance-ticks">
+                {ticks.map((t) => (
+                  <span class:list={["glance-tick", `glance-tick--${t.edge}`]} style={`left: ${t.pct}%;`}>
+                    <time datetime={t.iso} data-t={t.iso}>{wallClock(t.iso, tz)}</time>
+                  </span>
+                ))}
+              </div>
+              <div class="relative">
+                <ol class="glance-bar">
+                  {rows.map((r) => (
+                    <li
+                      class:list={["seg", `seg--${r.kind}`]}
+                      style={`flex-grow: ${r.minutes ?? 1};`}
+                      data-start={r.at?.start}
+                      data-end={r.at?.end}
+                      title={segTitle(r)}
+                    >
+                      {r.kind === "talk" ? (
+                        <a href={`#talk-${r.n}`} class="seg-link" tabindex="-1">{r.n}</a>
+                      ) : r.kind === "discussion" ? (
+                        <a href="#discussion" class="seg-link seg-link--text" tabindex="-1">{r.title ?? "Discussion"}</a>
+                      ) : null}
+                    </li>
+                  ))}
+                </ol>
+                <span class="glance-now" data-glance-now></span>
+              </div>
+            </div>
+          )}
+
+          <ol class="programme">
+            {rows.map((r) => (
+              <li
+                id={r.n ? `talk-${r.n}` : r.kind === "discussion" ? "discussion" : undefined}
+                class:list={["row scroll-mt-24", `row--${r.kind}`]}
+                data-start={r.at?.start}
+                data-end={r.at?.end}
+              >
+                <div class="cell-time">
+                  {r.at && (
+                    <time datetime={r.at.start} data-t={r.at.start} class="block font-mono text-sm leading-5 tabular-nums text-lav-100">
+                      {wallClock(r.at.start, tz)}
+                    </time>
+                  )}
+                  {r.at?.end && r.kind !== "break" && (
+                    <time datetime={r.at.end} data-t={r.at.end} class="block font-mono text-xs leading-5 tabular-nums text-lav-400">
+                      {wallClock(r.at.end, tz)}
+                    </time>
+                  )}
+                </div>
+
+                <div class="rail" aria-hidden="true"><span class="dot"></span></div>
+
+                <div class="cell-body">
+                  {r.kind === "talk" && (
+                    <>
+                      <p class="row-label text-violet-400">
+                        Talk {r.n}
+                        {r.minutes && <span class="text-lav-400 md:hidden">· {r.minutes} min</span>}
+                        <span class="now-badge">Now</span>
+                      </p>
+                      <h3 class="mt-1.5 text-pretty font-display text-[1.6rem] font-semibold leading-[1.2] text-lav md:text-[1.85rem]">
+                        {r.title ?? r.field}
+                      </h3>
+                      {r.title && r.field && <p class="mt-1 font-body text-xs text-lav-400">{r.field}</p>}
+                      {r.text && <p class="mt-3 max-w-2xl text-pretty font-body text-[15px] leading-relaxed text-lav-300">{r.text}</p>}
+                      <div class="mt-4 flex items-center gap-3">
+                        <span class:list={["avatar-sm", !r.sp && "avatar-sm--tba"]} aria-hidden="true">
+                          {r.sp?.photo ? <img src={r.sp.photo} alt="" loading="lazy" decoding="async" /> : r.sp ? initialsOf(r.sp.name) : null}
+                        </span>
+                        <p class="font-body text-sm">
+                          {r.sp ? (
+                            <>
+                              {r.sp.website ? (
+                                <a href={r.sp.website} target="_blank" rel="noopener noreferrer" class="font-semibold text-lav underline decoration-line underline-offset-4 transition-colors hover:text-violet-300 hover:decoration-violet-400/60">{r.sp.name}</a>
+                              ) : (
+                                <span class="font-semibold text-lav">{r.sp.name}</span>
+                              )}
+                              <span class="text-lav-300">, {r.sp.institution}</span>
+                            </>
+                          ) : (
+                            <span class="italic text-lav-400">Speaker to be announced</span>
+                          )}
+                        </p>
+                      </div>
+                      {r.sp?.bio && <p class="mt-3 max-w-2xl text-pretty font-body text-[13px] leading-relaxed text-lav-300">{r.sp.bio}</p>}
+                      {r.sp?.photoCredit && <p class="mt-1 font-body text-[11px] text-lav-500">Photo: {r.sp.photoCredit}</p>}
+                      {r.sp?.reading && (
+                        <p class="mt-3 max-w-2xl font-body text-[13px] leading-relaxed text-lav-400">
+                          <span class="mr-2 text-[10px] font-semibold uppercase tracking-label text-lav-500">Reading</span>
+                          {r.sp.reading.url ? (
+                            <a href={r.sp.reading.url} target="_blank" rel="noopener noreferrer" class="underline decoration-line underline-offset-4 transition-colors hover:text-violet-300 hover:decoration-violet-400/60">{r.sp.reading.citation}</a>
+                          ) : (
+                            r.sp.reading.citation
+                          )}
+                        </p>
+                      )}
+                    </>
+                  )}
+
+                  {r.kind === "discussion" && (
+                    <div class="discussion">
+                      <p class="row-label text-violet-400">
+                        {r.with ? `With ${r.with.toLowerCase()}` : "Discussion"}
+                        {r.minutes && <span class="text-lav-400 md:hidden">· {r.minutes} min</span>}
+                        <span class="now-badge">Now</span>
+                      </p>
+                      <h3 class="mt-1.5 font-display text-[1.85rem] font-semibold leading-tight text-lav md:text-[2.1rem]">{r.title ?? "Discussion"}</h3>
+                      {r.text && <p class="mt-3 max-w-2xl text-pretty font-body text-[15px] leading-relaxed text-lav-300">{r.text}</p>}
+                    </div>
+                  )}
+
+                  {(r.kind === "welcome" || r.kind === "closing") && (
+                    <>
+                      <p class="row-label text-lav-200">
+                        {r.title}
+                        {r.minutes && <span class="text-lav-400 md:hidden">· {r.minutes} min</span>}
+                        <span class="now-badge">Now</span>
+                      </p>
+                      {r.text && <p class="mt-1.5 max-w-2xl text-pretty font-body text-[15px] leading-relaxed text-lav-300">{r.text}</p>}
+                    </>
+                  )}
+
+                  {r.kind === "break" && (
+                    <p class="row-label font-medium normal-case tracking-normal text-lav-400">
+                      {r.title ?? "Break"}
+                      {r.minutes && <span class="md:hidden">· {r.minutes} min</span>}
+                      <span class="now-badge">Now</span>
+                    </p>
+                  )}
+                </div>
+
+                <div class="cell-len">{r.minutes && `${r.minutes} min`}</div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+    )}
+
+    {hasBody && (
+      <section class="section-pad border-t border-line bg-surface">
+        <div class="container-narrow">
+          <div class="prose max-w-none font-body prose-headings:font-display prose-headings:font-semibold prose-headings:text-lav prose-p:leading-relaxed prose-p:text-lav-200 prose-a:text-violet-400 prose-strong:text-lav prose-li:text-lav-200 prose-li:marker:text-violet-400">
+            <Content />
+          </div>
+        </div>
+      </section>
+    )}
+
+    <section id="register" class="when-open section-pad scroll-mt-16 border-t border-line bg-surface">
+      <div class="container-site grid gap-14 lg:grid-cols-12 lg:gap-20">
+        <div class="lg:col-span-7">
+          <h2 class="label-caps mb-3 text-violet-400">Registration</h2>
+          {data.registrationUrl ? (
+            <>
+              <p class="font-display text-3xl font-semibold leading-tight text-lav lg:text-4xl">Registration is open.</p>
+              <div class="mt-8">
+                <Button href={data.registrationUrl} variant="primary" size="lg" arrow>Register</Button>
+              </div>
+            </>
+          ) : (
+            <>
+              <p class="font-display text-3xl font-semibold leading-tight text-lav lg:text-4xl">{data.registrationNote ?? "Registration details will follow."}</p>
+              <p class="mt-4 max-w-lg font-body text-sm leading-relaxed text-lav-300">Leave your email address to hear when they are available.</p>
+              <form action="https://formspree.io/f/mqewwreq" method="POST" class="mt-8 flex max-w-lg flex-col gap-3 sm:flex-row">
+                <label for="notify-email" class="sr-only">Email address</label>
+                <input id="notify-email" type="email" name="email" required autocomplete="email" placeholder="Your email address" class="input-field flex-1" />
+                <input type="hidden" name="_subject" value={`Event updates: ${fullTitle}`} />
+                <input type="hidden" name="event" value={fullTitle} />
+                <button type="submit" class="whitespace-nowrap border border-violet-400 bg-violet-400 px-6 py-3 font-body text-xs font-semibold uppercase tracking-label text-ground transition-colors duration-200 hover:border-violet-300 hover:bg-violet-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-surface">
+                  Notify me
+                </button>
+              </form>
+            </>
+          )}
+        </div>
+
+        <div class="lg:col-span-5">
+          <h2 class="label-caps mb-3 text-violet-400">Questions</h2>
+          <p class="font-body text-[15px] leading-relaxed text-lav-200">
+            Write to the organisers at
+            <a href={`mailto:${siteConfig.email}`} class="text-violet-400 underline decoration-violet-400/40 underline-offset-4 transition-colors hover:text-violet-300">{siteConfig.email}</a>.
+          </p>
+          {(googleUrl || icsUrl) && (
+            <>
+              <h2 class="label-caps mb-3 mt-10 text-violet-400">Add to calendar</h2>
+              <p class="flex flex-wrap gap-x-6 gap-y-2 font-body text-[15px]">
+                {googleUrl && (
+                  <a href={googleUrl} target="_blank" rel="noopener noreferrer" class="text-lav-200 underline decoration-line underline-offset-4 transition-colors hover:text-violet-300 hover:decoration-violet-400/60">Google Calendar</a>
+                )}
+                {icsUrl && (
+                  <a href={icsUrl} download class="text-lav-200 underline decoration-line underline-offset-4 transition-colors hover:text-violet-300 hover:decoration-violet-400/60">Apple Calendar, Outlook (.ics)</a>
+                )}
+              </p>
+            </>
+          )}
+        </div>
+      </div>
+    </section>
+
+    <div class="border-t border-line bg-ground">
+      <div class="container-site py-8">
+        <a href="/events" class="group inline-flex items-center gap-2.5 font-body text-xs font-semibold uppercase tracking-label text-lav-300 transition-colors hover:text-violet-300">
+          <svg class="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 12H6m0 0 5.5 5.5M6 12l5.5-5.5" />
+          </svg>
+          All events
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .speakers-glow {
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 70%;
+    pointer-events: none;
+    background: radial-gradient(ellipse 38% 55% at 50% 100%, rgb(var(--c-violet-400) / 0.11) 0%, transparent 70%);
+  }
+
+  .speaker {
+    position: relative;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid rgb(var(--c-line));
+    background: rgb(var(--c-surface) / 0.55);
+    padding: 1.9rem 0.85rem 1.4rem;
+    text-align: center;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+  }
+  .speaker:hover,
+  .speaker:focus-visible,
+  .speaker.is-hot {
+    border-color: rgb(var(--c-violet-400) / 0.5);
+    background: rgb(var(--c-surface-raised) / 0.8);
+    outline: none;
+  }
+  .speaker-no {
+    position: absolute;
+    left: 0.7rem;
+    top: 0.55rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 10px;
+    color: rgb(var(--c-lav-500));
+  }
+  .speaker-avatar {
+    position: relative;
+    display: flex;
+    height: 6.25rem;
+    width: 6.25rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 9999px;
+    background: radial-gradient(circle at 50% 35%, rgb(var(--c-surface-raised)) 0%, rgb(var(--c-surface)) 70%);
+    box-shadow: 0 0 0 2px rgb(var(--c-line));
+    transition: box-shadow 0.35s ease;
+  }
+  .speaker:hover .speaker-avatar,
+  .speaker:focus-visible .speaker-avatar,
+  .speaker.is-hot .speaker-avatar {
+    box-shadow: 0 0 0 2px rgb(var(--c-violet-400)), 0 0 30px rgb(var(--c-violet-400) / 0.28);
+  }
+  .speaker-avatar img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: top;
+    filter: grayscale(1) contrast(1.04);
+    transition: filter 0.5s ease;
+  }
+  .speaker:hover .speaker-avatar img,
+  .speaker.is-hot .speaker-avatar img {
+    filter: none;
+  }
+  .speaker-avatar--tba {
+    background: transparent;
+    box-shadow: none;
+    border: 1px dashed rgb(var(--c-violet-400) / 0.32);
+  }
+  .speaker:hover .speaker-avatar--tba,
+  .speaker.is-hot .speaker-avatar--tba {
+    box-shadow: none;
+    border-color: rgb(var(--c-violet-400) / 0.6);
+  }
+  .speaker-initials {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 2.1rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: rgb(var(--c-violet-400));
+  }
+  .speaker-tba-dot {
+    height: 6px;
+    width: 6px;
+    border-radius: 9999px;
+    background: rgb(var(--c-violet-400) / 0.45);
+  }
+  .speaker-field {
+    margin-top: 1.3rem;
+    min-height: 2.7em;
+    font-family: "Sora", system-ui, sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgb(var(--c-lav-300));
+  }
+  .speaker-name {
+    margin-top: 0.45rem;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    line-height: 1.15;
+    color: rgb(var(--c-lav));
+    transition: color 0.3s ease;
+  }
+  .speaker:hover .speaker-name,
+  .speaker.is-hot .speaker-name {
+    color: rgb(var(--c-violet-300));
+  }
+  .speaker-name--tba {
+    font-style: italic;
+    font-weight: 500;
+    color: rgb(var(--c-lav-400));
+  }
+  .speaker-inst {
+    margin-top: 0.3rem;
+    font-family: "Sora", system-ui, sans-serif;
+    font-size: 12px;
+    line-height: 1.4;
+    color: rgb(var(--c-lav-300));
+  }
+
+  .converge {
+    display: none;
+  }
+  @media (min-width: 1024px) {
+    .converge {
+      position: relative;
+      display: block;
+      height: 9rem;
+    }
+  }
+  .converge svg {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    overflow: visible;
+  }
+  .converge :global(.wire) {
+    fill: none;
+    stroke: rgb(var(--c-violet-400) / 0.16);
+    stroke-width: 1;
+    transition: stroke 0.3s ease;
+  }
+  .converge :global(.wire--tba) {
+    stroke-dasharray: 3 5;
+  }
+  .converge :global(.wire-flow) {
+    fill: none;
+    stroke: rgb(var(--c-violet-300) / 0.8);
+    stroke-width: 1.3;
+    stroke-linecap: round;
+    stroke-dasharray: 1.5 14.5;
+    animation: wire-flow 2.6s linear infinite;
+    transition: stroke 0.3s ease, opacity 0.3s ease;
+  }
+  .converge :global(.wire-flow--tba) {
+    opacity: 0.35;
+  }
+  .converge :global(.wire-node) {
+    fill: rgb(var(--c-ground-deep));
+    stroke: rgb(var(--c-violet-400));
+    stroke-width: 1.2;
+  }
+  .converge :global(.is-hot.wire) {
+    stroke: rgb(var(--c-violet-400) / 0.6);
+  }
+  .converge :global(.is-hot.wire-flow) {
+    stroke: rgb(var(--c-lav));
+    opacity: 1;
+  }
+  @keyframes wire-flow {
+    to {
+      stroke-dashoffset: -32;
+    }
+  }
+
+  .hub {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2.5rem;
+    text-align: center;
+  }
+  .hub::before {
+    content: "";
+    display: block;
+    height: 2.5rem;
+    width: 1px;
+    margin-bottom: 0.9rem;
+    background: linear-gradient(to bottom, transparent, rgb(var(--c-violet-400) / 0.55));
+  }
+  @media (min-width: 1024px) {
+    .hub {
+      margin-top: 0;
+    }
+    .hub::before {
+      display: none;
+    }
+  }
+  .hub-dot {
+    position: relative;
+    height: 18px;
+    width: 18px;
+    border-radius: 9999px;
+    background: rgb(var(--c-violet-300));
+    box-shadow: 0 0 0 6px rgb(var(--c-violet-400) / 0.12), 0 0 34px rgb(var(--c-violet-400) / 0.6);
+  }
+  .hub-dot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: rgb(var(--c-violet-400));
+    animation: pulse-ring 2.6s ease-out infinite;
+  }
+  .hub-kicker {
+    margin-top: 1.4rem;
+    font-family: "Sora", system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgb(var(--c-violet-300));
+  }
+  .hub-title {
+    margin-top: 0.5rem;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: clamp(1.9rem, 3.2vw, 2.75rem);
+    font-style: italic;
+    line-height: 1.1;
+    color: rgb(var(--c-violet-400));
+    transition: color 0.3s ease;
+  }
+  .hub:hover .hub-title {
+    color: rgb(var(--c-lav));
+  }
+  .hub-sub {
+    margin-top: 0.6rem;
+    font-family: "Sora", system-ui, sans-serif;
+    font-size: 13px;
+    color: rgb(var(--c-lav-300));
+  }
+
+  .avatar-sm {
+    display: inline-flex;
+    height: 2.5rem;
+    width: 2.5rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 9999px;
+    background: rgb(var(--c-surface));
+    box-shadow: 0 0 0 1.5px rgb(var(--c-line));
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: rgb(var(--c-violet-400));
+  }
+  .avatar-sm img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: top;
+    filter: grayscale(1);
+  }
+  .avatar-sm--tba {
+    background: transparent;
+    box-shadow: none;
+    border: 1px dashed rgb(var(--c-violet-400) / 0.32);
+  }
+
+  .glance {
+    display: none;
+    margin-bottom: 4rem;
+  }
+  @media (min-width: 768px) {
+    .glance {
+      display: block;
+    }
+  }
+  .glance-ticks {
+    position: relative;
+    height: 1.9rem;
+  }
+  .glance-tick {
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px;
+    color: rgb(var(--c-lav-400));
+    white-space: nowrap;
+  }
+  .glance-tick::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 1.25rem;
+    height: 0.45rem;
+    width: 1px;
+    background: rgb(var(--c-lav-500));
+  }
+  .glance-tick--start {
+    transform: none;
+  }
+  .glance-tick--start::after {
+    left: 0;
+  }
+  .glance-tick--end {
+    transform: translateX(-100%);
+  }
+  .glance-tick--end::after {
+    left: 100%;
+  }
+  .glance-bar {
+    display: flex;
+    height: 3.5rem;
+    border: 1px solid rgb(var(--c-line));
+  }
+  .seg {
+    position: relative;
+    min-width: 0;
+    flex-basis: 0;
+    border-right: 1px solid rgb(var(--c-line));
+    transition: background-color 0.25s ease, opacity 0.3s ease;
+  }
+  .seg:last-child {
+    border-right: 0;
+  }
+  .seg-link {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: rgb(var(--c-lav-200));
+  }
+  .seg-link--text {
+    font-family: "Sora", system-ui, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgb(var(--c-lav));
+  }
+  .seg--talk {
+    background: rgb(var(--c-violet-400) / 0.08);
+  }
+  .seg--talk:hover {
+    background: rgb(var(--c-violet-400) / 0.18);
+  }
+  .seg--discussion {
+    background: rgb(var(--c-violet-400) / 0.24);
+  }
+  .seg--discussion:hover {
+    background: rgb(var(--c-violet-400) / 0.34);
+  }
+  .seg--break {
+    background: repeating-linear-gradient(135deg, rgb(var(--c-lav) / 0.07) 0 1px, transparent 1px 6px);
+  }
+  .seg--welcome,
+  .seg--closing {
+    background: rgb(var(--c-lav) / 0.025);
+  }
+  .seg[data-now] {
+    background: rgb(var(--c-violet-400) / 0.36);
+    box-shadow: inset 0 0 0 1px rgb(var(--c-violet-300));
+  }
+  .seg[data-done] {
+    opacity: 0.4;
+  }
+  .glance-now {
+    position: absolute;
+    top: -0.45rem;
+    bottom: -0.45rem;
+    display: none;
+    width: 2px;
+    background: rgb(var(--c-lav));
+    box-shadow: 0 0 12px rgb(var(--c-lav) / 0.7);
+  }
+  .glance-now.is-shown {
+    display: block;
+  }
+
+  [data-phase="past"] .when-open,
+  [data-phase="upcoming"] .when-past,
+  [data-phase="live"] .when-past {
+    display: none;
+  }
+
+  .status-chip {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 0.35rem;
+    font-family: "Sora", system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgb(var(--c-violet-300));
+    white-space: nowrap;
+  }
+  .status-chip.is-shown {
+    display: inline-flex;
+  }
+  .status-chip :global(.pulse) {
+    position: relative;
+    display: inline-flex;
+    height: 0.5rem;
+    width: 0.5rem;
+  }
+  .status-chip :global(.pulse)::before,
+  .status-chip :global(.pulse)::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: rgb(var(--c-violet-400));
+  }
+  .status-chip :global(.pulse)::before {
+    animation: pulse-ring 1.6s ease-out infinite;
+  }
+
+  .cal-menu summary {
+    list-style: none;
+  }
+  .cal-menu summary::-webkit-details-marker {
+    display: none;
+  }
+  .cal-trigger {
+    display: inline-flex;
+    cursor: pointer;
+    align-items: center;
+    gap: 0.6rem;
+    border: 1px solid;
+    padding: 0.7rem 1.4rem;
+    font-family: "Sora", system-ui, sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+    user-select: none;
+  }
+  .cal-trigger:focus {
+    outline: none;
+  }
+  .cal-trigger:focus-visible {
+    box-shadow: 0 0 0 2px rgb(var(--c-ground)), 0 0 0 4px rgb(var(--c-violet-400));
+  }
+  .cal-trigger--solid {
+    border-color: rgb(var(--c-violet-400));
+    background: rgb(var(--c-violet-400));
+    color: rgb(var(--c-ground));
+  }
+  .cal-trigger--solid:hover {
+    border-color: rgb(var(--c-violet-300));
+    background: rgb(var(--c-violet-300));
+    transform: translateY(-2px);
+  }
+  .cal-trigger--quiet {
+    border-color: rgb(var(--c-line));
+    color: rgb(var(--c-lav));
+  }
+  .cal-trigger--quiet:hover {
+    border-color: rgb(var(--c-violet-400));
+    background: rgb(var(--c-violet-400) / 0.1);
+  }
+  .cal-chevron {
+    transition: transform 0.3s ease;
+  }
+  .cal-menu[open] .cal-chevron {
+    transform: rotate(180deg);
+  }
+  .cal-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.7rem 0.9rem;
+    font-family: "Sora", system-ui, sans-serif;
+    font-size: 0.875rem;
+    color: rgb(var(--c-lav-200));
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  .cal-item:hover,
+  .cal-item:focus-visible {
+    background: rgb(var(--c-surface-raised));
+    color: rgb(var(--c-lav));
+    outline: none;
+  }
+
+  .zone-switch {
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+  .zone-switch.is-shown {
+    display: flex;
+  }
+  @media (min-width: 1024px) {
+    .zone-switch {
+      align-items: flex-end;
+    }
+  }
+  .zone-btn {
+    padding: 0.45rem 0.9rem;
+    font-family: "Sora", system-ui, sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: rgb(var(--c-lav-300));
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  .zone-btn:hover {
+    color: rgb(var(--c-lav));
+  }
+  .zone-btn[aria-pressed="true"] {
+    background: rgb(var(--c-violet-400));
+    color: rgb(var(--c-ground));
+  }
+  .zone-btn:focus {
+    outline: none;
+  }
+  .zone-btn:focus-visible {
+    box-shadow: 0 0 0 2px rgb(var(--c-violet-400));
+  }
+
+  .row {
+    --pt: 1.75rem;
+    --pb: 2.25rem;
+    display: grid;
+    grid-template-columns: 3.75rem 1.75rem minmax(0, 1fr);
+    transition: opacity 0.4s ease;
+  }
+  @media (min-width: 768px) {
+    .row {
+      grid-template-columns: 6.5rem 3rem minmax(0, 1fr) 5rem;
+    }
+  }
+  .row > * {
+    padding-top: var(--pt);
+    padding-bottom: var(--pb);
+  }
+  .row--break {
+    --pt: 0.9rem;
+    --pb: 0.9rem;
+  }
+  .row--talk + .row--break,
+  .row--welcome + .row--break {
+    --pt: 0rem;
+  }
+  .row--break + .row {
+    --pt: 1.25rem;
+  }
+  .row:first-child {
+    --pt: 0.5rem;
+  }
+  .row:last-child {
+    --pb: 0rem;
+  }
+
+  .rail {
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+  .rail::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    transform: translateX(-50%);
+    background: rgb(var(--c-line));
+  }
+  .row:first-child .rail::before {
+    top: calc(var(--pt) + 10px);
+  }
+  .row:last-child .rail::before {
+    bottom: auto;
+    height: calc(var(--pt) + 10px);
+  }
+
+  .dot {
+    position: relative;
+    z-index: 1;
+    margin-top: 4px;
+    height: 12px;
+    width: 12px;
+    border-radius: 9999px;
+    border: 1.5px solid rgb(var(--c-violet-400));
+    background: rgb(var(--c-ground));
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .row--welcome .dot,
+  .row--closing .dot {
+    margin-top: 5px;
+    height: 10px;
+    width: 10px;
+    border-color: rgb(var(--c-lav-400));
+  }
+  .row--break .dot {
+    margin-top: 7.5px;
+    height: 5px;
+    width: 5px;
+    border: 0;
+    background: rgb(var(--c-lav-500));
+  }
+  .row--discussion .dot {
+    margin-top: 2px;
+    height: 16px;
+    width: 16px;
+    border: 0;
+    background: rgb(var(--c-violet-400));
+    box-shadow: 0 0 0 5px rgb(var(--c-violet-400) / 0.12), 0 0 22px rgb(var(--c-violet-400) / 0.45);
+  }
+
+  .cell-body {
+    min-width: 0;
+    padding-left: 0.5rem;
+  }
+  @media (min-width: 768px) {
+    .cell-body {
+      padding-left: 1rem;
+    }
+  }
+  .cell-len {
+    display: none;
+    text-align: right;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.75rem;
+    line-height: 1.25rem;
+    color: rgb(var(--c-lav-400));
+  }
+  @media (min-width: 768px) {
+    .cell-len {
+      display: block;
+    }
+  }
+
+  .row-label {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0.6rem;
+    font-family: "Sora", system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.25rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .row--break .row-label {
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .discussion {
+    position: relative;
+    margin-top: -1.1rem;
+    border: 1px solid rgb(var(--c-violet-400) / 0.22);
+    padding: 1.1rem 1.25rem 1.5rem;
+    background:
+      radial-gradient(ellipse 70% 120% at 0% 0%, rgb(var(--c-violet-400) / 0.08) 0%, transparent 60%),
+      rgb(var(--c-surface) / 0.6);
+  }
+  @media (min-width: 768px) {
+    .discussion {
+      padding: 1.1rem 1.75rem 1.75rem;
+    }
+  }
+
+  .now-badge {
+    display: none;
+    align-items: center;
+    gap: 0.4rem;
+    border: 1px solid rgb(var(--c-violet-400) / 0.5);
+    padding: 0 0.5rem;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgb(var(--c-violet-300));
+  }
+  .row[data-now] .now-badge {
+    display: inline-flex;
+  }
+  .row[data-now] .dot {
+    background: rgb(var(--c-violet-300));
+    border-color: rgb(var(--c-violet-300));
+    box-shadow: 0 0 0 5px rgb(var(--c-violet-400) / 0.16), 0 0 22px rgb(var(--c-violet-400) / 0.6);
+  }
+  .row[data-done] {
+    opacity: 0.45;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .status-chip :global(.pulse)::before,
+    .hub-dot::after,
+    .converge :global(.wire-flow) {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-event]");
+
+  if (root) {
+    const tz = root.dataset.tz ?? "Europe/Brussels";
+    const ymd = root.dataset.ymd ?? "";
+    const start = new Date(root.dataset.start ?? "");
+    const end = new Date(root.dataset.end ?? "");
+    const local = Intl.DateTimeFormat().resolvedOptions().timeZone || tz;
+
+    const ymdIn = (d: Date, zone: string) =>
+      new Intl.DateTimeFormat("en-CA", { timeZone: zone, year: "numeric", month: "2-digit", day: "2-digit" }).format(d);
+    const hm = (d: Date, zone: string) =>
+      new Intl.DateTimeFormat("en-GB", { timeZone: zone, hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).format(d);
+    const weekdayIn = (d: Date, zone: string) =>
+      new Intl.DateTimeFormat("en-GB", { timeZone: zone, weekday: "short" }).format(d);
+    const offsetIn = (d: Date, zone: string) =>
+      new Intl.DateTimeFormat("en-GB", { timeZone: zone, timeZoneName: "shortOffset" })
+        .formatToParts(d)
+        .find((p) => p.type === "timeZoneName")?.value ?? zone;
+    const shiftIn = (d: Date, zone: string) =>
+      Math.round((Date.parse(ymdIn(d, zone)) - Date.parse(ymd)) / 86400000);
+
+    const place = local.includes("/") ? local.split("/").pop()!.replace(/_/g, " ") : offsetIn(start, local);
+    const differs = offsetIn(start, local) !== offsetIn(start, tz);
+
+    const localSpan = root.querySelector<HTMLElement>("[data-local-span]");
+    if (differs && localSpan && !Number.isNaN(start.getTime())) {
+      const s0 = shiftIn(start, local);
+      const s1 = shiftIn(end, local);
+      const range =
+        s0 === 0 && s1 === 0
+          ? `${hm(start, local)}–${hm(end, local)}`
+          : s0 === s1
+            ? `${weekdayIn(start, local)} ${hm(start, local)}–${hm(end, local)}`
+            : `${weekdayIn(start, local)} ${hm(start, local)} – ${weekdayIn(end, local)} ${hm(end, local)}`;
+      localSpan.textContent = `${range}, ${place} time`;
+      localSpan.classList.remove("hidden");
+    }
+
+    const zoneSwitch = root.querySelector<HTMLElement>("[data-zone-switch]");
+    const zoneButtons = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-zone]"));
+    const stamps = Array.from(root.querySelectorAll<HTMLElement>("[data-t]"));
+
+    const render = (mode: string) => {
+      const zone = mode === "local" ? local : tz;
+      stamps.forEach((el) => {
+        const d = new Date(el.dataset.t ?? "");
+        const shift = shiftIn(d, zone);
+        el.textContent = hm(d, zone);
+        if (shift !== 0) {
+          const sup = document.createElement("sup");
+          sup.className = "ml-0.5 text-[9px] text-lav-400";
+          sup.textContent = shift > 0 ? `+${shift}` : `${shift}`;
+          el.append(sup);
+        }
+      });
+      zoneButtons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.zone === mode)));
+      try {
+        localStorage.setItem("gadi-time-zone", mode);
+      } catch {}
+    };
+
+    if (differs && zoneSwitch) {
+      const localButton = zoneButtons.find((b) => b.dataset.zone === "local");
+      if (localButton) localButton.textContent = place;
+      zoneSwitch.classList.add("is-shown");
+      zoneButtons.forEach((b) => b.addEventListener("click", () => render(b.dataset.zone ?? "event")));
+      let saved = "event";
+      try {
+        saved = localStorage.getItem("gadi-time-zone") ?? "event";
+      } catch {}
+      if (saved === "local") render("local");
+    }
+
+    const status = root.querySelector<HTMLElement>("[data-status]");
+    const rowsEls = Array.from(root.querySelectorAll<HTMLElement>(".row[data-start], .seg[data-start]"));
+    const glanceNow = root.querySelector<HTMLElement>("[data-glance-now]");
+
+    const converge = root.querySelector<HTMLElement>("[data-converge]");
+    const wires = converge?.querySelector("svg") ?? null;
+    const hubDot = root.querySelector<HTMLElement>("[data-hub-dot]");
+    const sources = Array.from(root.querySelectorAll<HTMLElement>("[data-source]"));
+
+    const draw = () => {
+      if (!converge || !wires || !hubDot) return;
+      wires.replaceChildren();
+      if (getComputedStyle(converge).display === "none") return;
+      const box = converge.getBoundingClientRect();
+      const hub = hubDot.getBoundingClientRect();
+      const hx = hub.left + hub.width / 2 - box.left;
+      const hy = hub.top + hub.height / 2 - box.top;
+      const make = (tag: string, attrs: Record<string, string>) => {
+        const el = document.createElementNS(wires.namespaceURI, tag);
+        Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
+        return el;
+      };
+      sources.forEach((src, i) => {
+        const r = src.getBoundingClientRect();
+        const x = r.left + r.width / 2 - box.left;
+        const y = r.bottom - box.top;
+        const k = hy - y;
+        const d = `M ${x.toFixed(1)} ${y.toFixed(1)} C ${x.toFixed(1)} ${(y + k * 0.55).toFixed(1)}, ${hx.toFixed(1)} ${(y + k * 0.35).toFixed(1)}, ${hx.toFixed(1)} ${hy.toFixed(1)}`;
+        const tba = src.hasAttribute("data-tba");
+        wires.append(
+          make("path", { d, class: tba ? "wire wire--tba" : "wire", "data-i": String(i) }),
+          make("path", {
+            d,
+            class: tba ? "wire-flow wire-flow--tba" : "wire-flow",
+            "data-i": String(i),
+            style: `animation-delay: ${(-i * 0.43).toFixed(2)}s`,
+          }),
+          make("circle", { cx: x.toFixed(1), cy: y.toFixed(1), r: "3", class: "wire-node" })
+        );
+      });
+    };
+
+    const setHot = (i: number | null) => {
+      sources.forEach((s, j) => s.classList.toggle("is-hot", j === i));
+      wires?.querySelectorAll("[data-i]").forEach((p) => {
+        p.classList.toggle("is-hot", i !== null && p.getAttribute("data-i") === String(i));
+      });
+    };
+    sources.forEach((s, i) => {
+      s.addEventListener("mouseenter", () => setHot(i));
+      s.addEventListener("mouseleave", () => setHot(null));
+      s.addEventListener("focus", () => setHot(i));
+      s.addEventListener("blur", () => setHot(null));
+    });
+
+    let frame = 0;
+    const schedule = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(draw);
+    };
+    window.addEventListener("resize", schedule);
+    document.fonts?.ready.then(schedule);
+    schedule();
+
+    const tick = () => {
+      const now = new Date();
+      const phase = now >= end ? "past" : now >= start ? "live" : "upcoming";
+      root.dataset.phase = phase;
+
+      if (status) {
+        status.replaceChildren();
+        if (phase === "live") {
+          const pulse = document.createElement("span");
+          pulse.className = "pulse";
+          status.append(pulse, "Live now");
+        } else if (phase === "upcoming") {
+          const days = Math.round((Date.parse(ymd) - Date.parse(ymdIn(now, tz))) / 86400000);
+          status.append(days <= 0 ? "Today" : days === 1 ? "Tomorrow" : `In ${days} days`);
+        }
+        status.classList.toggle("is-shown", phase !== "past");
+      }
+
+      rowsEls.forEach((row) => {
+        const s = new Date(row.dataset.start ?? "");
+        const e = row.dataset.end ? new Date(row.dataset.end) : s;
+        const live = phase === "live";
+        row.toggleAttribute("data-now", live && now >= s && now < e);
+        row.toggleAttribute("data-done", live && now >= e);
+      });
+
+      if (glanceNow) {
+        const live = phase === "live";
+        glanceNow.classList.toggle("is-shown", live);
+        if (live) {
+          const pct = ((now.getTime() - start.getTime()) / (end.getTime() - start.getTime())) * 100;
+          glanceNow.style.left = `${Math.min(100, Math.max(0, pct)).toFixed(2)}%`;
+        }
+      }
+    };
+
+    tick();
+    window.setInterval(tick, 60000);
+  }
+
+  document.addEventListener("click", (e) => {
+    document.querySelectorAll<HTMLDetailsElement>("details[data-cal][open]").forEach((d) => {
+      if (!d.contains(e.target as Node)) d.open = false;
+    });
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    document.querySelectorAll<HTMLDetailsElement>("details[data-cal][open]").forEach((d) => {
+      d.open = false;
+      d.querySelector("summary")?.focus();
+    });
+  });
+</script>

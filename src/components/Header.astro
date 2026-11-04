@@ -4,16 +4,14 @@ import MobileMenu from "./MobileMenu.astro";
 import { siteConfig } from "../data/site-config";
 ---
 
-<header class="sticky top-0 z-50 border-b border-line backdrop-blur-md" style="background-color: rgba(15, 18, 22, 0.82);">
+<header class="band-dark header-glass sticky top-0 z-50 border-b border-line">
   <div class="container-site">
     <div class="flex h-16 items-center justify-between">
 
-      <!-- Logo -->
       <a href="/" class="flex items-center group" aria-label="GADI – Home">
         <img src="/images/gadi-logo.svg" alt="GADI" class="h-10 w-auto object-contain" />
       </a>
 
-      <!-- Desktop nav -->
       <div class="hidden md:flex items-center">
         <Navigation items={siteConfig.nav.filter((l) => !siteConfig.hiddenPages.includes(l.href))} />
         <div class="ml-5 border-l border-line pl-5">
@@ -26,7 +24,6 @@ import { siteConfig } from "../data/site-config";
         </div>
       </div>
 
-      <!-- Mobile menu -->
       <MobileMenu items={siteConfig.nav.filter((l) => !siteConfig.hiddenPages.includes(l.href))} />
     </div>
   </div>

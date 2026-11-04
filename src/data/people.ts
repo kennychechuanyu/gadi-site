@@ -11,7 +11,6 @@ export interface Person {
 }
 
 export const people: Person[] = [
-  // Coordinator
   {
     name: "Jonas Zaman",
     title: "Dr.",
@@ -23,7 +22,6 @@ export const people: Person[] = [
     photo: "/images/people/JZ.jpg",
     bio: "Jonas Zaman is currently an Assistant Professor at the Rehabilitation Research Center of Hasselt University. His research focuses on how (subjective) experiences shape what we learn, how we behave, what we perceive, and how we feel. His work spans multiple topics, including chronic pain, anxiety disorders, and mental well-being in children. He combines controlled experimental paradigms with computational modelling and field studies. His work is fundamentally theory-driven, using formal frameworks to guide the development of experimental tasks and computational models that advance understanding of core cognitive processes, including learning, generalization, and perception. His ultimate goal is to identify transdiagnostic behavioral and cognitive markers and to design experimental tasks and computational tools that support more personalized approaches in healthcare.",
   },
-  // Belgium
   {
     name: "Vera Hoorens",
     title: "Dr.",
@@ -67,7 +65,6 @@ export const people: Person[] = [
     photo: "/images/people/KY.jpg",
     bio: "Kenny Yu is a mathematical psychologist who investigates the conditions under which computational models of cognition live up to their claims, that behavior can be decomposed into distinct processes, that model parameters correspond to the processes they purport to measure, and that fitting data constitutes evidence for theory. He builds probabilistic models of human learning and generalization that formally separate the cognitive mechanisms contributing to observed behavior. Methodologically, he asks when a model parameter genuinely measures the process it names, what data is needed to tell competing theories apart, and how model generalisability relates to explanatory power.",
   },
-  // Netherlands
   {
     name: "Steven Verheyen",
     title: "Dr.",
@@ -79,7 +76,6 @@ export const people: Person[] = [
     photo: "/images/people/SV.jpg",
     bio: "Steven Verheyen studies generalization in the context of categorization and induction. He investigates how similarity relations govern the extension of category membership and semantic properties. He is particularly interested in understanding individual differences in generalization and how these relate to people's category representations, which he models as multidimensional metric spaces. More recently, he has applied this framework to the study of conceptual fear generalization.",
   },
-  // United Kingdom
   {
     name: "Dagmar Divjak",
     title: "Dr.",
@@ -113,7 +109,6 @@ export const people: Person[] = [
     photo: "/images/people/MR.png",
     bio: "Maria Robinson is an assistant professor in the Behavioral Science group in the Psychology Department at the University of Warwick. Her primary research interest is in combining formal modeling and analysis with empirical work to study a range of cognitive processes, including attention, memory, and metacognition. She is also interested in best practices in measurement and theory assessment in psychology, particularly in how to build quantitative models in laboratory settings that can generalize to behavior in the real world.",
   },
-  // United States
   {
     name: "Sam Cooper",
     title: "Dr.",

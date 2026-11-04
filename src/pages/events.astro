@@ -1,0 +1,50 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import Section from "../components/Section.astro";
+import EventCard from "../components/EventCard.astro";
+import { getCollection } from "astro:content";
+import { hasEnded } from "../utils/eventTime";
+
+const allEvents = await getCollection("events");
+const byDate = (a: (typeof allEvents)[number], b: (typeof allEvents)[number]) =>
+  a.data.date.getTime() - b.data.date.getTime();
+
+const upcoming = allEvents.filter((e) => !hasEnded(e.data)).sort(byDate);
+const past = allEvents.filter((e) => hasEnded(e.data)).sort((a, b) => byDate(b, a));
+---
+
+<PageLayout
+  title="Events"
+  description="Conferences, expert meetings, hackathons, and summer schools organized by the Generalization Across Domains Initiative."
+  pageTitle="Events"
+  pageSubtitle="When the network convenes"
+>
+  <Section label="Upcoming" background="white">
+    {upcoming.length > 0 ? (
+      <ul class="border-t border-line fade-up">
+        {upcoming.map((event) => (
+          <li><EventCard event={event} /></li>
+        ))}
+      </ul>
+    ) : (
+      <div class="px-10 py-14 text-center fade-in bg-surface">
+        <p class="label-caps mb-2 text-lav-500">Coming Soon</p>
+        <p class="text-sm font-body text-lav-500 max-w-sm mx-auto">
+          No upcoming events scheduled yet. Check back soon, or
+          <a href="/community" class="text-violet-400 hover:underline">join the mailing list</a>
+          to be notified.
+        </p>
+      </div>
+    )}
+  </Section>
+
+  {past.length > 0 && (
+    <Section label="Past Events" background="cream">
+      <ul class="border-t border-line fade-up">
+        {past.map((event) => (
+          <li><EventCard event={event} /></li>
+        ))}
+      </ul>
+    </Section>
+  )}
+</PageLayout>

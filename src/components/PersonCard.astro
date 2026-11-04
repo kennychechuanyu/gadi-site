@@ -23,15 +23,11 @@ const initials = name
 const dialogId = "bio-" + name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 ---
 
-<!-- One grid cell: card + its modal (kept as a single child so stagger/grid count stays correct) -->
 <div class="person-cell">
-<!-- Card (entire card opens the profile modal) -->
 <button type="button" data-bio-open={dialogId} class="group relative flex w-full cursor-pointer flex-col items-center pt-8 text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-4 focus-visible:ring-offset-ground">
-  <!-- Top accent rule — animates on hover -->
   <div aria-hidden="true" class="absolute inset-x-0 top-0 h-px bg-surface-raised"></div>
   <div aria-hidden="true" class="absolute inset-x-0 top-0 h-[2px] w-0 bg-violet-400 transition-[width] duration-700 ease-out group-hover:w-full"></div>
 
-  <!-- Photo / Initials -->
   {photo ? (
     <img
       src={photo}
@@ -44,14 +40,12 @@ const dialogId = "bio-" + name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
     </div>
   )}
 
-  <!-- Info block -->
   <div class="mt-5 space-y-1">
     <h3 class="font-display text-lg font-semibold leading-snug text-lav">{name}</h3>
     <p class="text-sm font-medium text-violet-400">{institution}</p>
     {department && <p class="text-xs font-body text-lav-400">{department}</p>}
   </div>
 
-  <!-- Hover affordance -->
   <span class="mt-4 inline-flex items-center gap-1.5 font-body text-[10px] font-semibold uppercase tracking-label text-lav-500 transition-colors duration-300 group-hover:text-violet-300">
     {bio ? "View profile" : "Details"}
     <svg class="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
@@ -60,17 +54,14 @@ const dialogId = "bio-" + name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
   </span>
 </button>
 
-<!-- Profile modal -->
 <dialog id={dialogId} class="bio-modal w-[min(92vw,40rem)] border border-line bg-surface p-0 text-left text-lav">
   <div class="relative max-h-[85vh] overflow-y-auto px-7 py-8 sm:px-10 sm:py-10">
-    <!-- Close -->
     <button type="button" data-bio-close aria-label="Close" class="absolute right-4 top-4 flex h-9 w-9 items-center justify-center text-lav-400 transition-colors hover:text-lav focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400">
       <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
       </svg>
     </button>
 
-    <!-- Header: photo + identity -->
     <div class="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
       {photo ? (
         <img src={photo} alt={name} class="h-20 w-20 flex-shrink-0 rounded-full object-cover object-top ring-2 ring-violet-700" />
@@ -90,14 +81,12 @@ const dialogId = "bio-" + name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 
     <div class="my-6 h-px w-full bg-gradient-to-r from-violet-500/60 via-line to-transparent"></div>
 
-    <!-- Bio -->
     {bio ? (
       <p class="bio-text text-pretty font-body text-[15px] leading-[1.8] text-lav-300" set:html={bio} />
     ) : (
       <p class="font-body text-sm italic leading-relaxed text-lav-400">Profile details coming soon.</p>
     )}
 
-    <!-- Email -->
     <a
       href={`mailto:${email}`}
       class="mt-7 inline-flex items-center gap-2 border-t border-line pt-5 text-lav-500 transition-colors hover:text-violet-300"
@@ -114,19 +103,18 @@ const dialogId = "bio-" + name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 
 <style>
   .bio-text :global(a) {
-    color: rgb(167 139 250); /* violet-400 */
+    color: rgb(var(--c-violet-400));
     text-decoration: underline;
     text-underline-offset: 2px;
     transition: color 0.15s;
   }
   .bio-text :global(a:hover) {
-    color: rgb(196 181 253); /* violet-300 */
+    color: rgb(var(--c-violet-300));
   }
 </style>
 
 <script>
   function wireBioModals() {
-    // Delegate open/close once.
     if (!(window as any).__bioModalWired) {
       (window as any).__bioModalWired = true;
       document.addEventListener("click", (e) => {
@@ -142,7 +130,6 @@ const dialogId = "bio-" + name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
         }
       });
     }
-    // Backdrop click closes (guard each dialog once).
     document.querySelectorAll<HTMLDialogElement>("dialog.bio-modal").forEach((d) => {
       if (d.dataset.wired) return;
       d.dataset.wired = "1";

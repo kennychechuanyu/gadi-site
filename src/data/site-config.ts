@@ -10,9 +10,7 @@ export const siteConfig = {
   countryCount: "10+",
   steeringCount: "9",
 
-  // Pages hidden until they have content. To show one again, remove it here
-  // and drop the leading "_" from its file in src/pages (e.g. _resources.astro).
-  hiddenPages: ["/events", "/news", "/resources"],
+  hiddenPages: ["/news", "/resources"],
 
   nav: [
     { label: "Home",      href: "/" },

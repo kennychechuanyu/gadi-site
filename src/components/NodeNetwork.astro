@@ -1,13 +1,4 @@
 ---
-/**
- * NodeNetwork — an animated constellation of nodes and edges.
- * The visual signature of GADI: discrete domains (nodes) drifting and
- * forming connections (edges) — generalization made visible.
- *
- * Renders behind dark hero sections. Self-contained: DPR-aware, pointer
- * reactive, pauses when scrolled out of view, and disables under
- * prefers-reduced-motion (see global.css [data-net]).
- */
 interface Props {
   class?: string;
 }
@@ -36,12 +27,12 @@ const { class: extraClass = "" } = Astro.props;
       const parent = canvas.parentElement as HTMLElement;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-      // Starfield palette — lavender stars on midnight indigo. No warm tones:
-      // the pointer-driven "action" edges glow brighter lavender, not amber.
-      const EDGE = "180, 171, 212";   // soft lavender lines
-      const NODE = "200, 191, 234";   // star lavender
-      const HUB  = "226, 221, 248";   // bright star (glowing)
-      const ACT  = "224, 220, 250";   // brightest starlight — interaction
+      const css = getComputedStyle(canvas);
+      const tone = (name: string, fallback: string) => css.getPropertyValue(name).trim() || fallback;
+      const EDGE = tone("--c-star-edge", "180 171 212");
+      const NODE = tone("--c-star-node", "200 191 234");
+      const HUB = tone("--c-star-hub", "226 221 248");
+      const ACT = tone("--c-star-act", "224 220 250");
 
       let w = 0, h = 0;
       let nodes: { x: number; y: number; vx: number; vy: number; r: number; hub: boolean }[] = [];
@@ -55,7 +46,6 @@ const { class: extraClass = "" } = Astro.props;
         canvas.height = h * dpr;
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-        // Density scales with area, capped for performance.
         const count = Math.min(64, Math.max(26, Math.round((w * h) / 22000)));
         nodes = Array.from({ length: count }, () => {
           const hub = Math.random() < 0.12;
@@ -73,7 +63,6 @@ const { class: extraClass = "" } = Astro.props;
       function draw() {
         ctx.clearRect(0, 0, w, h);
 
-        // Edges
         for (let i = 0; i < nodes.length; i++) {
           const a = nodes[i];
           for (let j = i + 1; j < nodes.length; j++) {
@@ -83,7 +72,7 @@ const { class: extraClass = "" } = Astro.props;
             const d = Math.hypot(dx, dy);
             if (d < LINK_DIST) {
               const o = (1 - d / LINK_DIST) * 0.5;
-              ctx.strokeStyle = `rgba(${EDGE}, ${o})`;
+              ctx.strokeStyle = `rgb(${EDGE} / ${o})`;
               ctx.lineWidth = a.hub || b.hub ? 0.9 : 0.55;
               ctx.beginPath();
               ctx.moveTo(a.x, a.y);
@@ -92,14 +81,13 @@ const { class: extraClass = "" } = Astro.props;
             }
           }
 
-          // Edge toward pointer — connections form around the cursor.
           if (pointer.active) {
             const dx = a.x - pointer.x;
             const dy = a.y - pointer.y;
             const d = Math.hypot(dx, dy);
             if (d < LINK_DIST * 1.5) {
               const o = (1 - d / (LINK_DIST * 1.5)) * 0.6;
-              ctx.strokeStyle = `rgba(${ACT}, ${o})`;
+              ctx.strokeStyle = `rgb(${ACT} / ${o})`;
               ctx.lineWidth = 0.7;
               ctx.beginPath();
               ctx.moveTo(a.x, a.y);
@@ -109,19 +97,18 @@ const { class: extraClass = "" } = Astro.props;
           }
         }
 
-        // Nodes
         for (const n of nodes) {
           const color = n.hub ? HUB : NODE;
           if (n.hub) {
             const g = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r * 4);
-            g.addColorStop(0, `rgba(${color}, 0.5)`);
-            g.addColorStop(1, `rgba(${color}, 0)`);
+            g.addColorStop(0, `rgb(${color} / 0.5)`);
+            g.addColorStop(1, `rgb(${color} / 0)`);
             ctx.fillStyle = g;
             ctx.beginPath();
             ctx.arc(n.x, n.y, n.r * 4, 0, Math.PI * 2);
             ctx.fill();
           }
-          ctx.fillStyle = `rgba(${color}, ${n.hub ? 0.95 : 0.65})`;
+          ctx.fillStyle = `rgb(${color} / ${n.hub ? 0.95 : 0.65})`;
           ctx.beginPath();
           ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
           ctx.fill();
@@ -137,7 +124,6 @@ const { class: extraClass = "" } = Astro.props;
           if (n.y < -20) n.y = h + 20;
           if (n.y > h + 20) n.y = -20;
 
-          // Gentle drift toward pointer for liveliness.
           if (pointer.active) {
             const dx = pointer.x - n.x;
             const dy = pointer.y - n.y;
@@ -157,7 +143,6 @@ const { class: extraClass = "" } = Astro.props;
       function start() { if (!running) { running = true; loop(); } }
       function stop() { running = false; cancelAnimationFrame(raf); }
 
-      // Only animate while the hero is on screen.
       const io = new IntersectionObserver(
         ([e]) => (e.isIntersecting ? start() : stop()),
         { threshold: 0 }

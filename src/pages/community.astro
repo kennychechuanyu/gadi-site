@@ -4,18 +4,16 @@ import Section from "../components/Section.astro";
 import Button from "../components/Button.astro";
 import { siteConfig } from "../data/site-config";
 
-// Replace FORMSPREE_ID with actual Formspree endpoint
 const MEMBERSHIP_FORM = "https://formspree.io/f/mqewwreq";
 const DISCUSSION_FORM  = "https://formspree.io/f/mlgaaqgn";
 ---
 
 <PageLayout
-  title="Community — GADI"
+  title="Community | GADI"
   description="Join the Generalization Across Domains Initiative. Become a member, propose research topics, and connect with researchers across disciplines."
   pageTitle="Community"
   pageSubtitle="Join the network"
 >
-  <!-- Quick signup -->
   <Section background="white">
     <div class="mx-auto max-w-2xl text-center fade-up">
       <p class="label-caps mb-3 text-violet-400">Quick Signup</p>
@@ -41,7 +39,6 @@ const DISCUSSION_FORM  = "https://formspree.io/f/mlgaaqgn";
     </div>
   </Section>
 
-  <!-- Who can join -->
   <Section background="cream">
     <div class="grid gap-16 lg:grid-cols-2 lg:gap-24">
       <div class="fade-up">
@@ -77,7 +74,6 @@ const DISCUSSION_FORM  = "https://formspree.io/f/mlgaaqgn";
         </div>
       </div>
 
-      <!-- Membership form -->
       <div class="fade-up" style="transition-delay: 0.1s;">
         <div class="border border-line bg-surface p-7">
           <h3 class="font-display text-2xl font-semibold text-lav mb-6">
@@ -141,7 +137,6 @@ const DISCUSSION_FORM  = "https://formspree.io/f/mlgaaqgn";
     </div>
   </Section>
 
-  <!-- Discussion topics -->
   <Section label="Scientific Discussions" title="Propose a topic" background="cream">
     <div class="grid gap-12 lg:grid-cols-2 items-start">
       <div class="fade-up">

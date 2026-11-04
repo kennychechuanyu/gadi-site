@@ -7,11 +7,11 @@ import Button from "../components/Button.astro";
 import NodeNetwork from "../components/NodeNetwork.astro";
 import { getCollection } from "astro:content";
 import { siteConfig } from "../data/site-config";
+import { hasEnded } from "../utils/eventTime";
 
 const allEvents = await getCollection("events");
-const now = new Date();
 const upcomingEvents = allEvents
-  .filter((e) => e.data.date >= now)
+  .filter((e) => !hasEnded(e.data))
   .sort((a, b) => a.data.date.getTime() - b.data.date.getTime())
   .slice(0, 3);
 ---
@@ -20,29 +20,25 @@ const upcomingEvents = allEvents
   title="GADI – Generalization Across Domains Initiative"
   description={siteConfig.description}
 >
-  <!-- ─── Hero ─────────────────────────────────────────────────────── -->
   <section
-    class="grain relative isolate flex min-h-[92vh] flex-col justify-center overflow-hidden"
-    style="background: linear-gradient(165deg, #1b1e26 0%, #0f1216 45%, #0a0c0f 100%);"
+    class="band-dark grain relative isolate flex min-h-[92vh] flex-col justify-center overflow-hidden"
+    style="background: linear-gradient(165deg, rgb(var(--c-hero)) 0%, rgb(var(--c-ground)) 45%, rgb(var(--c-ground-deep)) 100%);"
   >
-    <!-- Animated node-network: the visual signature -->
     <NodeNetwork class="reveal-blur is-visible opacity-90" />
 
-    <!-- Depth veils for atmosphere + text legibility -->
     <div
       class="absolute inset-0 z-[2]"
       style="background:
-        radial-gradient(ellipse 60% 55% at 78% 28%, rgba(185,179,212,0.10) 0%, transparent 62%),
-        radial-gradient(ellipse 70% 60% at 8% 92%, rgba(10,12,15,0.85) 0%, transparent 60%),
-        linear-gradient(to right, rgba(15,18,22,0.92) 0%, rgba(15,18,22,0.38) 55%, transparent 100%);"
+        radial-gradient(ellipse 60% 55% at 78% 28%, rgb(var(--c-accent) / 0.10) 0%, transparent 62%),
+        radial-gradient(ellipse 70% 60% at 8% 92%, rgb(var(--c-ground-deep) / 0.85) 0%, transparent 60%),
+        linear-gradient(to right, rgb(var(--c-ground) / 0.92) 0%, rgb(var(--c-ground) / 0.38) 55%, transparent 100%);"
     />
-    <div class="absolute inset-x-0 bottom-0 z-[2] h-1/3" style="background: linear-gradient(to top, var(--ink), transparent);" />
+    <div class="absolute inset-x-0 bottom-0 z-[2] h-1/3" style="background: linear-gradient(to top, rgb(var(--c-ground-deep)), transparent);" />
     <div class="absolute top-0 inset-x-0 z-[3] h-px bg-gradient-to-r from-transparent via-violet-400/70 to-transparent" />
 
     <div class="container-site relative z-10 py-28 lg:py-32">
       <div class="grid items-end gap-y-12 lg:grid-cols-12 lg:gap-12">
 
-        <!-- Headline column -->
         <div class="lg:col-span-8 xl:col-span-9">
           <p class="label-caps mb-8 text-violet-300 fade-up">
             <span class="mr-3 inline-block h-1.5 w-1.5 -translate-y-0.5 rounded-full bg-violet-400 align-middle"></span>
@@ -72,7 +68,6 @@ const upcomingEvents = allEvents
           </div>
         </div>
 
-        <!-- Domain index rail -->
         <aside class="hidden lg:col-span-4 lg:block xl:col-span-3 fade-up" style="transition-delay: 0.6s;">
           <p class="label-caps mb-5 text-lav-500" style="font-size:10px;">Connecting</p>
           <ul class="space-y-px border-l border-violet-800">
@@ -87,7 +82,6 @@ const upcomingEvents = allEvents
       </div>
     </div>
 
-    <!-- Scroll cue -->
     <div class="absolute bottom-7 left-1/2 z-10 hidden -translate-x-1/2 lg:block fade-in" style="transition-delay: 1s;">
       <div class="flex flex-col items-center gap-2">
         <span class="label-caps text-lav-400" style="font-size:9px;">Scroll</span>
@@ -97,13 +91,11 @@ const upcomingEvents = allEvents
   </section>
 
   <script is:inline>
-    // Reveal the hero domain rail on load.
     requestAnimationFrame(() =>
       document.querySelectorAll("[data-rail]").forEach((el) => (el.style.opacity = "1"))
     );
   </script>
 
-  <!-- ─── Upcoming Events (only when events are scheduled) ──────────── -->
   {upcomingEvents.length > 0 && (
   <section class="bg-surface border-b border-line">
     <div class="container-site py-16 lg:py-20">
@@ -121,36 +113,16 @@ const upcomingEvents = allEvents
         </a>
       </div>
 
-      {upcomingEvents.length > 0 ? (
-        <div class="stagger-children grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {upcomingEvents.map((event) => (
-            <EventCard
-              title={event.data.title}
-              date={event.data.date}
-              endDate={event.data.endDate}
-              location={event.data.location}
-              type={event.data.type}
-              href={`/events/${event.id}`}
-              featured={event.data.featured}
-            />
-          ))}
-        </div>
-      ) : (
-        <div class="px-10 py-14 text-center fade-in bg-surface">
-          <p class="label-caps mb-2 text-lav-500">Coming Soon</p>
-          <p class="text-sm font-body text-lav-500 max-w-sm mx-auto">
-            Events will be announced here as they are scheduled. Check back or
-            <a href="/community" class="text-violet-400 hover:underline">join the network</a>
-            to be notified.
-          </p>
-        </div>
-      )}
+      <ul class="border-t border-line fade-up">
+        {upcomingEvents.map((event) => (
+          <li><EventCard event={event} /></li>
+        ))}
+      </ul>
 
     </div>
   </section>
   )}
 
-  <!-- ─── The Problem ───────────────────────────────────────────────── -->
   <Section background="cream">
     <div class="grid gap-16 lg:grid-cols-[1fr,1fr] lg:gap-20 items-start">
       <div class="fade-up">
@@ -205,7 +177,6 @@ const upcomingEvents = allEvents
     </div>
   </Section>
 
-  <!-- ─── Objectives ────────────────────────────────────────────────── -->
   <Section
     label="Scientific Objectives"
     title="Five goals, one vision"
@@ -218,7 +189,7 @@ const upcomingEvents = allEvents
           class="group relative grid grid-cols-[auto,1fr] items-start gap-x-6 gap-y-2 border-b border-line py-9 transition-colors duration-300 hover:bg-surface-raised md:gap-x-12 fade-up"
           style={`transition-delay:${i * 0.06}s`}
         >
-          <div class="numeral-outline select-none text-[3.25rem] transition-all duration-500 group-hover:translate-x-1 group-hover:[-webkit-text-stroke-color:#c4832a] md:text-[6rem]">
+          <div class="numeral-outline select-none text-[3.25rem] transition-all duration-500 group-hover:translate-x-1 group-hover:[-webkit-text-stroke-color:rgb(var(--c-violet-300))] md:text-[6rem]">
             {obj.number}
           </div>
           <div class="md:pt-4">
@@ -237,10 +208,9 @@ const upcomingEvents = allEvents
     </div>
   </Section>
 
-  <!-- ─── Stay Updated ──────────────────────────────────────────────── -->
-  <section class="relative isolate overflow-hidden" style="background-color: var(--ink-indigo);">
+  <section class="relative isolate overflow-hidden" style="background-color: rgb(var(--c-ground-deep));">
     <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-violet-400/50 to-transparent" />
-    <div class="absolute inset-0" style="background: radial-gradient(ellipse 50% 80% at 50% 0%, rgba(185,179,212,0.10) 0%, transparent 70%);" />
+    <div class="absolute inset-0" style="background: radial-gradient(ellipse 50% 80% at 50% 0%, rgb(var(--c-accent) / 0.10) 0%, transparent 70%);" />
     <div class="container-site relative py-16 lg:py-20">
       <div class="mx-auto max-w-2xl text-center fade-up">
         <p class="label-caps mb-3 text-violet-300">Stay Updated</p>
