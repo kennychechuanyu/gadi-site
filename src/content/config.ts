@@ -7,12 +7,6 @@ const speaker = z.object({
   photoCredit: z.string().optional(),
   bio: z.string().optional(),
   website: z.string().url().optional(),
-  reading: z
-    .object({
-      citation: z.string(),
-      url: z.string().url().optional(),
-    })
-    .optional(),
 });
 
 const events = defineCollection({

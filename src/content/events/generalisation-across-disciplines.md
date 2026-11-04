@@ -34,30 +34,18 @@ speakers:
     photoCredit: "Patrick Bal"
     bio: >-
       Charley Wu is Professor of Computational Cognitive Science at TU Darmstadt, where he directs the Human and Machine Cognition Lab. His research asks how people generalize from limited experience to act in new situations. He develops computational models of learning, exploration, and generalization, and tests them against human behavior and machine learning systems. His ERC Starting Grant project, C⁴, studies how compositional compression shapes cognition and culture. Before Darmstadt, he held positions at the University of Tübingen and Harvard University. He originally trained in philosophy before turning to cognitive science and psychology.
-    reading:
-      citation: "Wu, Meder & Schulz (2025). Unifying principles of generalization: Past, present, and future. Annual Review of Psychology."
-      url: "https://doi.org/10.1146/annurev-psych-021524-110810"
   - name: "Timothy Brady"
     institution: "UC San Diego"
     photo: "/images/speakers/brady-timothy.jpg"
     bio: >-
       Timothy Brady is a Professor in the Department of Psychology at the University of California, San Diego. His research lies at the intersection of visual cognition and memory, using behavioral, computational and neuroimaging methods to understand the limits on our ability to encode and maintain information in visual memory. He has received the Vision Sciences Society Young Investigator Award, the Psychonomic Society Early Career Award, an APS “Rising Star” award, and the APA’s New Investigator Award and Distinguished Scientific Award for Early Career Contributions to Psychology. He received his B.A. in Cognitive Science from Yale, his Ph.D. in Brain and Cognitive Sciences from MIT, and did postdoctoral research at Harvard.
-    reading:
-      citation: "Schurgin, Wixted & Brady (2020). Psychophysical scaling reveals a unified theory of visual memory strength. Nature Human Behaviour."
-      url: "https://doi.org/10.1038/s41562-020-00938-0"
   - name: "Susan Gelman"
     institution: "University of Michigan"
-    reading:
-      citation: "Gelman (2003). The Essential Child: Origins of Essentialism in Everyday Thought. Oxford University Press."
-      url: "https://doi.org/10.1093/acprof:oso/9780195154061.001.0001"
   - name: "Peter Gärdenfors"
     institution: "Lund University"
     photo: "/images/speakers/gardenfors-peter.jpg"
     bio: >-
       Peter Gärdenfors is Professor emeritus of Cognitive Science at Lund University. His main research concerns models of concept formation and semantics, cognitive aspects of AI and robotics, and the evolution of human cognition. He is most known for his work on conceptual space which has also found applications in several disciplines. He is a member of the Royal Swedish Academy of Science, member of Academia Europaea, member of Leopoldina Deutsche Akademie für Naturforscher, and member of the Royal Swedish Academy of Engineering Sciences.
-    reading:
-      citation: "Gärdenfors (2000). Conceptual Spaces: The Geometry of Thought. MIT Press."
-      url: "https://doi.org/10.7551/mitpress/2076.001.0001"
 programme:
   - time: "15:00–15:10"
     kind: welcome
