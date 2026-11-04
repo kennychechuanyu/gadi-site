@@ -454,11 +454,12 @@ const jsonLd = {
                       </h3>
                       {r.title && r.field && <p class="mt-1 font-body text-xs text-lav-400">{r.field}</p>}
                       {r.text && <p class="mt-3 max-w-2xl text-pretty font-body text-[15px] leading-relaxed text-lav-300">{r.text}</p>}
-                      <div class="mt-4 flex items-center gap-3">
-                        <span class:list={["avatar-sm", !r.sp && "avatar-sm--tba"]} aria-hidden="true">
+                      <div class:list={["mt-5 flex gap-4", r.sp?.bio ? "items-start" : "items-center"]}>
+                        <span class:list={["avatar-sm", r.sp?.bio && "avatar-sm--lg", !r.sp && "avatar-sm--tba"]} aria-hidden="true">
                           {r.sp?.photo ? <img src={r.sp.photo} alt="" loading="lazy" decoding="async" /> : r.sp ? initialsOf(r.sp.name) : null}
                         </span>
-                        <p class="font-body text-sm">
+                        <div class="min-w-0">
+                        <p class:list={["font-body text-sm", r.sp?.bio && "pt-1"]}>
                           {r.sp ? (
                             <>
                               {r.sp.website ? (
@@ -472,9 +473,10 @@ const jsonLd = {
                             <span class="italic text-lav-400">Speaker to be announced</span>
                           )}
                         </p>
+                        {r.sp?.bio && <p class="mt-2 max-w-2xl text-pretty font-body text-sm leading-relaxed text-lav-300">{r.sp.bio}</p>}
+                        {r.sp?.photoCredit && <p class="mt-2 font-body text-[11px] text-lav-400">Photo: {r.sp.photoCredit}</p>}
+                        </div>
                       </div>
-                      {r.sp?.bio && <p class="mt-3 max-w-2xl text-pretty font-body text-[13px] leading-relaxed text-lav-300">{r.sp.bio}</p>}
-                      {r.sp?.photoCredit && <p class="mt-1 font-body text-[11px] text-lav-500">Photo: {r.sp.photoCredit}</p>}
                       {r.sp?.reading && (
                         <p class="mt-3 max-w-2xl font-body text-[13px] leading-relaxed text-lav-400">
                           <span class="mr-2 text-[10px] font-semibold uppercase tracking-label text-lav-500">Reading</span>
@@ -661,13 +663,6 @@ const jsonLd = {
     height: 100%;
     width: 100%;
     object-fit: cover;
-    object-position: top;
-    filter: grayscale(1) contrast(1.04);
-    transition: filter 0.5s ease;
-  }
-  .speaker:hover .speaker-avatar img,
-  .speaker.is-hot .speaker-avatar img {
-    filter: none;
   }
   .speaker-avatar--tba {
     background: transparent;
@@ -873,8 +868,11 @@ const jsonLd = {
     height: 100%;
     width: 100%;
     object-fit: cover;
-    object-position: top;
-    filter: grayscale(1);
+  }
+  .avatar-sm--lg {
+    height: 3.5rem;
+    width: 3.5rem;
+    font-size: 1.2rem;
   }
   .avatar-sm--tba {
     background: transparent;
