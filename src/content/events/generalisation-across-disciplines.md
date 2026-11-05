@@ -50,23 +50,19 @@ programme:
   - time: "15:00–15:10"
     kind: welcome
     title: "Welcome"
-    text: "Introduction to GADI and the aims of the afternoon"
   - time: "15:10–15:50"
     kind: talk
     field: "Integrative perspective"
     short: "Integrative perspective"
-    text: "An overview of how different fields approach generalisation, and where attempts to bring them together stand"
     speaker: "Charley Wu"
   - time: "15:50–16:30"
     kind: talk
     field: "Associative learning"
     short: "Associative learning"
-    text: "Generalisation in conditioning and discrimination learning, one of the oldest experimental traditions on the topic"
   - time: "16:30–17:10"
     kind: talk
     field: "Perception and memory"
     short: "Perception and memory"
-    text: "How perceptual and memory representations shape what carries over from past experience to new situations"
     speaker: "Timothy Brady"
   - time: "17:10–17:25"
     kind: break
@@ -75,18 +71,15 @@ programme:
     kind: talk
     field: "Social cognition and generalising language"
     short: "Social cognition and language"
-    text: "How people go from limited information about individuals to judgements about categories and groups, and the role of language"
     speaker: "Susan Gelman"
   - time: "18:05–18:45"
     kind: talk
     field: "Artificial intelligence and machine learning"
     short: "AI and machine learning"
-    text: "How AI and machine learning define and test generalisation, and how this compares with human and animal learning"
   - time: "18:45–19:25"
     kind: talk
     field: "Philosophy"
     short: "Philosophy"
-    text: "Philosophical approaches to generalisation and induction, with particular attention to conceptual distinctions that can help connect the perspectives raised across the afternoon"
     speaker: "Peter Gärdenfors"
   - time: "19:25–19:35"
     kind: break
@@ -94,7 +87,6 @@ programme:
   - time: "19:35–20:35"
     kind: discussion
     title: "Discussion"
-    text: "Where fields use different words for similar ideas, where the same word means different things, and how the methods compare"
     with: "All speakers"
   - time: "20:35–20:45"
     kind: closing
