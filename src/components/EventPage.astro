@@ -316,9 +316,6 @@ const jsonLd = {
                 <span class="hub-dot" data-hub-dot aria-hidden="true"></span>
                 <span class="hub-kicker">{discussion.title ?? "Discussion"}</span>
                 <span class="hub-title">{data.subtitle ?? discussion.title}</span>
-                <span class="hub-sub">
-                  {discussion.with ? `With ${discussion.with.toLowerCase()}` : "With all speakers"}{discussion.minutes ? `, ${discussion.minutes} minutes` : ""}
-                </span>
               </a>
             </>
           )}
@@ -830,12 +827,6 @@ const jsonLd = {
   }
   .hub:hover .hub-title {
     color: rgb(var(--c-lav));
-  }
-  .hub-sub {
-    margin-top: 0.6rem;
-    font-family: "Sora", system-ui, sans-serif;
-    font-size: 13px;
-    color: rgb(var(--c-lav-300));
   }
 
   .avatar-sm {
