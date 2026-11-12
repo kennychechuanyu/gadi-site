@@ -41,6 +41,9 @@ speakers:
       Timothy Brady is a Professor in the Department of Psychology at the University of California, San Diego. His research lies at the intersection of visual cognition and memory, using behavioral, computational and neuroimaging methods to understand the limits on our ability to encode and maintain information in visual memory. He has received the Vision Sciences Society Young Investigator Award, the Psychonomic Society Early Career Award, an APS “Rising Star” award, and the APA’s New Investigator Award and Distinguished Scientific Award for Early Career Contributions to Psychology. He received his B.A. in Cognitive Science from Yale, his Ph.D. in Brain and Cognitive Sciences from MIT, and did postdoctoral research at Harvard.
   - name: "Susan Gelman"
     institution: "University of Michigan"
+    photo: "/images/speakers/gelman-susan.jpg"
+    bio: >-
+      Susan Gelman is the Heinz Werner Distinguished University Professor of Psychology and Linguistics at the University of Michigan. She is a developmental psychologist whose research focuses on how children's concepts and language develop. Her research has been funded by the National Science Foundation, the National Institutes of Health, the Templeton Foundation, and the Spencer Foundation, among others. She is an elected fellow of the National Academy of Sciences, the American Academy of Arts and Sciences, the Association for Psychological Science, the American Psychological Association (Division 7), and the Cognitive Science Society.
   - name: "Peter Gärdenfors"
     institution: "Lund University"
     photo: "/images/speakers/gardenfors-peter.jpg"
