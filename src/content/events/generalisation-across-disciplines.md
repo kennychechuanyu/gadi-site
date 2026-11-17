@@ -7,10 +7,11 @@ date: 2026-12-14
 time: "15:00–20:45"
 timezone: "Europe/Brussels"
 provisional: true
-location: "Online"
+location: "Online, Microsoft Teams"
 type: "symposium"
 featured: true
-registrationNote: "Registration details will follow."
+registrationUrl: "https://events.teams.microsoft.com/event/d2c42561-426f-4717-8632-06115992f47e@3973589b-9e40-4eb5-800e-b0b6383d1621"
+registrationNote: "Free and open to all. The symposium runs as a Microsoft Teams webinar, and the joining link is emailed to you as soon as you register. Attendees join without camera or microphone and can put questions to the speakers through the Teams Q&A."
 ogImage: "/images/og/generalisation-across-disciplines.jpg"
 format: "Each talk is 30 minutes plus 10 minutes for questions."
 about:
