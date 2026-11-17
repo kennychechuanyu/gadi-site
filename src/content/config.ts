@@ -26,6 +26,7 @@ const events = defineCollection({
     featured: z.boolean().default(false),
     registrationUrl: z.string().url().optional(),
     registrationNote: z.string().optional(),
+    recordingNote: z.string().optional(),
     ogImage: z.string().optional(),
     format: z.string().optional(),
     about: z.array(z.string()).optional(),

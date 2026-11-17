@@ -7,6 +7,7 @@ interface Props {
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
   arrow?: boolean;
+  external?: boolean;
 }
 
 const {
@@ -17,6 +18,7 @@ const {
   type = "button",
   disabled = false,
   arrow = false,
+  external = false,
 } = Astro.props;
 
 const baseClass =
@@ -41,7 +43,7 @@ const classes = [baseClass, variants[variant], sizes[size], extraClass].join(" "
 ---
 
 {href ? (
-  <a href={href} class={classes}>
+  <a href={href} class={classes} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined}>
     <slot />
     {arrow && (
       <svg class="h-3.5 w-3.5 -mr-0.5 transition-transform duration-300 ease-out group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">

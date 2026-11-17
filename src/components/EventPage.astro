@@ -129,6 +129,18 @@ const jsonLd = {
       }
     : {}),
   ...(data.ogImage ? { image: new URL(data.ogImage, Astro.site).href } : {}),
+  ...(data.registrationUrl
+    ? {
+        isAccessibleForFree: true,
+        offers: {
+          "@type": "Offer",
+          url: data.registrationUrl,
+          price: 0,
+          priceCurrency: "EUR",
+          availability: "https://schema.org/InStock",
+        },
+      }
+    : {}),
   url: pageUrl,
 };
 ---
@@ -224,7 +236,7 @@ const jsonLd = {
                 <div class="when-open">
                   <div class="flex flex-wrap items-center gap-3">
                     {data.registrationUrl && (
-                      <Button href={data.registrationUrl} variant="primary" arrow>Register</Button>
+                      <Button href={data.registrationUrl} variant="primary" arrow external>Register</Button>
                     )}
                     {(googleUrl || icsUrl) && (
                       <details class="cal-menu relative" data-cal>
@@ -534,8 +546,11 @@ const jsonLd = {
           {data.registrationUrl ? (
             <>
               <p class="font-display text-3xl font-semibold leading-tight text-lav lg:text-4xl">Registration is open.</p>
+              {data.registrationNote && (
+                <p class="mt-4 max-w-lg font-body text-[15px] leading-relaxed text-lav-200">{data.registrationNote}</p>
+              )}
               <div class="mt-8">
-                <Button href={data.registrationUrl} variant="primary" size="lg" arrow>Register</Button>
+                <Button href={data.registrationUrl} variant="primary" size="lg" arrow external>Register</Button>
               </div>
             </>
           ) : (
@@ -561,6 +576,12 @@ const jsonLd = {
             Write to the organisers at
             <a href={`mailto:${siteConfig.email}`} class="text-violet-400 underline decoration-violet-400/40 underline-offset-4 transition-colors hover:text-violet-300">{siteConfig.email}</a>.
           </p>
+          {data.recordingNote && (
+            <>
+              <h2 class="label-caps mb-3 mt-10 text-violet-400">Recording</h2>
+              <p class="font-body text-[15px] leading-relaxed text-lav-200">{data.recordingNote}</p>
+            </>
+          )}
           {(googleUrl || icsUrl) && (
             <>
               <h2 class="label-caps mb-3 mt-10 text-violet-400">Add to calendar</h2>
