@@ -3,7 +3,9 @@ import type { CollectionEntry } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import NodeNetwork from "./NodeNetwork.astro";
 import Button from "./Button.astro";
+import FormHandler from "./FormHandler.astro";
 import { siteConfig } from "../data/site-config";
+import { formAction } from "../utils/forms";
 import { toInstants, eventEnd, wallClock, zoneName } from "../utils/eventTime";
 
 interface Props {
@@ -557,7 +559,9 @@ const jsonLd = {
             <>
               <p class="font-display text-3xl font-semibold leading-tight text-lav lg:text-4xl">{data.registrationNote ?? "Registration details will follow."}</p>
               <p class="mt-4 max-w-lg font-body text-sm leading-relaxed text-lav-300">Leave your email address to hear when they are available.</p>
-              <form action="https://formspree.io/f/mqewwreq" method="POST" class="mt-8 flex max-w-lg flex-col gap-3 sm:flex-row">
+              <form action={formAction("mqewwreq")} method="POST" class="mt-8 flex max-w-lg flex-col gap-3 sm:flex-row" data-site-form="notify" data-success="notify-success">
+                <input type="hidden" name="form" value="notify" />
+                <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none" />
                 <label for="notify-email" class="sr-only">Email address</label>
                 <input id="notify-email" type="email" name="email" required autocomplete="email" placeholder="Your email address" class="input-field flex-1" />
                 <input type="hidden" name="_subject" value={`Event updates: ${fullTitle}`} />
@@ -566,6 +570,10 @@ const jsonLd = {
                   Notify me
                 </button>
               </form>
+              <div id="notify-success" class="mt-8 hidden" role="status">
+                <p class="font-body text-[15px] leading-relaxed text-lav-200">Thank you. We will email you as soon as registration opens.</p>
+              </div>
+              <FormHandler />
             </>
           )}
         </div>

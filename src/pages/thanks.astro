@@ -1,0 +1,25 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import Section from "../components/Section.astro";
+import Button from "../components/Button.astro";
+---
+
+<PageLayout
+  title="Thank you"
+  description="Your form has been received."
+  pageTitle="Thank you"
+  pageSubtitle="We have your message"
+  noindex
+>
+  <Section background="white">
+    <div class="max-w-xl">
+      <p class="font-body text-base leading-relaxed text-lav-200">
+        Thank you. Your form has been sent to the GADI coordination team, and we will be in touch by email.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-4">
+        <Button href="/" variant="primary" arrow>Home page</Button>
+        <Button href="/events" variant="secondary">Events</Button>
+      </div>
+    </div>
+  </Section>
+</PageLayout>

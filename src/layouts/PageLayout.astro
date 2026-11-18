@@ -8,12 +8,13 @@ interface Props {
   pageTitle: string;
   pageSubtitle?: string;
   image?: string;
+  noindex?: boolean;
 }
 
-const { title, description, pageTitle, pageSubtitle, image } = Astro.props;
+const { title, description, pageTitle, pageSubtitle, image, noindex } = Astro.props;
 ---
 
-<BaseLayout title={title} description={description} image={image}>
+<BaseLayout title={title} description={description} image={image} noindex={noindex}>
   <section
     class="band-dark relative isolate overflow-hidden"
     style="background: linear-gradient(150deg, rgb(var(--c-hero)) 0%, rgb(var(--c-ground)) 55%, rgb(var(--c-ground-deep)) 100%);"

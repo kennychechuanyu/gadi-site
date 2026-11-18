@@ -5,6 +5,7 @@ interface Props {
   image?: string;
   imageAlt?: string;
   type?: string;
+  noindex?: boolean;
 }
 
 const {
@@ -13,6 +14,7 @@ const {
   image = "/images/og/gadi.jpg",
   imageAlt = "GADI, Generalization Across Domains Initiative",
   type = "website",
+  noindex = false,
 } = Astro.props;
 
 const siteUrl = "https://gadi-psych.vercel.app";
@@ -23,6 +25,7 @@ const imageUrl = new URL(image, siteUrl).toString();
 
 <title>{fullTitle}</title>
 <meta name="description" content={description} />
+{noindex && <meta name="robots" content="noindex" />}
 <link rel="canonical" href={pageUrl} />
 
 <meta property="og:type" content={type} />

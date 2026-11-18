@@ -2,10 +2,14 @@
 import PageLayout from "../layouts/PageLayout.astro";
 import Section from "../components/Section.astro";
 import Button from "../components/Button.astro";
+import FormHandler from "../components/FormHandler.astro";
 import { siteConfig } from "../data/site-config";
+import { formAction } from "../utils/forms";
 
-const MEMBERSHIP_FORM = "https://formspree.io/f/mqewwreq";
-const DISCUSSION_FORM  = "https://formspree.io/f/mlgaaqgn";
+const UPDATES_FORM = formAction("mqewwreq");
+const MEMBERSHIP_FORM = formAction("mqewwreq");
+const DISCUSSION_FORM = formAction("mlgaaqgn");
+const positions = ["PhD Student", "Postdoctoral Researcher", "Assistant Professor", "Associate Professor", "Full Professor", "Other"];
 ---
 
 <PageLayout
@@ -23,19 +27,27 @@ const DISCUSSION_FORM  = "https://formspree.io/f/mlgaaqgn";
       <p class="mt-3 text-sm font-body text-lav-300 leading-relaxed">
         Enter your email to stay informed about events and opportunities. No full application needed.
       </p>
-      <form action="https://formspree.io/f/mqewwreq" method="POST" class="mt-6 flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+      <form action={UPDATES_FORM} method="POST" class="mt-6 flex flex-col sm:flex-row gap-3 max-w-lg mx-auto" data-site-form="updates" data-success="updates-success">
+        <input type="hidden" name="form" value="updates" />
+        <input type="hidden" name="_subject" value="GADI Updates Signup" />
+        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none" />
         <input
           type="email"
           name="email"
           required
+          autocomplete="email"
+          aria-label="Email address"
           placeholder="Your email address"
           class="input-field flex-1 text-center sm:text-left"
         />
-        <input type="hidden" name="_subject" value="GADI Updates Signup" />
         <button type="submit" class="px-6 py-3 border border-violet-500 bg-violet-500 text-xs font-body font-semibold uppercase tracking-label text-ground hover:bg-violet-400 hover:border-violet-400 transition-colors whitespace-nowrap">
           Subscribe
         </button>
       </form>
+      <div id="updates-success" class="hidden mt-6" role="status">
+        <p class="font-display text-2xl font-semibold text-lav">Thank you, you are on the list.</p>
+        <p class="mt-2 text-sm font-body text-lav-300">We will email you about GADI's events and opportunities.</p>
+      </div>
     </div>
   </Section>
 
@@ -79,7 +91,10 @@ const DISCUSSION_FORM  = "https://formspree.io/f/mlgaaqgn";
           <h3 class="font-display text-2xl font-semibold text-lav mb-6">
             Membership form
           </h3>
-          <form action={MEMBERSHIP_FORM} method="POST" class="space-y-4">
+          <form action={MEMBERSHIP_FORM} method="POST" class="space-y-4" data-site-form="join" data-success="join-success">
+            <input type="hidden" name="form" value="join" />
+            <input type="hidden" name="_subject" value="New GADI Membership Request" />
+            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none" />
             <div class="grid gap-4 sm:grid-cols-2">
               <div>
                 <label class="label-caps mb-1.5 block text-lav-400" for="first-name">First Name</label>
@@ -102,17 +117,12 @@ const DISCUSSION_FORM  = "https://formspree.io/f/mlgaaqgn";
               <label class="label-caps mb-1.5 block text-lav-400" for="position">Position</label>
               <select id="position" name="position" required class="input-field">
                 <option value="" disabled selected>Select position</option>
-                <option value="phd">PhD Student</option>
-                <option value="postdoc">Postdoctoral Researcher</option>
-                <option value="assistant-professor">Assistant Professor</option>
-                <option value="associate-professor">Associate Professor</option>
-                <option value="full-professor">Full Professor</option>
-                <option value="other">Other</option>
+                {positions.map((p) => <option value={p}>{p}</option>)}
               </select>
             </div>
             <div>
               <label class="label-caps mb-1.5 block text-lav-400" for="field">Primary Research Field</label>
-              <input id="field" name="field" type="text" class="input-field" placeholder="e.g. Cognitive psychology, Machine learning" />
+              <input id="field" name="research_field" type="text" class="input-field" placeholder="e.g. Cognitive psychology, Machine learning" />
             </div>
             <div>
               <label class="label-caps mb-1.5 block text-lav-400" for="interest">Why are you interested in GADI?</label>
@@ -132,6 +142,12 @@ const DISCUSSION_FORM  = "https://formspree.io/f/mlgaaqgn";
               Submit Application
             </button>
           </form>
+          <div id="join-success" class="hidden" role="status">
+            <p class="font-display text-2xl font-semibold text-lav">Thank you for joining.</p>
+            <p class="mt-3 text-sm font-body leading-relaxed text-lav-300">
+              Your membership request has been sent to the GADI coordination team. We will be in touch by email.
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -154,7 +170,10 @@ const DISCUSSION_FORM  = "https://formspree.io/f/mlgaaqgn";
 
       <div class="fade-up" style="transition-delay: 0.1s;">
         <div class="border border-line bg-surface p-6">
-          <form action={DISCUSSION_FORM} method="POST" class="space-y-4">
+          <form action={DISCUSSION_FORM} method="POST" class="space-y-4" data-site-form="topic" data-success="topic-success">
+            <input type="hidden" name="form" value="topic" />
+            <input type="hidden" name="_subject" value="New GADI Discussion Topic" />
+            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none" />
             <div>
               <label class="label-caps mb-1.5 block text-lav-400" for="topic-title">Topic Title</label>
               <input id="topic-title" name="topic_title" type="text" required class="input-field" placeholder="Brief, descriptive title" />
@@ -171,8 +190,16 @@ const DISCUSSION_FORM  = "https://formspree.io/f/mlgaaqgn";
               Propose Topic
             </button>
           </form>
+          <div id="topic-success" class="hidden" role="status">
+            <p class="font-display text-2xl font-semibold text-lav">Thank you for the topic.</p>
+            <p class="mt-3 text-sm font-body leading-relaxed text-lav-300">
+              It has been sent to the GADI coordination team. We will be in touch by email.
+            </p>
+          </div>
         </div>
       </div>
     </div>
   </Section>
 </PageLayout>
+
+<FormHandler />

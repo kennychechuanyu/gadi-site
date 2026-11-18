@@ -5,8 +5,10 @@ import Card from "../components/Card.astro";
 import EventCard from "../components/EventCard.astro";
 import Button from "../components/Button.astro";
 import NodeNetwork from "../components/NodeNetwork.astro";
+import FormHandler from "../components/FormHandler.astro";
 import { getCollection } from "astro:content";
 import { siteConfig } from "../data/site-config";
+import { formAction } from "../utils/forms";
 import { hasEnded } from "../utils/eventTime";
 
 const allEvents = await getCollection("events");
@@ -220,21 +222,30 @@ const upcomingEvents = allEvents
         <p class="mt-4 text-sm font-body text-lav-300 leading-relaxed">
           Get notified about events, publications, and opportunities.
         </p>
-        <form action="https://formspree.io/f/mqewwreq" method="POST" class="mt-8 flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+        <form action={formAction("mqewwreq")} method="POST" class="mt-8 flex flex-col sm:flex-row gap-3 max-w-lg mx-auto" data-site-form="updates" data-success="home-updates-success">
+          <input type="hidden" name="form" value="updates" />
+          <input type="hidden" name="_subject" value="GADI Updates Signup" />
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none" />
           <input
             type="email"
             name="email"
             required
+            autocomplete="email"
+            aria-label="Email address"
             placeholder="Your email address"
             class="flex-1 px-4 py-3 text-sm font-body bg-surface border border-violet-800 text-lav placeholder:text-lav-400 focus:border-violet-500 focus:outline-none focus:ring-1 focus:ring-violet-500 transition-colors"
           />
-          <input type="hidden" name="_subject" value="GADI Updates Signup" />
           <button type="submit" class="px-6 py-3 border border-violet-500 bg-violet-500 text-xs font-body font-semibold uppercase tracking-label text-ground hover:bg-violet-400 hover:border-violet-400 transition-colors whitespace-nowrap">
             Subscribe
           </button>
         </form>
+        <div id="home-updates-success" class="hidden mt-8" role="status">
+          <p class="font-display text-2xl font-semibold text-lav">Thank you, you are on the list.</p>
+          <p class="mt-2 text-sm font-body text-lav-300">We will email you about GADI's events and opportunities.</p>
+        </div>
       </div>
     </div>
   </section>
 
+  <FormHandler />
 </BaseLayout>
