@@ -19,7 +19,7 @@ export const people: Person[] = [
     country: "Belgium",
     email: "Jonas.zaman@hasselt.be",
     role: "coordinator",
-    photo: "/images/people/JZ.jpg",
+    photo: "/images/people/zaman-jonas.jpg",
     bio: "Jonas Zaman is currently an Assistant Professor at the Rehabilitation Research Center of Hasselt University. His research focuses on how (subjective) experiences shape what we learn, how we behave, what we perceive, and how we feel. His work spans multiple topics, including chronic pain, anxiety disorders, and mental well-being in children. He combines controlled experimental paradigms with computational modelling and field studies. His work is fundamentally theory-driven, using formal frameworks to guide the development of experimental tasks and computational models that advance understanding of core cognitive processes, including learning, generalization, and perception. His ultimate goal is to identify transdiagnostic behavioral and cognitive markers and to design experimental tasks and computational tools that support more personalized approaches in healthcare.",
   },
   {
@@ -30,7 +30,7 @@ export const people: Person[] = [
     country: "Belgium",
     email: "vera.hoorens@kuleuven.be",
     role: "steering",
-    photo: "/images/people/VH.jpg",
+    photo: "/images/people/hoorens-vera.jpg",
   },
   {
     name: "Eline Van Geert",
@@ -40,7 +40,7 @@ export const people: Person[] = [
     country: "Belgium",
     email: "eline.vangeert@kuleuven.be",
     role: "steering",
-    photo: "/images/people/EVG.jpg",
+    photo: "/images/people/van-geert-eline.jpg",
     bio: "Eline Van Geert is a postdoctoral researcher in the Brain and Cognition Research Unit at KU Leuven. Her theoretical, experimental, and computational research examines individual and contextual differences in visual perception, and how these perceptual differences affect post-perceptual cognitive processes such as categorization, discrimination, and aesthetic appreciation. Perceptual learning and generalization (the focus of GADI) are central processes in understanding the impact of spatial and temporal context as well as individual differences on perception, cognition, and behavior.",
   },
   {
@@ -51,7 +51,7 @@ export const people: Person[] = [
     country: "Belgium",
     email: "wolf.vanpaemel@kuleuven.be",
     role: "steering",
-    photo: "/images/people/WV.jpg",
+    photo: "/images/people/vanpaemel-wolf.jpg",
     bio: "Wolf Vanpaemel is head of the Research Group of Quantitative Psychology and Individual Differences at KU Leuven. His research is situated within mathematical psychology and centers on methodological and metascientific issues, including Bayesian statistics, and the concept of the data prior as a tool for severe theory testing. He recently authored a resource for scrutinizing and replicating studies: Evaluating and replicating studies: A practical guide (available at earsguide.io).",
   },
   {
@@ -62,7 +62,7 @@ export const people: Person[] = [
     country: "Belgium",
     email: "kenny.yu@kuleuven.be",
     role: "steering",
-    photo: "/images/people/KY.jpg",
+    photo: "/images/people/yu-kenny.jpg",
     bio: "Kenny Yu is a mathematical psychologist who investigates the conditions under which computational models of cognition live up to their claims, that behavior can be decomposed into distinct processes, that model parameters correspond to the processes they purport to measure, and that fitting data constitutes evidence for theory. He builds probabilistic models of human learning and generalization that formally separate the cognitive mechanisms contributing to observed behavior. Methodologically, he asks when a model parameter genuinely measures the process it names, what data is needed to tell competing theories apart, and how model generalisability relates to explanatory power.",
   },
   {
@@ -73,7 +73,7 @@ export const people: Person[] = [
     country: "Netherlands",
     email: "verheyen@essb.eur.nl",
     role: "steering",
-    photo: "/images/people/SV.jpg",
+    photo: "/images/people/verheyen-steven.jpg",
     bio: "Steven Verheyen studies generalization in the context of categorization and induction. He investigates how similarity relations govern the extension of category membership and semantic properties. He is particularly interested in understanding individual differences in generalization and how these relate to people's category representations, which he models as multidimensional metric spaces. More recently, he has applied this framework to the study of conceptual fear generalization.",
   },
   {
@@ -84,7 +84,7 @@ export const people: Person[] = [
     country: "United Kingdom",
     email: "d.divjak@bham.ac.uk",
     role: "steering",
-    photo: "/images/people/DD.png",
+    photo: "/images/people/divjak-dagmar.png",
     bio: "Dagmar Divjak is an interdisciplinary linguist working at the interface of linguistics, cognitive science, and AI. Her research investigates how linguistic knowledge emerges from usage, combining corpus, experimental and computational approaches to study abstraction in language learning across individuals and languages.",
   },
   {
@@ -95,7 +95,7 @@ export const people: Person[] = [
     country: "United Kingdom",
     email: "p.milin@bham.ac.uk",
     role: "steering",
-    photo: "/images/people/PM.jpg",
+    photo: "/images/people/milin-petar.jpg",
     bio: "Petar Milin is Professor of Psychology of Language and Language Learning at the University of Birmingham. His research explores how learning gives rise to language knowledge and behaviour, integrating experimental methods, computational modelling, and statistical analysis. His work views language as a dynamic cognitive system, with research spanning lexical processing, natural communication, and language learning. His scientific interests also extend to probabilistic approaches to text analysis, stylometry, vocabulary structure, and language-centred AI.",
   },
   {
@@ -106,7 +106,7 @@ export const people: Person[] = [
     country: "United Kingdom",
     email: "maria.robinson@warwick.ac.uk",
     role: "steering",
-    photo: "/images/people/MR.png",
+    photo: "/images/people/robinson-maria.png",
     bio: "Maria Robinson is an assistant professor in the Behavioral Science group in the Psychology Department at the University of Warwick. Her primary research interest is in combining formal modeling and analysis with empirical work to study a range of cognitive processes, including attention, memory, and metacognition. She is also interested in best practices in measurement and theory assessment in psychology, particularly in how to build quantitative models in laboratory settings that can generalize to behavior in the real world.",
   },
   {
@@ -117,7 +117,7 @@ export const people: Person[] = [
     country: "United States",
     email: "samuel.cooper@austin.utexas.edu",
     role: "steering",
-    photo: "/images/people/SC.jpg",
+    photo: "/images/people/cooper-sam.jpg",
     bio: "Samuel E. Cooper is an Assistant Professor of Psychiatry and Behavioral Sciences at the University of Texas at Austin, where he directs the SCOOP Lab. His research focuses on the neurobehavioral mechanisms of fear generalization and their relation to anxiety-related psychopathology, such as PTSD and OCD. He integrates threat conditioning paradigms with multivariate fMRI, psychophysiology, and EMA, and is currently focusing on abstract forms of generalization through higher-order associative learning in adults and adolescents. Cutting across these lines of research, his lab employs dimensional psychopathology frameworks to characterize individual differences in fear learning and extinction, and relates them to real-world symptoms and outcomes.",
   },
   {
@@ -128,7 +128,7 @@ export const people: Person[] = [
     country: "United States",
     email: "is3060@nyu.edu",
     role: "steering",
-    photo: "/images/people/IS.jpg",
+    photo: "/images/people/sucholutsky-ilia.jpg",
     bio: 'Ilia Sucholutsky is an assistant professor of Computer Science at Purdue University, where he leads the <a href="https://ilia10000.github.io" target="_blank" rel="noopener noreferrer">AI Thought Partner Lab</a>. He uses tools like <a href="https://arxiv.org/abs/2310.13018" target="_blank" rel="noopener noreferrer">representational alignment</a> to study the parallels between human and artificial intelligence and probe <a href="https://proceedings.neurips.cc/paper_files/paper/2023/hash/e8ddc03b001d4c4b44b29bc1167e7fdd-Abstract-Conference.html" target="_blank" rel="noopener noreferrer">the limits of learning and teaching with small data</a> to develop AI thought partners that <a href="https://www.nature.com/articles/s41562-024-01991-9" target="_blank" rel="noopener noreferrer">learn and think with people rather than instead of people</a>. He was previously a Faculty Fellow and assistant professor at the NYU Center for Data Science, a Computer Science postdoc at Princeton University, and a visiting scholar in Brain and Cognitive Sciences at MIT. Ilia earned his PhD and BMath degrees in the Statistics department at the University of Waterloo.',
   },
 ];
