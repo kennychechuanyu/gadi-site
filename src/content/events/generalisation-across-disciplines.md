@@ -29,6 +29,11 @@ questions:
   - label: "Open questions"
     text: "What are the main challenges or open questions? Where do you see important unresolved issues, or potential connections with other fields?"
 speakers:
+  - name: "Jessica Lee"
+    institution: "University of Sydney"
+    photo: "/images/speakers/lee-jessica.jpg"
+    bio: >-
+      Jessica Lee is a Senior Lecturer in the School of Psychology at the University of Sydney. Her research examines how “high-level” cognitive processes, such as reasoning and rule use, interact with “low-level” associative learning. It aims to uncover general learning principles that translate from animals to humans and from the laboratory to the real world. Her current work focuses on individual differences in the processes underlying fear generalisation, with the goal of explaining why some people overgeneralise fear. Her research has been recognised with an ARC Discovery Early Career Researcher Award and an APS Rising Star Award. She is a Fellow of the Psychonomic Society and a former Co-Convenor of the Australian Learning Group.
   - name: "Charley Wu"
     institution: "TU Darmstadt"
     photo: "/images/speakers/wu-charley.jpg"
@@ -56,30 +61,31 @@ programme:
     title: "Welcome"
   - time: "15:10–15:50"
     kind: talk
+    field: "Associative learning"
+    short: "Associative learning"
+    speaker: "Jessica Lee"
+  - time: "15:50–16:30"
+    kind: talk
+    field: "Artificial intelligence and machine learning"
+    short: "AI and machine learning"
+  - time: "16:30–17:10"
+    kind: talk
     field: "Integrative perspective"
     short: "Integrative perspective"
     speaker: "Charley Wu"
-  - time: "15:50–16:30"
-    kind: talk
-    field: "Associative learning"
-    short: "Associative learning"
-  - time: "16:30–17:10"
-    kind: talk
-    field: "Perception and memory"
-    short: "Perception and memory"
-    speaker: "Timothy Brady"
   - time: "17:10–17:25"
     kind: break
     title: "Break"
   - time: "17:25–18:05"
     kind: talk
+    field: "Perception and memory"
+    short: "Perception and memory"
+    speaker: "Timothy Brady"
+  - time: "18:05–18:45"
+    kind: talk
     field: "Social cognition and generalising language"
     short: "Social cognition and language"
     speaker: "Susan Gelman"
-  - time: "18:05–18:45"
-    kind: talk
-    field: "Artificial intelligence and machine learning"
-    short: "AI and machine learning"
   - time: "18:45–19:25"
     kind: talk
     field: "Philosophy"
