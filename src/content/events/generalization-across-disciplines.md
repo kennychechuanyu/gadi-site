@@ -1,8 +1,8 @@
 ---
-title: "Generalisation Across Disciplines"
+title: "Generalization Across Disciplines"
 subtitle: "Towards a Common Language"
-description: "An online GADI symposium on 14 December 2026 that brings together researchers from different fields to compare how they define, explain and study generalisation, and to work towards a common language for it."
-deck: "Different fields study generalisation, but often use different definitions, theories, and methods. This GADI symposium brings researchers together through talks and a structured discussion to compare these approaches, clarify how their concepts relate, and work towards a common language for generalisation research."
+description: "An online GADI symposium on 14 December 2026 that brings together researchers from different fields to compare how they define, explain and study generalization, and to work towards a common language for it."
+deck: "Different fields study generalization, but often use different definitions, theories, and methods. This GADI symposium brings researchers together through talks and a structured discussion to compare these approaches, clarify how their concepts relate, and work towards a common language for generalization research."
 date: 2026-12-14
 time: "15:00–20:45"
 timezone: "Europe/Brussels"
@@ -12,20 +12,20 @@ type: "symposium"
 featured: true
 registrationUrl: "https://events.teams.microsoft.com/event/d2c42561-426f-4717-8632-06115992f47e@3973589b-9e40-4eb5-800e-b0b6383d1621"
 registrationNote: "Free and open to all. The symposium runs as a Microsoft Teams webinar, and the joining link is emailed to you as soon as you register. Attendees join without camera or microphone and can put questions to the speakers through the Teams Q&A."
-ogImage: "/images/og/generalisation-across-disciplines.jpg"
+ogImage: "/images/og/generalization-across-disciplines.jpg"
 format: "Each talk is 30 minutes plus 10 minutes for questions."
 about:
-  - "Broadly, generalisation involves applying what has been learned in one situation to something new. It is fundamental to learning and adaptive behaviour, and is studied across many areas of research, from perception and associative learning to memory, social cognition, language, and artificial intelligence."
-  - "Yet these fields often approach generalisation using different definitions, concepts, experimental paradigms, and theoretical frameworks. This can make it difficult to see when we are studying closely related phenomena, where our approaches genuinely differ, and what we might learn from one another."
-  - "The symposium brings these research traditions into conversation. Each talk introduces how generalisation is understood and studied in one area. A structured discussion with the speakers and GADI members then looks at how the perspectives relate: where different fields may use different terms for similar ideas, where the same terms may mean different things, and how different experimental approaches capture different aspects of generalisation. GADI will use the discussion as a starting point for a consensus paper on generalisation across domains."
+  - "Broadly, generalization involves applying what has been learned in one situation to something new. It is fundamental to learning and adaptive behavior, and is studied across many areas of research, from perception and associative learning to memory, social cognition, language, and artificial intelligence."
+  - "Yet these fields often approach generalization using different definitions, concepts, experimental paradigms, and theoretical frameworks. This can make it difficult to see when we are studying closely related phenomena, where our approaches genuinely differ, and what we might learn from one another."
+  - "The symposium brings these research traditions into conversation. Each talk introduces how generalization is understood and studied in one area. A structured discussion with the speakers and GADI members then looks at how the perspectives relate: where different fields may use different terms for similar ideas, where the same terms may mean different things, and how different experimental approaches capture different aspects of generalization. GADI will use the discussion as a starting point for a consensus paper on generalization across domains."
 questionsIntro: "To give the talks a common starting point, each speaker is invited to consider four broad questions."
 questions:
   - label: "Definition"
-    text: "What does generalisation mean in your field? How is it defined, and what related terms or concepts are commonly used?"
+    text: "What does generalization mean in your field? How is it defined, and what related terms or concepts are commonly used?"
   - label: "Theory"
-    text: "What are the main theoretical approaches to generalisation? What ideas or assumptions shape how it is explained?"
+    text: "What are the main theoretical approaches to generalization? What ideas or assumptions shape how it is explained?"
   - label: "Method"
-    text: "How is generalisation studied in practice? What kinds of paradigms and measures are used, and what counts as evidence for generalisation?"
+    text: "How is generalization studied in practice? What kinds of paradigms and measures are used, and what counts as evidence for generalization?"
   - label: "Open questions"
     text: "What are the main challenges or open questions? Where do you see important unresolved issues, or potential connections with other fields?"
 speakers:
@@ -33,7 +33,7 @@ speakers:
     institution: "University of Sydney"
     photo: "/images/speakers/lee-jessica.jpg"
     bio: >-
-      Jessica Lee is a Senior Lecturer in the School of Psychology at the University of Sydney. Her research examines how “high-level” cognitive processes, such as reasoning and rule use, interact with “low-level” associative learning. It aims to uncover general learning principles that translate from animals to humans and from the laboratory to the real world. Her current work focuses on individual differences in the processes underlying fear generalisation, with the goal of explaining why some people overgeneralise fear. Her research has been recognised with an ARC Discovery Early Career Researcher Award and an APS Rising Star Award. She is a Fellow of the Psychonomic Society and a former Co-Convenor of the Australian Learning Group.
+      Jessica Lee is a Senior Lecturer in the School of Psychology at the University of Sydney. Her research examines how “high-level” cognitive processes, such as reasoning and rule use, interact with “low-level” associative learning. It aims to uncover general learning principles that translate from animals to humans and from the laboratory to the real world. Her current work focuses on individual differences in the processes underlying fear generalization, with the goal of explaining why some people overgeneralize fear. Her research has been recognized with an ARC Discovery Early Career Researcher Award and an APS Rising Star Award. She is a Fellow of the Psychonomic Society and a former Co-Convenor of the Australian Learning Group.
   - name: "Charley Wu"
     institution: "TU Darmstadt"
     photo: "/images/speakers/wu-charley.jpg"
@@ -83,7 +83,7 @@ programme:
     speaker: "Timothy Brady"
   - time: "18:05–18:45"
     kind: talk
-    field: "Social cognition and generalising language"
+    field: "Social cognition and generalizing language"
     short: "Social cognition and language"
     speaker: "Susan Gelman"
   - time: "18:45–19:25"

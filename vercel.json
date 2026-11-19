@@ -1,0 +1,8 @@
+{
+  "redirects": [
+    { "source": "/events/generalisation-across-disciplines", "destination": "/events/generalization-across-disciplines/", "permanent": true },
+    { "source": "/events/generalisation-across-disciplines/", "destination": "/events/generalization-across-disciplines/", "permanent": true },
+    { "source": "/events/generalisation-across-disciplines.ics", "destination": "/events/generalization-across-disciplines.ics", "permanent": true },
+    { "source": "/images/og/generalisation-across-disciplines.jpg", "destination": "/images/og/generalization-across-disciplines.jpg", "permanent": true }
+  ]
+}

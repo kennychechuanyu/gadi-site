@@ -63,7 +63,7 @@ export const people: Person[] = [
     email: "kenny.yu@kuleuven.be",
     role: "steering",
     photo: "/images/people/yu-kenny.jpg",
-    bio: "Kenny Yu is a mathematical psychologist who investigates the conditions under which computational models of cognition live up to their claims, that behavior can be decomposed into distinct processes, that model parameters correspond to the processes they purport to measure, and that fitting data constitutes evidence for theory. He builds probabilistic models of human learning and generalization that formally separate the cognitive mechanisms contributing to observed behavior. Methodologically, he asks when a model parameter genuinely measures the process it names, what data is needed to tell competing theories apart, and how model generalisability relates to explanatory power.",
+    bio: "Kenny Yu is a mathematical psychologist who investigates the conditions under which computational models of cognition live up to their claims, that behavior can be decomposed into distinct processes, that model parameters correspond to the processes they purport to measure, and that fitting data constitutes evidence for theory. He builds probabilistic models of human learning and generalization that formally separate the cognitive mechanisms contributing to observed behavior. Methodologically, he asks when a model parameter genuinely measures the process it names, what data is needed to tell competing theories apart, and how model generalizability relates to explanatory power.",
   },
   {
     name: "Steven Verheyen",
